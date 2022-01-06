@@ -28,6 +28,8 @@ ext{
     ]
     libARouter = "com.alibaba:arouter-api:1.5.2"
     libARouterCompiler = "com.alibaba:arouter-compiler:1.5.2"
+
+    javaVersion = JavaVersion.VERSION_11
 }
 
 task clean(type: Delete) {
