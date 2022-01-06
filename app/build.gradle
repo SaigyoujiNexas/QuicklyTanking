@@ -33,7 +33,10 @@ android {
 }
 
 dependencies {
-
+    if(!isDebug)
+    {
+        implementation(project(":modulesCore:main"))
+    }
     implementation(project(":modulesBase:libBase"))
     annotationProcessor(setting.libARouterCompiler)
     testImplementation 'junit:junit:4.+'
