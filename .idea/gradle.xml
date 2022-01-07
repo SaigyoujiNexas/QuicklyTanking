@@ -14,6 +14,7 @@
             <option value="$PROJECT_DIR$/modulesBase" />
             <option value="$PROJECT_DIR$/modulesBase/libBase" />
             <option value="$PROJECT_DIR$/modulesCore" />
+            <option value="$PROJECT_DIR$/modulesCore/login" />
             <option value="$PROJECT_DIR$/modulesCore/main" />
             <option value="$PROJECT_DIR$/modulesPublic" />
             <option value="$PROJECT_DIR$/modulesPublic/common" />
