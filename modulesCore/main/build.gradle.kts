@@ -21,6 +21,12 @@ android{
                 arguments(mapOf("AROUTER_MODULE_NAME" to project.name))
             }
         }
+        sourceSets["main"].manifest.srcFile {
+            if (isDebug)
+                "src/main/debug/AndroidManifest.xml"
+            else
+                "src/main/AndroidManifest.xml"
+        }
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

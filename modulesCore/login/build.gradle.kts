@@ -24,7 +24,7 @@ android {
     }
 
     buildTypes {
-        release {
+        val release by getting{
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
@@ -35,6 +35,13 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
+    }
+
+    sourceSets["main"].manifest.srcFile {
+        if (isDebug)
+            "src/main/debug/AndroidManifest.xml"
+        else
+            "src/main/AndroidManifest.xml"
     }
 }
 kapt {
