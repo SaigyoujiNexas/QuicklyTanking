@@ -51,9 +51,10 @@ kapt {
 }
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.7.0")
     implementation(project(":modulesBase:libBase"))
+    implementation(project(":modulesPublic:repository"))
     kapt(libARouterCompiler)
+
     testImplementation("junit:junit:4.+")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")

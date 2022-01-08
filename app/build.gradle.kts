@@ -33,13 +33,15 @@ android {
 }
 
 dependencies {
-    if(!isDebug)
-    {
-        implementation(project(":modulesCore:main"))
-        implementation(project(":modulesCore:login"))
-    }
+
+    implementation(project(":modulesCore:main"))
+    implementation(project(":modulesCore:login"))
     implementation(project(":modulesBase:libBase"))
+
+    implementation(project(":modulesPublic:common"))
+    implementation(project(":modulesPublic:repository"))
     annotationProcessor(libARouterCompiler)
+
     testImplementation("junit:junit:4.+")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")

@@ -12,7 +12,8 @@ val androidC = mapOf(
 val libraryC = mapOf(
 "appcompat" to  "androidx.appcompat:appcompat:1.4.0",
 "material" to  "com.google.android.material:material:1.4.0",
-"constraintlayout" to "androidx.constraintlayout:constraintlayout:2.1.2"
+"constraintlayout" to "androidx.constraintlayout:constraintlayout:2.1.2",
+    "core-ktx" to "androidx.core:core-ktx:1.7.0"
 )
 val libARouter = "com.alibaba:arouter-api:1.5.2"
 val libARouterCompiler = "com.alibaba:arouter-compiler:1.5.2"
@@ -24,3 +25,5 @@ val applicationIds = mapOf(
 )
 
 val javaVersion = JavaVersion.VERSION_11
+
+val kotlinVersion = "1.6.10"

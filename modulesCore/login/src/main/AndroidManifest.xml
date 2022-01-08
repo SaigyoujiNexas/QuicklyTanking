@@ -2,9 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.modulescore.login">
     <application>
+
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".LoginActivity">
         </activity>
     </application>
 </manifest>
