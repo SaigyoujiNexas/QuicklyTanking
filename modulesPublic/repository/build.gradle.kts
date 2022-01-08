@@ -1,22 +1,19 @@
 plugins {
-    id("com.android.application")
+    id("com.android.library")
+    id("kotlin-android")
 }
+var versionCode: Int? = null
+var versionName: String? = null
 android {
     compileSdk = androidC["compileSdk"] as Int
-
     defaultConfig {
-        applicationId = applicationIds["app"]
         minSdk = androidC["minSdk"] as Int
         targetSdk = androidC["targetSdk"] as Int
         versionCode = androidC["versionCode"] as Int
         versionName = androidC["versionName"] as String
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments(mapOf("AROUTER_MODULE_NAME" to project.name))
-            }
-        }
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -29,19 +26,11 @@ android {
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
     }
-    buildToolsVersion = "31.0.0"
 }
 
 dependencies {
 
-    implementation(project(":modulesCore:main"))
-    implementation(project(":modulesCore:login"))
     implementation(project(":modulesBase:libBase"))
-
-    implementation(project(":modulesPublic:common"))
-    implementation(project(":modulesPublic:repository"))
-    annotationProcessor(libARouterCompiler)
-
     testImplementation("junit:junit:4.+")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")

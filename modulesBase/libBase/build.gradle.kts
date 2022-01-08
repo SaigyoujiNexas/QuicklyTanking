@@ -1,5 +1,7 @@
+
 plugins {
     id("com.android.library")
+    id("kotlin-android")
 }
 var versionCode : Int? = null
 var versionName : String? = null
@@ -33,8 +35,10 @@ android {
         api(libraryC["appcompat"] as Any)
         api(libraryC["material"] as Any)
         api(libraryC["constraintlayout"] as Any)
+        api(libraryC["core-ktx"] as Any)
         api(libARouter)
         testImplementation("junit:junit:4.+")
         androidTestImplementation("androidx.test.ext:junit:1.1.3")
         androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+        implementation("androidx.core:core-ktx:+")
     }
