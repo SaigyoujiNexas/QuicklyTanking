@@ -26,6 +26,9 @@ android {
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
     }
+    kotlinOptions {
+        jvmTarget = JvmTarget
+    }
 }
 
 dependencies {
