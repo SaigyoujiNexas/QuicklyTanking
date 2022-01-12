@@ -17,8 +17,8 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
         Button button = findViewById(R.id.button);
-        button.setOnClickListener(v -> {
-            ARouter.getInstance().build(RoutePathRepository.LOG_IN).navigation(this);
-        });
+        button.setOnClickListener(v ->
+            ARouter.getInstance().build(RoutePathRepository.LOG_IN).navigation(this)
+        );
     }
 }

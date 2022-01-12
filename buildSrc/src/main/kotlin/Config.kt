@@ -33,6 +33,7 @@ const val libHiltAndroidXCompiler = "androidx.hilt:hilt-compiler:1.0.0"
 
 
 const val libRetrofit = "com.squareup.retrofit2:retrofit:2.9.0"
+const val libOkHttpInterceptor = "com.squareup.okhttp3:logging-interceptor:4.9.3"
 const val libRxJava = "io.reactivex.rxjava3:rxjava:3.1.3"
 const val libRxAndroid = "io.reactivex.rxjava3:rxandroid:3.0.0"
 const val libRetrofit2RxJava = "com.squareup.retrofit2:adapter-rxjava3:2.9.0"

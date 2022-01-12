@@ -1,5 +1,6 @@
 
 plugins {
+    id("kotlin-android")
     id("com.android.library")
     id("dagger.hilt.android.plugin")
 }
@@ -47,7 +48,9 @@ android {
         annotationProcessor(libHiltCompiler)
         api(libHiltLifeCycle)
         annotationProcessor(libHiltAndroidXCompiler)
+
         api(libRetrofit)
+        api(libOkHttpInterceptor)
         api(libRxJava)
         api(libRxAndroid)
         api(libRetrofit2RxJava)
