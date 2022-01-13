@@ -10,7 +10,7 @@ val androidC = mapOf(
 "versionName" to "1.0"
 )
 
-val nav_version = "2.3.5"
+const val nav_version = "2.3.5"
 
 
 val libraryC = mapOf(

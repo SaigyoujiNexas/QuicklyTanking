@@ -1,13 +1,13 @@
 package com.example.modulescore.main;
 
+
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.example.repository.RoutePathRepository;
+import com.example.modulespublic.common.constant.RoutePath;
 
-@Route(path = RoutePathRepository.MAIN)
+
+@Route(path = RoutePath.MAIN)
 public class MainActivity extends AppCompatActivity {
 
     @Override

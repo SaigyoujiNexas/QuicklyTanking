@@ -26,8 +26,8 @@ android {
             }
         }
         compileOptions {
-            sourceCompatibility = javaVersion
-            targetCompatibility = javaVersion
+            sourceCompatibility(javaVersion)
+            targetCompatibility(javaVersion)
         }
     }
 
@@ -43,10 +43,10 @@ android {
         androidTestImplementation(libraryC["nav-test"] as Any)
 
 
-        api(libARouter)
-        api(libHilt)
+
+        implementation(libHilt)
         annotationProcessor(libHiltCompiler)
-        api(libHiltLifeCycle)
+        implementation(libHiltLifeCycle)
         annotationProcessor(libHiltAndroidXCompiler)
 
         api(libRetrofit)
