@@ -20,6 +20,13 @@ android {
         versionCode = androidC["versionCode"] as Int
         versionName = androidC["versionName"] as String
 
+        sourceSets["main"].manifest.srcFile {
+            if (isDebug)
+                "src/main/debug/AndroidManifest.xml"
+            else
+                "src/main/AndroidManifest.xml"
+        }
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -45,7 +52,7 @@ android {
     }
 }
 kapt {
-    arguments {
+    arguments  {
         arg("AROUTER_MODULE_NAME", project.name)
     }
 }

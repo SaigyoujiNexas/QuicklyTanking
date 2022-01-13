@@ -12,7 +12,7 @@ android {
         versionName = androidC["versionName"] as String
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments(mapOf("AROUTER_MODULE_NAME" to project.name))
+                arguments += mapOf("AROUTER_MODULE_NAME" to project.name)
             }
         }
 

@@ -18,7 +18,7 @@ android{
         versionName = androidC["versionName"] as String
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments(mapOf("AROUTER_MODULE_NAME" to project.name))
+                arguments += mapOf("AROUTER_MODULE_NAME" to project.name)
             }
         }
         sourceSets["main"].manifest.srcFile {
@@ -46,8 +46,9 @@ android{
 dependencies {
 
     implementation(project(":modulesBase:libBase"))
-    annotationProcessor(libARouterCompiler)
     implementation(project(":modulesPublic:repository"))
+
+    annotationProcessor(libARouterCompiler)
     testImplementation("junit:junit:4.+")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
