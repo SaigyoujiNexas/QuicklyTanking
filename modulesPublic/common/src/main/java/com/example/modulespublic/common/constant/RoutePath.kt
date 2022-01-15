@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull
 class RoutePath {
 
     companion object {
+
         @NotNull
         const val LOG_IN = "/login/LoginActivity"
         @NotNull

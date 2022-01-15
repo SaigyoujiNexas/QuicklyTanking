@@ -4,5 +4,4 @@ import com.example.modulespublic.common.base.BaseApplication
 
 
 class App: BaseApplication(){
-
 }
