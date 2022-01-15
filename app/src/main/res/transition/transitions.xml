@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<transitionSet xmlns:android="http://schemas.android.com/apk/res/android">
-    <changeImageTransform android:duration="3000" >
-        //指定目标控件的id进行changeImageTransform 变换
-        <targets android:targetId="@id/button"/>
-    </changeImageTransform>
-    //startDelay  上一个动画结束后1s，fade动画开始
-    <fade android:duration="3000" android:startDelay="1000"/>
-</transitionSet>

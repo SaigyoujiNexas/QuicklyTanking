@@ -20,6 +20,7 @@ android {
         versionCode = androidC["versionCode"] as Int
         versionName = androidC["versionName"] as String
 
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -30,11 +31,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = javaVersion
-        targetCompatibility = javaVersion
+        sourceCompatibility(javaVersion)
+        targetCompatibility(javaVersion)
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = JvmTarget
     }
 
     sourceSets["main"].manifest.srcFile {
@@ -45,15 +46,22 @@ android {
     }
 }
 kapt {
-    arguments {
+    arguments  {
         arg("AROUTER_MODULE_NAME", project.name)
     }
 }
 dependencies {
 
     implementation(project(":modulesBase:libBase"))
-    implementation(project(":modulesPublic:repository"))
+    implementation(project(":modulesPublic:common"))
+
+    implementation(libARouter)
     kapt(libARouterCompiler)
+
+    implementation(libHilt)
+    kapt(libHiltCompiler)
+    implementation(libHiltLifeCycle)
+    kapt(libHiltAndroidXCompiler)
 
     testImplementation("junit:junit:4.+")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")

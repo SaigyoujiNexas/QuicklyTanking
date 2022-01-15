@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.modulescore.login">
     <application>
-
         <activity
             android:name=".LoginActivity">
         </activity>
