@@ -39,6 +39,9 @@ const val libRxAndroid = "io.reactivex.rxjava3:rxandroid:3.0.0"
 const val libRetrofit2RxJava = "com.squareup.retrofit2:adapter-rxjava3:2.9.0"
 const val libRetrofit2Gson = "com.squareup.retrofit2:converter-gson:2.9.0"
 
+const val libGlide = "com.github.bumptech.glide:glide:4.12.0"
+const val libGlideCompiler = "com.github.bumptech.glide:compiler:4.12.0"
+
 val applicationIds = mapOf(
     "app" to "com.example.quicklytanking",
     "main" to "com.example.modulescore.main",
