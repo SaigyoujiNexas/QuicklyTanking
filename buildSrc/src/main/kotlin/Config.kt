@@ -1,6 +1,6 @@
 import org.gradle.api.JavaVersion
 
-const val isDebug = false
+const val isDebug = true
 val androidC = mapOf(
 "compileSdk" to 31,
 "minSdk" to 27,
@@ -45,7 +45,8 @@ const val libGlideCompiler = "com.github.bumptech.glide:compiler:4.12.0"
 val applicationIds = mapOf(
     "app" to "com.example.quicklytanking",
     "main" to "com.example.modulescore.main",
-    "login" to "com.example.modulescore.login"
+    "login" to "com.example.modulescore.login",
+    "setting" to "com.example.modulescore.setting"
 )
 
 val javaVersion = JavaVersion.VERSION_11

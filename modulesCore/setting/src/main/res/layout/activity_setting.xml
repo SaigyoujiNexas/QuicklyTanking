@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#DCDCDC"
-    tools:context=".SettingActivity">
+    tools:context="com.example.modulescore.setting.SettingActivity">
     <TextView
         android:id="@+id/SettingBack"
         android:layout_width="wrap_content"
@@ -41,7 +41,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/SettingsItem1"
                 app:layout_constraintTop_toTopOf="parent"
-                android:background="@drawable/state_pressed"
+                android:background="?attr/selectableItemBackground"
                 android:layout_width="match_parent"
                 android:layout_height="49dp">
                 <TextView
@@ -70,7 +70,7 @@
                 android:id="@+id/SettingsItem2"
                 app:layout_constraintTop_toBottomOf="@id/SettingsItem1"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/state_pressed"
+                android:background="?attr/selectableItemBackground"
                 android:layout_width="match_parent"
                 android:layout_height="49dp">
                 <TextView
@@ -98,7 +98,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/SettingsItem3"
                 app:layout_constraintTop_toBottomOf="@id/SettingsItem2"
-                android:background="@drawable/state_pressed"
+                android:background="?attr/selectableItemBackground"
                 android:layout_marginTop="1dp"
                 android:layout_width="match_parent"
                 android:layout_height="49dp">
@@ -129,7 +129,7 @@
                 android:id="@+id/SettingsItem4"
                 app:layout_constraintTop_toBottomOf="@id/SettingsItem3"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/state_pressed"
+                android:background="?attr/selectableItemBackground"
                 android:layout_width="match_parent"
                 android:layout_height="49dp">
                 <TextView
@@ -157,7 +157,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/SettingsItem5"
                 app:layout_constraintTop_toBottomOf="@id/SettingsItem4"
-                android:background="@drawable/state_pressed"
+                android:background="?attr/selectableItemBackground"
                 android:layout_width="match_parent"
                 android:layout_marginTop="1dp"
                 android:layout_height="49dp">
@@ -187,7 +187,7 @@
                 android:id="@+id/SettingsItem6"
                 app:layout_constraintTop_toBottomOf="@id/SettingsItem5"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/state_pressed"
+                android:background="?attr/selectableItemBackground"
                 android:layout_width="match_parent"
                 android:layout_height="49dp">
                 <TextView
@@ -216,7 +216,7 @@
                 android:id="@+id/SettingsItem7"
                 app:layout_constraintTop_toBottomOf="@id/SettingsItem6"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/state_pressed"
+                android:background="?attr/selectableItemBackground"
                 android:layout_width="match_parent"
                 android:layout_height="50dp">
                 <TextView

@@ -11,6 +11,9 @@ class RoutePath {
         const val LOG_IN = "/login/LoginActivity"
         @NotNull
         const val MAIN = "/main/MainActivity"
+
+        const val SETTING= "/setting/SettingActivity"
+
     }
 
 }

@@ -1,4 +1,4 @@
-package com.example.modulescore.main;
+package com.example.modulescore.setting;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
