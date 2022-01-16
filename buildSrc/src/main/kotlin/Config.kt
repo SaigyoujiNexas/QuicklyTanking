@@ -1,6 +1,6 @@
 import org.gradle.api.JavaVersion
 
-const val isDebug = true
+const val isDebug = false
 val androidC = mapOf(
 "compileSdk" to 31,
 "minSdk" to 27,
