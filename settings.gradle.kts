@@ -6,6 +6,7 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "QuicklyTanking"
+include(":app")
 include(":modulesBase:libBase")
 include(":modulesPublic:common")
 include(":modulesCore:main")
