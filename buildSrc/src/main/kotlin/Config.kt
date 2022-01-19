@@ -1,6 +1,6 @@
 import org.gradle.api.JavaVersion
 
-const val isDebug = false
+const val isDebug = true
 val androidC = mapOf(
 "compileSdk" to 31,
 "minSdk" to 27,
@@ -21,7 +21,8 @@ val libraryC = mapOf(
     "nav-fragment" to "androidx.navigation:navigation-fragment:$nav_version",
     "nav-ui" to "androidx.navigation:navigation-ui:$nav_version",
     "nav-dnmc-fragment" to "androidx.navigation:navigation-dynamic-features-fragment:$nav_version",
-    "nav-test" to "androidx.navigation:navigation-testing:$nav_version"
+    "nav-test" to "androidx.navigation:navigation-testing:$nav_version",
+    "nav_compose" to "androidx.navigation:navigation-compose:2.4.0-rc01"
 )
 const val libARouter = "com.alibaba:arouter-api:1.5.2"
 const val libARouterCompiler = "com.alibaba:arouter-compiler:1.5.2"

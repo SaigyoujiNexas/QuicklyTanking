@@ -40,7 +40,7 @@ android {
         api(libraryC["nav-fragment"] as Any)
         api(libraryC["nav-ui"] as Any)
         api(libraryC["nav-dnmc-fragment"] as Any)
-        androidTestImplementation(libraryC["nav-test"] as Any)
+
 
 
 
