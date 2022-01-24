@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/login_nav_graph"
     app:startDestination="@id/loginFrontFragment">
+
     <fragment
         android:id="@+id/loginForgetFragment"
         android:name="com.example.modulescore.login.LoginForgetFragment"
@@ -12,6 +13,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFrontFragment"
+        tools:layout="@layout/fragment_login_front"
         android:name="com.example.modulescore.login.LoginFrontFragment"
         android:label="@string/login_front">
         <action
@@ -20,33 +22,10 @@
         <action
             android:id="@+id/action_loginFrontFragment_to_loginForgetFragment"
             app:destination="@id/loginForgetFragment" />
-        <action
-            android:id="@+id/action_loginFrontFragment_to_login_front_nav_graph"
-            app:destination="@+id/login_front_nav_graph"/>
     </fragment>
     <fragment
         android:id="@+id/loginRegisterFragment"
+        tools:layout="@layout/fragment_login_register"
         android:name="com.example.modulescore.login.LoginRegisterFragment"
         android:label="@string/login_register"/>
-    <navigation
-        app:startDestination="@id/loginFrontAccountFragment"
-        android:id="@+id/login_front_nav_graph"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:android="http://schemas.android.com/apk/res/android">
-        <fragment
-            android:id="@+id/loginFrontAccountFragment"
-            android:name="com.example.modulescore.login.LoginFrontAccountFragment">
-            <action
-                android:id="@+id/action_loginFrontAccountFragment_to_loginFrontVerifyFragment"
-                app:destination="@id/loginFrontVerifyFragment"/>
-        </fragment>
-        <fragment
-            android:id="@+id/loginFrontVerifyFragment"
-            android:name="com.example.modulescore.login.LoginFrontVerifyFragment">
-            <action
-                android:id="@+id/action_loginFrontVerifyFragment_to_loginFrontAccountFragment"
-                app:destination="@id/loginFrontAccountFragment"/>
-
-        </fragment>
-    </navigation>
 </navigation>
