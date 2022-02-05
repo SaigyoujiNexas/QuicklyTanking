@@ -3,6 +3,7 @@ plugins {
         id("com.android.application")
     else
         id("com.android.library")
+    id("dagger.hilt.android.plugin")
 }
 var applicationId :String? = null
 var versionCode : Int? = null

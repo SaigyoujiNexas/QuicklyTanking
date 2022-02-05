@@ -24,7 +24,7 @@ public class NetWorkModule {
     @Singleton
     public Retrofit provideRetrofit(OkHttpClient client){
         return new Retrofit.Builder()
-                .baseUrl("")
+                .baseUrl("https://www.baidu.com/")
                 .client(client)
                 .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())

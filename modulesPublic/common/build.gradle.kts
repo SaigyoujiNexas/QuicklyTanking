@@ -1,7 +1,6 @@
 plugins {
     id("com.android.library")
     id("kotlin-android")
-    id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
 }
 
@@ -43,9 +42,9 @@ dependencies {
     implementation(libARouter)
 
     implementation(libHilt)
-    kapt(libHiltCompiler)
+    annotationProcessor(libHiltCompiler)
     implementation(libHiltLifeCycle)
-    kapt(libHiltAndroidXCompiler)
+    annotationProcessor(libHiltAndroidXCompiler)
 
     testImplementation("junit:junit:4.+")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")

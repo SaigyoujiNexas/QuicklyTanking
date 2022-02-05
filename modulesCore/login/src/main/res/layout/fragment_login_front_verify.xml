@@ -23,6 +23,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:maxLines="1"
+            android:id="@+id/et_login_front_verify_code"
             android:hint="@string/verify_code"
             android:inputType="number"
             android:layout_toStartOf="@+id/bt_login_front_verify"
@@ -32,7 +33,7 @@
             android:layout_marginStart="24dp"
             android:id="@+id/bt_login_front_verify"
             android:layout_alignParentEnd="true"
-            android:text="发送验证码"
+            android:text="@string/send_verify_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </RelativeLayout>

@@ -1,4 +1,4 @@
-package com.example.modulescore.login;
+package com.example.modulescore.login.view;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,23 +9,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import java.lang.ref.WeakReference;
+import com.example.modulescore.login.R;
 
-public class LoginFrontVerifyFragment extends Fragment {
-
-
-    private LoginFrontVerifyFragment(){
-
-    }
+public class LoginForgetFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_login_front_verify, container, false);
+        return inflater.inflate(R.layout.fragment_login_forget, container, false);
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-    public static Fragment getFragmentInstance(){
-
-        return new LoginFrontVerifyFragment();
     }
 }

@@ -16,7 +16,7 @@ class RequestModel{
                 .subscribe(
                     {callback.onSuccess(it) },
                     {
-                        callback.onFailure()})
+                        callback.onFailure(it)})
         }
     }
 }
