@@ -51,10 +51,9 @@ android{
 
 dependencies {
 
-    implementation(project(":modulesBase:libBase"))
     implementation(project(":modulesPublic:common"))
 
-    implementation(libARouter)
+
     annotationProcessor(libARouterCompiler)
 
     implementation(libHilt)

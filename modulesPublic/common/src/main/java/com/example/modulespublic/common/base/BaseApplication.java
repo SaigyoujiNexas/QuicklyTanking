@@ -4,6 +4,8 @@ import android.app.Application;
 import android.text.TextUtils;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.example.common.utils.DisplayUtil;
+import com.example.common.utils.ToastUtil;
 import com.example.modulesbase.libbase.util.PropertiesUtil;
 
 import dagger.hilt.android.HiltAndroidApp;
@@ -19,6 +21,8 @@ public class BaseApplication extends Application {
             ARouter.openDebug();
         }
         ARouter.init(this);
+        DisplayUtil.Companion.init(this);
+        ToastUtil.Companion.init(this);
         super.onCreate();
     }
 }

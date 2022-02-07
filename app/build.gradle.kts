@@ -39,10 +39,9 @@ dependencies {
         implementation(project(":modulesCore:main"))
         implementation(project(":modulesCore:login"))
     }
-    implementation(project(":modulesBase:libBase"))
+
     implementation(project(":modulesPublic:common"))
 
-    implementation(libARouter)
 
     implementation(libHilt)
     annotationProcessor(libHiltCompiler)

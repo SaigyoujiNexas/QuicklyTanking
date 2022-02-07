@@ -38,13 +38,15 @@ var versionName: String? = null
 
 dependencies {
 
-    implementation(project(":modulesBase:libBase"))
-    implementation(libARouter)
+    api(project(":modulesBase:libBase"))
+    api(libARouter)
 
     implementation(libHilt)
     annotationProcessor(libHiltCompiler)
     implementation(libHiltLifeCycle)
     annotationProcessor(libHiltAndroidXCompiler)
+
+    implementation("com.hjq:toast:8.0")
 
     testImplementation("junit:junit:4.+")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
