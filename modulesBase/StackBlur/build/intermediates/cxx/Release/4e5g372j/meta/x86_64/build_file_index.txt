@@ -1,0 +1,2 @@
+E:\Android_series\cloudmusic\StackBlur\jni\Android.mk
+E:\Android_series\cloudmusic\StackBlur\jni\Application.mk

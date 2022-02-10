@@ -1,0 +1,43 @@
+-- Merging decision tree log ---
+manifest
+ADDED from E:\Android_series\cloudmusic\StackBlur\src\main\AndroidManifest.xml:2:1-14:12
+INJECTED from E:\Android_series\cloudmusic\StackBlur\src\main\AndroidManifest.xml:2:1-14:12
+INJECTED from E:\Android_series\cloudmusic\StackBlur\src\main\AndroidManifest.xml:2:1-14:12
+	package
+		ADDED from E:\Android_series\cloudmusic\StackBlur\src\main\AndroidManifest.xml:3:5-36
+		INJECTED from E:\Android_series\cloudmusic\StackBlur\src\main\AndroidManifest.xml
+		INJECTED from E:\Android_series\cloudmusic\StackBlur\src\main\AndroidManifest.xml
+	android:versionName
+		ADDED from E:\Android_series\cloudmusic\StackBlur\src\main\AndroidManifest.xml:5:5-30
+	xmlns:android
+		ADDED from E:\Android_series\cloudmusic\StackBlur\src\main\AndroidManifest.xml:2:11-69
+	android:versionCode
+		ADDED from E:\Android_series\cloudmusic\StackBlur\src\main\AndroidManifest.xml:4:5-28
+uses-permission#android.permission.WRITE_INTERNAL_STORAGE
+ADDED from E:\Android_series\cloudmusic\StackBlur\src\main\AndroidManifest.xml:6:5-81
+	android:name
+		ADDED from E:\Android_series\cloudmusic\StackBlur\src\main\AndroidManifest.xml:6:22-78
+application
+ADDED from E:\Android_series\cloudmusic\StackBlur\src\main\AndroidManifest.xml:7:5-12:19
+	android:label
+		ADDED from E:\Android_series\cloudmusic\StackBlur\src\main\AndroidManifest.xml:10:9-41
+	android:icon
+		ADDED from E:\Android_series\cloudmusic\StackBlur\src\main\AndroidManifest.xml:9:9-43
+	android:allowBackup
+		ADDED from E:\Android_series\cloudmusic\StackBlur\src\main\AndroidManifest.xml:8:9-35
+	android:theme
+		ADDED from E:\Android_series\cloudmusic\StackBlur\src\main\AndroidManifest.xml:11:9-49
+uses-sdk
+INJECTED from E:\Android_series\cloudmusic\StackBlur\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from E:\Android_series\cloudmusic\StackBlur\src\main\AndroidManifest.xml
+INJECTED from E:\Android_series\cloudmusic\StackBlur\src\main\AndroidManifest.xml
+INJECTED from E:\Android_series\cloudmusic\StackBlur\src\main\AndroidManifest.xml
+INJECTED from E:\Android_series\cloudmusic\StackBlur\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from E:\Android_series\cloudmusic\StackBlur\src\main\AndroidManifest.xml
+		ADDED from E:\Android_series\cloudmusic\StackBlur\src\main\AndroidManifest.xml
+		INJECTED from E:\Android_series\cloudmusic\StackBlur\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from E:\Android_series\cloudmusic\StackBlur\src\main\AndroidManifest.xml
+		ADDED from E:\Android_series\cloudmusic\StackBlur\src\main\AndroidManifest.xml
+		INJECTED from E:\Android_series\cloudmusic\StackBlur\src\main\AndroidManifest.xml

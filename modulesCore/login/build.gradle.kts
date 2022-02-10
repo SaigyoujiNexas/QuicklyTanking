@@ -51,17 +51,11 @@ android {
 dependencies {
 
     implementation(project(":modulesPublic:common"))
+    libraryC.forEach { (_, s2) -> implementation(s2) }
+    libs.forEach { implementation(it) }
+    apts.forEach { annotationProcessor(it) }
+    tests.forEach { androidTestImplementation(it) }
 
-    annotationProcessor(libARouterCompiler)
-
-    implementation(libHilt)
-    annotationProcessor(libHiltCompiler)
-    implementation(libHiltLifeCycle)
-    annotationProcessor(libHiltAndroidXCompiler)
-
-    implementation("androidx.navigation:navigation-compose:2.4.0-beta02")
-
-    androidTestImplementation(libraryC["nav-test"] as Any)
     testImplementation("junit:junit:4.+")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")

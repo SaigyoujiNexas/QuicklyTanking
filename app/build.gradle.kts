@@ -44,7 +44,7 @@ dependencies {
         implementation(project(":modulesCore:login"))
     }
     implementation(project(":modulesPublic:common"))
-    libraryC.forEach { implementation(it) }
+    libraryC.forEach {(_, v)-> implementation(v) }
 
     implementation(libARouter)
     

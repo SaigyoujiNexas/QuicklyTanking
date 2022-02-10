@@ -1,0 +1,45 @@
+apply plugin: 'com.android.library'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: '*.jar')
+    implementation fileTree(dir: "$buildDir/native-libs", include: 'native-libs.jar')
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 30
+        renderscriptTargetApi 22
+        renderscriptSupportModeEnabled false
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+        }
+    }
+
+    externalNativeBuild {
+        ndkBuild {
+            path file('jni/Android.mk')
+        }
+    }
+
+    flavorDimensions 'cpuArch'
+}
+
+task nativeLibsToJar(type: Zip, description: 'create a jar archive of the native libs') {
+    destinationDir file("$buildDir/native-libs")
+    baseName 'native-libs'
+    extension 'jar'
+    from fileTree(dir: 'libs', include: '**/*.so')
+    from fileTree(dir: 'renderscript', include: '**/*.so')
+    into 'lib/'
+}
+
+tasks.withType(JavaCompile) {
+    compileTask -> compileTask.dependsOn(nativeLibsToJar)
+}

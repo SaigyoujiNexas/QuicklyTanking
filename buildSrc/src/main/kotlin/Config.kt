@@ -23,7 +23,8 @@ val libraryC = mapOf(
     "nav-dnmc-fragment" to "androidx.navigation:navigation-dynamic-features-fragment:$nav_version",
 
 )
-
+const val libAMap3DMap = "com.amap.api:3dmap:latest.integration"
+const val libAMapLocation = "com.amap.api:location:latest.integration"
 const val libHttpLogger = "com.squareup.okhttp3:logging-interceptor:4.9.3"
 const val libARouter = "com.alibaba:arouter-api:1.5.2"
 const val libARouterCompiler = "com.alibaba:arouter-compiler:1.5.2"
@@ -65,8 +66,9 @@ val libs = listOf(
     libGlideOkhttp3,
     libStatusBarUtil,
     libRecyclerAdapter,
-    libRxPermissions
-
+    libRxPermissions,
+    libAMap3DMap,
+    libAMapLocation
 )
 val tests = listOf(
     "androidx.navigation:navigation-testing:$nav_version"

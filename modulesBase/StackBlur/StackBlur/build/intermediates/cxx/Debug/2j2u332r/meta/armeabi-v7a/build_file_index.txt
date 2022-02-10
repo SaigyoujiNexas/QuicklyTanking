@@ -1,0 +1,2 @@
+E:\Android_Google_Code\android-stackblur\StackBlur\jni\Android.mk
+E:\Android_Google_Code\android-stackblur\StackBlur\jni\Application.mk

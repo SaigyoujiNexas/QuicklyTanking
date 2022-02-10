@@ -36,7 +36,7 @@ android {
         libraryC.forEach{(_, v) -> implementation(v)}
         libs.forEach { s -> implementation(s) }
         tests.forEach { t -> androidTestImplementation(t) }
-        apts.forEach { s -> implementation(s) }
+        apts.forEach { s -> annotationProcessor(s) }
 
 
 

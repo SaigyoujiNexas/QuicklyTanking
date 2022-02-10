@@ -1,0 +1,184 @@
+[
+  {
+    "level_": 0,
+    "message_": "Start JSON generation. Platform version: 19 min SDK version: armeabi-v7a",
+    "file_": "E:\\Android_Google_Code\\android-stackblur\\StackBlur\\jni\\Android.mk",
+    "tag_": "release|armeabi-v7a",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {},
+      "fieldsDescending": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": 1539213925
+  },
+  {
+    "level_": 0,
+    "message_": "rebuilding JSON E:\\Android_Google_Code\\android-stackblur\\StackBlur\\build\\.cxx\\Release\\5a2r665l\\armeabi-v7a\\android_gradle_build.json due to:",
+    "file_": "E:\\Android_Google_Code\\android-stackblur\\StackBlur\\jni\\Android.mk",
+    "tag_": "release|armeabi-v7a",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {},
+      "fieldsDescending": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": 2069932343
+  },
+  {
+    "level_": 0,
+    "message_": "- expected json E:\\Android_Google_Code\\android-stackblur\\StackBlur\\build\\.cxx\\Release\\5a2r665l\\armeabi-v7a\\android_gradle_build.json file is not present, will remove stale json folder",
+    "file_": "E:\\Android_Google_Code\\android-stackblur\\StackBlur\\jni\\Android.mk",
+    "tag_": "release|armeabi-v7a",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {},
+      "fieldsDescending": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": -788751339
+  },
+  {
+    "level_": 0,
+    "message_": "- missing previous command file E:\\Android_Google_Code\\android-stackblur\\StackBlur\\build\\.cxx\\Release\\5a2r665l\\armeabi-v7a\\metadata_generation_command.txt, will remove stale json folder",
+    "file_": "E:\\Android_Google_Code\\android-stackblur\\StackBlur\\jni\\Android.mk",
+    "tag_": "release|armeabi-v7a",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {},
+      "fieldsDescending": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": 701688723
+  },
+  {
+    "level_": 0,
+    "message_": "- command changed from previous, will remove stale json folder",
+    "file_": "E:\\Android_Google_Code\\android-stackblur\\StackBlur\\jni\\Android.mk",
+    "tag_": "release|armeabi-v7a",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {},
+      "fieldsDescending": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": 1862476722
+  },
+  {
+    "level_": 0,
+    "message_": "created folder \u0027E:\\Android_Google_Code\\android-stackblur\\StackBlur\\build\\.cxx\\Release\\5a2r665l\\armeabi-v7a\u0027",
+    "file_": "E:\\Android_Google_Code\\android-stackblur\\StackBlur\\jni\\Android.mk",
+    "tag_": "release|armeabi-v7a",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {},
+      "fieldsDescending": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": -806412731
+  },
+  {
+    "level_": 0,
+    "message_": "executing ndkBuild Executable : D:\\dev\\asdownload\\ndk\\21.4.7075529\\ndk-build.cmd\narguments : \nNDK_PROJECT_PATH\u003dnull\nAPP_BUILD_SCRIPT\u003dE:\\Android_Google_Code\\android-stackblur\\StackBlur\\jni\\Android.mk\nNDK_APPLICATION_MK\u003dE:\\Android_Google_Code\\android-stackblur\\StackBlur\\jni\\Application.mk\nAPP_ABI\u003darmeabi-v7a\nNDK_ALL_ABIS\u003darmeabi-v7a\nNDK_DEBUG\u003d0\nAPP_PLATFORM\u003dandroid-19\nNDK_OUT\u003dE:\\Android_Google_Code\\android-stackblur\\StackBlur\\build\\intermediates\\cxx\\Release\\5a2r665l/obj\nNDK_LIBS_OUT\u003dE:\\Android_Google_Code\\android-stackblur\\StackBlur\\build\\intermediates\\cxx\\Release\\5a2r665l/lib\nAPP_SHORT_COMMANDS\u003dfalse\nLOCAL_SHORT_COMMANDS\u003dfalse\n-B\n-n\njvmArgs : \n\n",
+    "file_": "E:\\Android_Google_Code\\android-stackblur\\StackBlur\\jni\\Android.mk",
+    "tag_": "release|armeabi-v7a",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {},
+      "fieldsDescending": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": -851334010
+  },
+  {
+    "level_": 0,
+    "message_": "Executable : D:\\dev\\asdownload\\ndk\\21.4.7075529\\ndk-build.cmd\narguments : \nNDK_PROJECT_PATH\u003dnull\nAPP_BUILD_SCRIPT\u003dE:\\Android_Google_Code\\android-stackblur\\StackBlur\\jni\\Android.mk\nNDK_APPLICATION_MK\u003dE:\\Android_Google_Code\\android-stackblur\\StackBlur\\jni\\Application.mk\nAPP_ABI\u003darmeabi-v7a\nNDK_ALL_ABIS\u003darmeabi-v7a\nNDK_DEBUG\u003d0\nAPP_PLATFORM\u003dandroid-19\nNDK_OUT\u003dE:\\Android_Google_Code\\android-stackblur\\StackBlur\\build\\intermediates\\cxx\\Release\\5a2r665l/obj\nNDK_LIBS_OUT\u003dE:\\Android_Google_Code\\android-stackblur\\StackBlur\\build\\intermediates\\cxx\\Release\\5a2r665l/lib\nAPP_SHORT_COMMANDS\u003dfalse\nLOCAL_SHORT_COMMANDS\u003dfalse\n-B\n-n\njvmArgs : \n\n",
+    "file_": "E:\\Android_Google_Code\\android-stackblur\\StackBlur\\jni\\Android.mk",
+    "tag_": "release|armeabi-v7a",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {},
+      "fieldsDescending": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": -142309805
+  },
+  {
+    "level_": 0,
+    "message_": "parse and convert ndk-build output to build configuration JSON",
+    "file_": "E:\\Android_Google_Code\\android-stackblur\\StackBlur\\jni\\Android.mk",
+    "tag_": "release|armeabi-v7a",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {},
+      "fieldsDescending": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": 304993409
+  },
+  {
+    "level_": 0,
+    "message_": "found application make file E:\\Android_Google_Code\\android-stackblur\\StackBlur\\jni\\Application.mk",
+    "file_": "E:\\Android_Google_Code\\android-stackblur\\StackBlur\\jni\\Android.mk",
+    "tag_": "release|armeabi-v7a",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {},
+      "fieldsDescending": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": -26755387
+  },
+  {
+    "level_": 0,
+    "message_": "done executing ndkBuild",
+    "file_": "E:\\Android_Google_Code\\android-stackblur\\StackBlur\\jni\\Android.mk",
+    "tag_": "release|armeabi-v7a",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {},
+      "fieldsDescending": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": -2125127321
+  },
+  {
+    "level_": 0,
+    "message_": "write command file E:\\Android_Google_Code\\android-stackblur\\StackBlur\\build\\.cxx\\Release\\5a2r665l\\armeabi-v7a\\metadata_generation_command.txt",
+    "file_": "E:\\Android_Google_Code\\android-stackblur\\StackBlur\\jni\\Android.mk",
+    "tag_": "release|armeabi-v7a",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {},
+      "fieldsDescending": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": 1982691713
+  },
+  {
+    "level_": 0,
+    "message_": "JSON generation completed without problems",
+    "file_": "E:\\Android_Google_Code\\android-stackblur\\StackBlur\\jni\\Android.mk",
+    "tag_": "release|armeabi-v7a",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {},
+      "fieldsDescending": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": -806763741
+  }
+]
