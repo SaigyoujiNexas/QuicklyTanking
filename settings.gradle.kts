@@ -5,6 +5,7 @@ dependencyResolutionManagement {
         maven(url= "https://jitpack.io")
         jcenter()
         mavenCentral()
+        maven(url="https://jitpack.io")
     }
 }
 rootProject.name = "QuicklyTanking"

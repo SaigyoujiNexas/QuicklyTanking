@@ -12,7 +12,8 @@ android {
         defaultConfig {
             minSdk = androidC["minSdk"] as Int
             targetSdk = androidC["targetSdk"] as Int
-
+            versionCode = androidC["versionCode"] as Int
+            versionName = androidC["versionName"] as String
 
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
             consumerProguardFiles("consumer-rules.pro")
@@ -32,28 +33,13 @@ android {
 
     dependencies {
 
-        api(libraryC["appcompat"] as Any)
-        api(libraryC["material"] as Any)
-        api(libraryC["constraintlayout"] as Any)
-        api(libraryC["core-ktx"] as Any)
-        api(libraryC["nav-fragment"] as Any)
-        api(libraryC["nav-ui"] as Any)
-        api(libraryC["nav-dnmc-fragment"] as Any)
+        libraryC.forEach{(_, v) -> implementation(v)}
+        libs.forEach { s -> implementation(s) }
+        tests.forEach { t -> androidTestImplementation(t) }
+        apts.forEach { s -> implementation(s) }
 
 
 
-
-        implementation(libHilt)
-        annotationProcessor(libHiltCompiler)
-        implementation(libHiltLifeCycle)
-        annotationProcessor(libHiltAndroidXCompiler)
-
-        api(libRetrofit)
-        api(libOkHttpInterceptor)
-        api(libRxJava)
-        api(libRxAndroid)
-        api(libRetrofit2RxJava)
-        api(libRetrofit2Gson)
 
         testImplementation("junit:junit:4.+")
         androidTestImplementation("androidx.test.ext:junit:1.1.3")
