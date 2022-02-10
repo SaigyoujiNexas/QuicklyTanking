@@ -30,7 +30,11 @@ android {
         sourceCompatibility(javaVersion)
         targetCompatibility(javaVersion)
     }
-    buildToolsVersion = "31.0.0"
+    //support the view binding and dataBinding
+    android.buildFeatures.viewBinding = true
+    android.buildFeatures.dataBinding = true
+
+    buildToolsVersion = androidC["buildToolsVersion"] as String
 }
 
 dependencies {
@@ -39,16 +43,11 @@ dependencies {
         implementation(project(":modulesCore:main"))
         implementation(project(":modulesCore:login"))
     }
-    implementation(project(":modulesBase:libBase"))
     implementation(project(":modulesPublic:common"))
+    libraryC.forEach { implementation(it) }
 
     implementation(libARouter)
-
-    implementation(libHilt)
-    annotationProcessor(libHiltCompiler)
-    implementation(libHiltLifeCycle)
-    annotationProcessor(libHiltAndroidXCompiler)
-
+    
     testImplementation("junit:junit:4.+")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
