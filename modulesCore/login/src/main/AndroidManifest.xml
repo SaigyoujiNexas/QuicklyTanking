@@ -3,7 +3,7 @@
     package="com.example.modulescore.login">
     <application>
         <activity
-            android:name=".LoginActivity">
+            android:name=".view.LoginActivity">
         </activity>
     </application>
 </manifest>

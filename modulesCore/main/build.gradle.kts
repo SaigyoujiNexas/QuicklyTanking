@@ -50,16 +50,11 @@ android{
 
 dependencies {
 
-    implementation(project(":modulesBase:libBase"))
     implementation(project(":modulesPublic:common"))
-
-    implementation(libARouter)
-    annotationProcessor(libARouterCompiler)
-
-    implementation(libHilt)
-    annotationProcessor(libHiltCompiler)
-    implementation(libHiltLifeCycle)
-    annotationProcessor(libHiltAndroidXCompiler)
+    libraryC.forEach { (_, s2) -> implementation(s2) }
+    libs.forEach { implementation(it) }
+    apts.forEach { annotationProcessor(it) }
+    tests.forEach { androidTestImplementation(it) }
 
     testImplementation("junit:junit:4.+")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")

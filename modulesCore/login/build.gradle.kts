@@ -3,9 +3,7 @@ plugins {
         id("com.android.application")
     else
         id("com.android.library")
-    id("kotlin-android")
-    id("com.google.devtools.ksp") version "1.6.10-1.0.2"
-    id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
 }
 var applicationId :String? = null
 var versionCode : Int? = null
@@ -22,7 +20,14 @@ android {
 
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += mapOf("AROUTER_MODULE_NAME" to project.name)
+            }
+        }
     }
+
 
     buildTypes {
         val release by getting{
@@ -34,9 +39,6 @@ android {
         sourceCompatibility(javaVersion)
         targetCompatibility(javaVersion)
     }
-    kotlinOptions {
-        jvmTarget = JvmTarget
-    }
 
     sourceSets["main"].manifest.srcFile {
         if (isDebug)
@@ -45,23 +47,14 @@ android {
             "src/main/AndroidManifest.xml"
     }
 }
-kapt {
-    arguments  {
-        arg("AROUTER_MODULE_NAME", project.name)
-    }
-}
+
 dependencies {
 
-    implementation(project(":modulesBase:libBase"))
     implementation(project(":modulesPublic:common"))
-
-    implementation(libARouter)
-    kapt(libARouterCompiler)
-
-    implementation(libHilt)
-    kapt(libHiltCompiler)
-    implementation(libHiltLifeCycle)
-    kapt(libHiltAndroidXCompiler)
+    libraryC.forEach { (_, s2) -> implementation(s2) }
+    libs.forEach { implementation(it) }
+    apts.forEach { annotationProcessor(it) }
+    tests.forEach { androidTestImplementation(it) }
 
     testImplementation("junit:junit:4.+")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")

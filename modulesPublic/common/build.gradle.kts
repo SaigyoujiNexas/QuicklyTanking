@@ -1,7 +1,6 @@
 plugins {
     id("com.android.library")
     id("kotlin-android")
-    id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
 }
 
@@ -39,13 +38,14 @@ var versionName: String? = null
 
 dependencies {
 
-    implementation(project(":modulesBase:libBase"))
-    implementation(libARouter)
+    api(project(":modulesBase:libBase"))
 
-    implementation(libHilt)
-    kapt(libHiltCompiler)
-    implementation(libHiltLifeCycle)
-    kapt(libHiltAndroidXCompiler)
+    libraryC.forEach { (_, s2) -> implementation(s2) }
+    libs.forEach { implementation(it) }
+    apts.forEach { annotationProcessor(it) }
+    tests.forEach { androidTestImplementation(it) }
+    implementation("jp.wasabeef:glide-transformations:4.3.0")
+    implementation("com.hjq:toast:8.0")
 
     testImplementation("junit:junit:4.+")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")

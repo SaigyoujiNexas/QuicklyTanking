@@ -13,10 +13,12 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/modulesBase" />
+            <option value="$PROJECT_DIR$/modulesBase/StackBlur" />
             <option value="$PROJECT_DIR$/modulesBase/libBase" />
             <option value="$PROJECT_DIR$/modulesCore" />
             <option value="$PROJECT_DIR$/modulesCore/login" />
             <option value="$PROJECT_DIR$/modulesCore/main" />
+            <option value="$PROJECT_DIR$/modulesCore/setting" />
             <option value="$PROJECT_DIR$/modulesPublic" />
             <option value="$PROJECT_DIR$/modulesPublic/common" />
           </set>
