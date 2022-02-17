@@ -1,0 +1,2 @@
+E:\Android_series\QuicklyTanking\modulesBase\StackBlur\jni\Android.mk
+E:\Android_series\QuicklyTanking\modulesBase\StackBlur\jni\Application.mk

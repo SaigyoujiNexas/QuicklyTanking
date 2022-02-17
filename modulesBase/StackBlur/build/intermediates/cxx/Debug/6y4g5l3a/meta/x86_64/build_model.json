@@ -1,0 +1,148 @@
+{
+  "abi": "X86_64",
+  "info": {
+    "abi": "X86_64",
+    "bitness": 64,
+    "deprecated": false,
+    "default": true
+  },
+  "cxxBuildFolder": "E:\\Android_series\\QuicklyTanking\\modulesBase\\StackBlur\\build\\.cxx\\Debug\\6y4g5l3a\\x86_64",
+  "soFolder": "E:\\Android_series\\QuicklyTanking\\modulesBase\\StackBlur\\build\\intermediates\\cxx\\Debug\\6y4g5l3a\\obj\\local\\x86_64",
+  "soRepublishFolder": "E:\\Android_series\\QuicklyTanking\\modulesBase\\StackBlur\\build\\intermediates\\ndkBuild\\debug\\obj\\local\\x86_64",
+  "abiPlatformVersion": 19,
+  "variant": {
+    "buildSystemArgumentList": [],
+    "cFlagsList": [],
+    "cppFlagsList": [],
+    "variantName": "debug",
+    "soFolder": "E:\\Android_series\\QuicklyTanking\\modulesBase\\StackBlur\\build\\intermediates\\cxx\\Debug\\6y4g5l3a\\obj\\local",
+    "soRepublishFolder": "E:\\Android_series\\QuicklyTanking\\modulesBase\\StackBlur\\build\\intermediates\\ndkBuild\\debug\\obj\\local",
+    "cxxBuildFolder": "E:\\Android_series\\QuicklyTanking\\modulesBase\\StackBlur\\build\\.cxx\\Debug\\6y4g5l3a",
+    "intermediatesFolder": "E:\\Android_series\\QuicklyTanking\\modulesBase\\StackBlur\\build\\intermediates\\cxx\\Debug\\6y4g5l3a",
+    "isDebuggableEnabled": true,
+    "validAbiList": [
+      "ARMEABI_V7A",
+      "ARM64_V8A",
+      "X86",
+      "X86_64"
+    ],
+    "buildTargetSet": [],
+    "implicitBuildTargetSet": [],
+    "cmakeSettingsConfiguration": "android-gradle-plugin-predetermined-name",
+    "module": {
+      "cxxFolder": "E:\\Android_series\\QuicklyTanking\\modulesBase\\StackBlur\\build\\.cxx",
+      "intermediatesBaseFolder": "E:\\Android_series\\QuicklyTanking\\modulesBase\\StackBlur\\build\\intermediates",
+      "intermediatesFolder": "E:\\Android_series\\QuicklyTanking\\modulesBase\\StackBlur\\build\\intermediates\\cxx",
+      "gradleModulePathName": ":modulesBase:StackBlur",
+      "moduleRootFolder": "E:\\Android_series\\QuicklyTanking\\modulesBase\\StackBlur",
+      "moduleBuildFile": "E:\\Android_series\\QuicklyTanking\\modulesBase\\StackBlur\\build.gradle",
+      "makeFile": "E:\\Android_series\\QuicklyTanking\\modulesBase\\StackBlur\\jni\\Android.mk",
+      "buildSystem": "NDK_BUILD",
+      "ndkFolder": "D:\\dev\\AndroidSDK\\ndk\\23.1.7779620",
+      "ndkVersion": "23.1.7779620",
+      "ndkSupportedAbiList": [
+        "ARMEABI_V7A",
+        "ARM64_V8A",
+        "X86",
+        "X86_64"
+      ],
+      "ndkDefaultAbiList": [
+        "ARMEABI_V7A",
+        "ARM64_V8A",
+        "X86",
+        "X86_64"
+      ],
+      "ndkDefaultStl": "SYSTEM",
+      "ndkMetaPlatforms": {
+        "min": 16,
+        "max": 31,
+        "aliases": {
+          "20": 19,
+          "25": 24,
+          "J": 16,
+          "J-MR1": 17,
+          "J-MR2": 18,
+          "K": 19,
+          "L": 21,
+          "L-MR1": 22,
+          "M": 23,
+          "N": 24,
+          "N-MR1": 24,
+          "O": 26,
+          "O-MR1": 27,
+          "P": 28,
+          "Q": 29,
+          "R": 30,
+          "S": 31
+        }
+      },
+      "ndkMetaAbiList": [
+        {
+          "abi": "ARMEABI_V7A",
+          "bitness": 32,
+          "deprecated": false,
+          "default": true
+        },
+        {
+          "abi": "ARM64_V8A",
+          "bitness": 64,
+          "deprecated": false,
+          "default": true
+        },
+        {
+          "abi": "X86",
+          "bitness": 32,
+          "deprecated": false,
+          "default": true
+        },
+        {
+          "abi": "X86_64",
+          "bitness": 64,
+          "deprecated": false,
+          "default": true
+        }
+      ],
+      "cmakeToolchainFile": "D:\\dev\\AndroidSDK\\ndk\\23.1.7779620\\build\\cmake\\android.toolchain.cmake",
+      "stlSharedObjectMap": {
+        "LIBCXX_SHARED": {
+          "ARMEABI_V7A": "D:\\dev\\AndroidSDK\\ndk\\23.1.7779620\\toolchains\\llvm\\prebuilt\\windows-x86_64\\sysroot\\usr\\lib\\arm-linux-androideabi\\libc++_shared.so",
+          "ARM64_V8A": "D:\\dev\\AndroidSDK\\ndk\\23.1.7779620\\toolchains\\llvm\\prebuilt\\windows-x86_64\\sysroot\\usr\\lib\\aarch64-linux-android\\libc++_shared.so",
+          "X86": "D:\\dev\\AndroidSDK\\ndk\\23.1.7779620\\toolchains\\llvm\\prebuilt\\windows-x86_64\\sysroot\\usr\\lib\\i686-linux-android\\libc++_shared.so",
+          "X86_64": "D:\\dev\\AndroidSDK\\ndk\\23.1.7779620\\toolchains\\llvm\\prebuilt\\windows-x86_64\\sysroot\\usr\\lib\\x86_64-linux-android\\libc++_shared.so"
+        },
+        "LIBCXX_STATIC": {},
+        "NONE": {},
+        "SYSTEM": {}
+      },
+      "project": {
+        "rootBuildGradleFolder": "E:\\Android_series\\QuicklyTanking",
+        "sdkFolder": "D:\\dev\\AndroidSDK",
+        "isBuildOnlyTargetAbiEnabled": true,
+        "isCmakeBuildCohabitationEnabled": false,
+        "isPrefabEnabled": false
+      },
+      "outputOptions": []
+    },
+    "prefabClassPathFileCollection": [],
+    "prefabPackageDirectoryListFileCollection": [],
+    "stlType": "system",
+    "optimizationTag": "Debug"
+  },
+  "buildSettings": {
+    "environmentVariables": []
+  },
+  "prefabFolder": "E:\\Android_series\\QuicklyTanking\\modulesBase\\StackBlur\\build\\.cxx\\Debug\\6y4g5l3a\\prefab\\x86_64",
+  "isActiveAbi": true,
+  "fullConfigurationHash": "6y4g5l3a5p291i403j3k356ta3p3z4m4w313g7272344r4m6k4w3nf3j734dv",
+  "configurationArguments": [
+    "NDK_PROJECT_PATH\u003dnull",
+    "APP_BUILD_SCRIPT\u003dE:\\Android_series\\QuicklyTanking\\modulesBase\\StackBlur\\jni\\Android.mk",
+    "NDK_APPLICATION_MK\u003dE:\\Android_series\\QuicklyTanking\\modulesBase\\StackBlur\\jni\\Application.mk",
+    "APP_ABI\u003dx86_64",
+    "NDK_ALL_ABIS\u003dx86_64",
+    "NDK_DEBUG\u003d1",
+    "APP_PLATFORM\u003dandroid-19",
+    "NDK_OUT\u003dE:\\Android_series\\QuicklyTanking\\modulesBase\\StackBlur\\build\\intermediates\\cxx\\Debug\\6y4g5l3a/obj",
+    "NDK_LIBS_OUT\u003dE:\\Android_series\\QuicklyTanking\\modulesBase\\StackBlur\\build\\intermediates\\cxx\\Debug\\6y4g5l3a/lib"
+  ]
+}

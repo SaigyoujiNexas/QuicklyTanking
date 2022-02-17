@@ -39,15 +39,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import butterknife.BindView;
-
 
 public class RunningActivity extends AppCompatActivity implements LocationSource, AMapLocationListener {
 
     private static final String TAG = "mapActivity";
 
     private static final int WRITE_COARSE_LOCATION_REQUEST_CODE = 0;
-    @BindView(R.id.map)
+
     MapView mapView;
     private AMap aMap;
     //定位需要的声明
@@ -92,6 +90,7 @@ public class RunningActivity extends AppCompatActivity implements LocationSource
         setContentView(binding.getRoot());
         tv_mapSpeed = binding.speedText;
         tv_mapDuration = binding.distanceText;
+        mapView = binding.map;
 
         //初始化 SDK context 全局变量，指定 sdcard 路径，设置鉴权所需的KEY。
         //注：如果在创建地图之前使用BitmapDescriptorFactory的功能，则必须通过MapsInitializer.initialize(Context)来设置一个可用的context。
