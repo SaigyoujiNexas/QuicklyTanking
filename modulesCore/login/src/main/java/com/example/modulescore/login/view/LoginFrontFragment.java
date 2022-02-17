@@ -22,7 +22,7 @@ import com.example.modulesbase.libbase.net.response.NetCallback;
 import com.example.modulesbase.libbase.util.Logger;
 import com.example.modulescore.login.R;
 import com.example.modulescore.login.entity.LoginState;
-import com.example.modulescore.login.liveData.LoginViewModel;
+import com.example.modulescore.login.viewModel.LoginViewModel;
 import com.example.modulescore.login.net.LoginService;
 import com.example.modulespublic.common.constant.KeyPool;
 import com.example.modulespublic.common.constant.RoutePath;

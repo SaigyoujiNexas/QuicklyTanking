@@ -17,7 +17,15 @@ android {
 
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
             consumerProguardFiles("consumer-rules.pro")
+
+            javaCompileOptions {
+                annotationProcessorOptions {
+                    arguments += mapOf("AROUTER_MODULE_NAME" to project.name)
+                }
+            }
         }
+
+
 
         buildTypes {
             release {

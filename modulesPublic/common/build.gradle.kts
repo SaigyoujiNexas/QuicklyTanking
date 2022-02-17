@@ -11,11 +11,15 @@ var versionName: String? = null
         defaultConfig {
             minSdk = androidC["minSdk"] as Int
             targetSdk = androidC["targetSdk"] as Int
-            versionCode = androidC["versionCode"] as Int
-            versionName = androidC["versionName"] as String
 
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
             consumerProguardFiles("consumer-rules.pro")
+
+            javaCompileOptions {
+                annotationProcessorOptions {
+                    arguments += mapOf("AROUTER_MODULE_NAME" to project.name)
+                }
+            }
         }
 
         buildTypes {

@@ -1,6 +1,6 @@
 import org.gradle.api.JavaVersion
 
-const val isDebug = true
+const val isDebug = false
 val androidC = mapOf(
 "compileSdk" to 31,
 "minSdk" to 27,
@@ -11,7 +11,7 @@ val androidC = mapOf(
 )
 
 const val nav_version = "2.3.5"
-
+const val truth_version = "1.0"
 
 val libraryC = mapOf(
 "appcompat" to  "androidx.appcompat:appcompat:1.4.0",
@@ -22,6 +22,9 @@ val libraryC = mapOf(
     "nav-ui" to "androidx.navigation:navigation-ui:$nav_version",
     "nav-dnmc-fragment" to "androidx.navigation:navigation-dynamic-features-fragment:$nav_version",
 
+)
+val librariesDebug = listOf(
+    "com.google.truth:truth:$truth_version"
 )
 const val libAMap3DMap = "com.amap.api:3dmap:latest.integration"
 const val libAMapLocation = "com.amap.api:location:latest.integration"

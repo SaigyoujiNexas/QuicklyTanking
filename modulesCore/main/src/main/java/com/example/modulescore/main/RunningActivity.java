@@ -29,6 +29,7 @@ import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.PolylineOptions;
+import com.example.modulescore.main.databinding.ActivityRunningBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.robinhood.ticker.TickerUtils;
 import com.robinhood.ticker.TickerView;
@@ -72,17 +73,26 @@ public class RunningActivity extends AppCompatActivity implements LocationSource
     int count = 2;
 
     //数据显示
-    @BindView(R.id.speedText)
     TextView tv_mapSpeed;
-    @BindView(R.id.distanceText)
+
     TextView tv_mapDuration;
     FloatingActionButton backButton;
     TickerView tv_mapDistance;
 
+    //ViewBinding Obj
+    private ActivityRunningBinding binding;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_running);
+
+        //viewBindng Feature
+        binding = ActivityRunningBinding.inflate(getLayoutInflater(), null, false);
+        setContentView(binding.getRoot());
+        tv_mapSpeed = binding.speedText;
+        tv_mapDuration = binding.distanceText;
+
         //初始化 SDK context 全局变量，指定 sdcard 路径，设置鉴权所需的KEY。
         //注：如果在创建地图之前使用BitmapDescriptorFactory的功能，则必须通过MapsInitializer.initialize(Context)来设置一个可用的context。
         MapsInitializer mapsInitializer = new MapsInitializer();

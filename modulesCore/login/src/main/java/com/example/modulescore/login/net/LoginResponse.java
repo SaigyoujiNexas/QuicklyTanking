@@ -3,10 +3,15 @@ package com.example.modulescore.login.net;
 import com.example.modulesbase.libbase.net.response.NetResponse;
 
 public class LoginResponse implements NetResponse<String> {
-    private String msg;
-    private int code;
-    private String publicKey;
+    String msg;
+    int code;
+    String publicKey;
 
+    public LoginResponse(String msg, int code, String publicKey) {
+        this.msg = msg;
+        this.code = code;
+        this.publicKey = publicKey;
+    }
 
     @Override
     public String getData() {

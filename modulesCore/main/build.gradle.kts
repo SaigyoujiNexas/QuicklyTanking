@@ -18,6 +18,9 @@ android{
         versionCode = androidC["versionCode"] as Int
         versionName = androidC["versionName"] as String
 
+        buildFeatures{
+            viewBinding = true
+        }
 
         javaCompileOptions {
             annotationProcessorOptions {

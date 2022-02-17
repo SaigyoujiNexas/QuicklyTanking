@@ -2,7 +2,7 @@ package com.example.modulescore.login.net;
 
 import com.example.modulespublic.common.net.BaseResponse;
 
-import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 import retrofit2.http.Url;

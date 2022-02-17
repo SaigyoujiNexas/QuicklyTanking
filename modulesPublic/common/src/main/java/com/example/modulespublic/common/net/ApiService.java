@@ -1,6 +1,6 @@
 package com.example.modulespublic.common.net;
 
-import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.Observable;
 import retrofit2.http.GET;
 
 public interface ApiService {

@@ -6,12 +6,12 @@ import androidx.lifecycle.LifecycleOwner
 import com.example.modulesbase.libbase.net.exception.ApiException
 import com.example.modulesbase.libbase.net.response.NetResponse
 import com.example.modulesbase.libbase.util.ReflectUtil
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.ObservableSource
-import io.reactivex.rxjava3.core.ObservableTransformer
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.schedulers.Schedulers
+import io.reactivex.Observable
+import io.reactivex.ObservableSource
+import io.reactivex.ObservableTransformer
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 
 class ResponseTransformer<T> : ObservableTransformer<NetResponse<T>, T>, DefaultLifecycleObserver
 {
@@ -26,7 +26,7 @@ class ResponseTransformer<T> : ObservableTransformer<NetResponse<T>, T>, Default
 
     override fun apply(upstream: Observable<NetResponse<T>>): ObservableSource<T> {
         return upstream.doOnSubscribe { compositeDisposable.add(it) }
-            .onErrorResumeNext { Observable.error(it)}
+            .onErrorResumeNext { t: Throwable -> Observable.error(t) }
             .flatMap {
                 if(it.isSuccess){
                     if(it.data != null)
@@ -50,7 +50,7 @@ class ResponseTransformer<T> : ObservableTransformer<NetResponse<T>, T>, Default
             .observeOn(AndroidSchedulers.mainThread())
     }
     companion object{
-        inline fun <T> obtain(lifecycleOwner: LifecycleOwner): ResponseTransformer<T>
+        inline infix fun <T> obtain(lifecycleOwner: LifecycleOwner): ResponseTransformer<T>
         {
             val transformer = ResponseTransformer<T>()
             lifecycleOwner.lifecycle.addObserver(transformer)

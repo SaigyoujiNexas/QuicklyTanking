@@ -4,6 +4,7 @@ plugins {
     else
         id("com.android.library")
     id("dagger.hilt.android.plugin")
+    id("org.jetbrains.kotlin.android")
 }
 var applicationId :String? = null
 var versionCode : Int? = null
@@ -39,6 +40,10 @@ android {
         sourceCompatibility(javaVersion)
         targetCompatibility(javaVersion)
     }
+    buildFeatures {
+        viewBinding = true
+        dataBinding = true
+    }
 
     sourceSets["main"].manifest.srcFile {
         if (isDebug)
@@ -51,11 +56,17 @@ android {
 dependencies {
 
     implementation(project(":modulesPublic:common"))
+    implementation("androidx.appcompat:appcompat:1.4.1")
+    implementation("com.google.android.material:material:1.5.0")
+    implementation("androidx.annotation:annotation:1.2.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.3")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.4.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1")
     libraryC.forEach { (_, s2) -> implementation(s2) }
     libs.forEach { implementation(it) }
     apts.forEach { annotationProcessor(it) }
     tests.forEach { androidTestImplementation(it) }
-
+    librariesDebug.forEach { debugImplementation(it)}
     testImplementation("junit:junit:4.+")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")

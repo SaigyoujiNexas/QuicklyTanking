@@ -1,10 +1,9 @@
 package com.example.modulesbase.libbase.net
 
-import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import com.example.modulesbase.libbase.net.response.NetCallback
 import com.example.modulesbase.libbase.net.response.NetResponse
-import io.reactivex.rxjava3.core.Observable
+import io.reactivex.Observable
 
 private const val TAG = "RequestModel"
 class RequestModel{
@@ -12,11 +11,10 @@ class RequestModel{
         fun <T> request(o : Observable<out NetResponse<T>>, lifecycleOwner: LifecycleOwner,
                         callback: NetCallback<T>
         ) {
-            o.compose(ResponseTransformer.obtain(lifecycleOwner))
-                .subscribe(
-                    {callback.onSuccess(it) },
-                    {
-                        callback.onFailure(it)})
+            o.run {
+                compose(ResponseTransformer obtain lifecycleOwner)
+                        .subscribe(callback::onSuccess, callback::onFailure)
+            }
         }
     }
 }
