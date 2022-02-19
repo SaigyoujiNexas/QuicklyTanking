@@ -16,6 +16,7 @@
             <option value="$PROJECT_DIR$/modulesBase/StackBlur" />
             <option value="$PROJECT_DIR$/modulesBase/libBase" />
             <option value="$PROJECT_DIR$/modulesCore" />
+            <option value="$PROJECT_DIR$/modulesCore/composetest" />
             <option value="$PROJECT_DIR$/modulesCore/login" />
             <option value="$PROJECT_DIR$/modulesCore/main" />
             <option value="$PROJECT_DIR$/modulesCore/setting" />

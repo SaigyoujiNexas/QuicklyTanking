@@ -21,6 +21,10 @@ var versionName: String? = null
                 }
             }
         }
+        buildFeatures {
+            viewBinding = true
+            dataBinding = true
+        }
 
         buildTypes {
             val release by getting {

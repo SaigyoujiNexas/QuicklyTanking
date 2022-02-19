@@ -1,6 +1,6 @@
 import org.gradle.api.JavaVersion
 
-const val isDebug = false
+const val isDebug = true
 val androidC = mapOf(
 "compileSdk" to 31,
 "minSdk" to 27,
@@ -48,7 +48,7 @@ const val libGlideOkhttp3 = "com.github.bumptech.glide:okhttp3-integration:4.12.
 const val libRxPermissions = "com.github.qicodes:rxpermissions:1.3.0"
 const val libStatusBarUtil = "com.jaeger.statusbarutil:library:1.5.1"
 const  val libRecyclerAdapter = "com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.7"
-const  val libTicker = 'com.robinhood.ticker:ticker:2.0.1'
+const  val libTicker = "com.robinhood.ticker:ticker:2.0.1"
 
 val apts = listOf(
     libARouterCompiler,

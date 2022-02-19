@@ -17,7 +17,7 @@ import com.example.modulesbase.libbase.net.RequestModel;
 import com.example.modulesbase.libbase.net.response.NetCallback;
 import com.example.modulescore.login.R;
 import com.example.modulescore.login.net.LoginService;
-import com.example.modulescore.login.utils.ButtonCountDownTimer;
+import com.example.modulespublic.common.utils.ButtonCountDownTimer;
 
 import javax.inject.Inject;
 
@@ -55,7 +55,8 @@ public class LoginFrontVerifyFragment extends Fragment {
                 RequestModel.Companion.request(loginService.verify(tel.getText().toString()), this, new NetCallback<Object>() {
                     @Override
                     public void onSuccess(Object data) {
-                        new ButtonCountDownTimer(60000, 1000, sendVerifyCode).start();
+                        new ButtonCountDownTimer(60000, 1000,
+                                sendVerifyCode, "重新获取验证码").start();
                         Toast.makeText(getContext(), "验证码获取成功", Toast.LENGTH_SHORT).show();
                     }
                     @Override

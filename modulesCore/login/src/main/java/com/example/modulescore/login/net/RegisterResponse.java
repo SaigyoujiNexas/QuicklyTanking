@@ -7,6 +7,12 @@ public class RegisterResponse<T> implements NetResponse<T> {
     String msg;
     T data;
 
+    public RegisterResponse(int code, String msg, T data) {
+        this.code = code;
+        this.msg = msg;
+        this.data = data;
+    }
+
     @Override
     public String getCode() {
         return String.valueOf(code);

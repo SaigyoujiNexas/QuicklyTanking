@@ -12,6 +12,7 @@ public interface LoginService  {
     static final String LOGIN = "login";
     static final String REGISTER = "register";
      static final String VERIFY = "verify";
+     static final String FORGET = "forget";
 
     public static final int MODE_PASSWD = 0;
     public static final int MODE_VERIFY = 1;
@@ -36,4 +37,10 @@ public interface LoginService  {
     );
     @GET(VERIFY)
     Observable<BaseResponse<Object>> verify(@Query("phone") String phone);
+
+    @GET(FORGET)
+    Observable<BaseResponse<Object>> forget(
+            @Query("tel") String tel,
+            @Query("verifyCode") String verifyCode,
+            @Query("newPasswd") String newPasswd);
 }
