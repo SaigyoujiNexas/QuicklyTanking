@@ -4,6 +4,7 @@ package com.example.modulescore.main;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -11,7 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -29,7 +30,6 @@ import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.PolylineOptions;
-import com.example.modulescore.main.databinding.ActivityRunningBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.robinhood.ticker.TickerUtils;
 import com.robinhood.ticker.TickerView;
@@ -39,13 +39,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.BindView;
 
-public class RunningActivity extends AppCompatActivity implements LocationSource, AMapLocationListener {
 
-    private static final String TAG = "mapActivity";
+public class RunningActivity extends BaseActivity implements LocationSource, AMapLocationListener, View.OnClickListener {
+
+    private static final String TAG = "RunningActivity";
 
     private static final int WRITE_COARSE_LOCATION_REQUEST_CODE = 0;
-
+    @BindView(R.id.map)
     MapView mapView;
     private AMap aMap;
     //定位需要的声明
@@ -54,44 +56,33 @@ public class RunningActivity extends AppCompatActivity implements LocationSource
     private LocationSource.OnLocationChangedListener mListener = null;//定位监听器
     //标识，用于判断是否只显示一次定位信息和用户重新定位
     private boolean isFirstLoc = true;
+    //LatLng:地理坐标基本数据结构
     //绘制路线
     List<LatLng> path = new ArrayList<LatLng>();
     //上一次定位位置和当前定位位置，用于计算距离
     LatLng lastLatLng, nowLatLng;
     //此次运动总距离
-    int distanceThisTime = 0;
+    float distanceThisTime = 0;
     //平均速度
     float avgSpeed = 0;
     //开始时间
     Date startTime;
-    //
-    boolean isNormalMap = true;
-
-    //等待两次位置变化 使位置更准确
-    int count = 2;
+//    //等待两次位置变化 使位置更准确
+//    int count = 2;
 
     //数据显示
     TextView tv_mapSpeed;
 
-    TextView tv_mapDuration;
+    TextView tv_passedTime;
     FloatingActionButton backButton;
+
     TickerView tv_mapDistance;
 
-    //ViewBinding Obj
-    private ActivityRunningBinding binding;
-
-
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //viewBindng Feature
-        binding = ActivityRunningBinding.inflate(getLayoutInflater(), null, false);
-        setContentView(binding.getRoot());
-        tv_mapSpeed = binding.speedText;
-        tv_mapDuration = binding.distanceText;
-        mapView = binding.map;
-
+        setContentView(R.layout.activity_running);
         //初始化 SDK context 全局变量，指定 sdcard 路径，设置鉴权所需的KEY。
         //注：如果在创建地图之前使用BitmapDescriptorFactory的功能，则必须通过MapsInitializer.initialize(Context)来设置一个可用的context。
         MapsInitializer mapsInitializer = new MapsInitializer();
@@ -102,21 +93,23 @@ public class RunningActivity extends AppCompatActivity implements LocationSource
 
         setContentView(R.layout.activity_running);
         //在activity执行onCreate时执行mapView.onCreate(savedInstanceState)，创建地图
-        mapView = findViewById(R.id.map);//Butterknife对高德mapview不管用吗
+        mapView = findViewById(R.id.map);
+        tv_passedTime = findViewById(R.id.passedTime_running);
         mapView.onCreate(savedInstanceState);
         //初始化地图控制器对象
         aMap = mapView.getMap();
         //设置地图模式普通地图
         aMap.setMapType(AMap.MAP_TYPE_NORMAL);
+        //设置定位源（locationSource）。
+        aMap.setLocationSource(this);
+        //设置是否打开定位图层（myLocationOverlay）。
+        aMap.setMyLocationEnabled(true);
 
         //设置显示定位按钮 并且可以点击
         UiSettings settings = aMap.getUiSettings();
-        //设置定位源（locationSource）。
-        aMap.setLocationSource(this);
         //设置定位按钮是否可见。
         settings.setMyLocationButtonEnabled(true);
-        //设置是否打开定位图层（myLocationOverlay）。
-        aMap.setMyLocationEnabled(true);
+
         //定位小蓝点（当前位置）的绘制样式类。
         MyLocationStyle myLocationStyle = new MyLocationStyle();
         //设置圆形的填充颜色
@@ -143,6 +136,7 @@ public class RunningActivity extends AppCompatActivity implements LocationSource
 
             }
         });
+        tv_mapSpeed = findViewById(R.id.speedText);
         //初始化开始时间
         startTime = new Date();
         tv_mapDistance = findViewById(R.id.distanceTicker);
@@ -152,7 +146,8 @@ public class RunningActivity extends AppCompatActivity implements LocationSource
 
     //定位
     private void initLoc() throws Exception {
-        //这里用到ACCESS_FINE_LOCATION与ACCESS_COARSE_LOCATION权限
+        //ACCESS_FINE_LOCATION通过WiFi或移动基站的方式获取用户错略的经纬度信息，定位精度大概误差在30~1500米
+        //ACCESS_FINE_LOCATION，通过GPS芯片接收卫星的定位信息，定位精度达10米以内
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             //申请WRITE_EXTERNAL_STORAGE权限
@@ -164,7 +159,7 @@ public class RunningActivity extends AppCompatActivity implements LocationSource
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
                     WRITE_COARSE_LOCATION_REQUEST_CODE);//自定义的code
         }
-        //初始化定位
+        //定位发起端
         mLocationClient = new AMapLocationClient(getApplicationContext());
         //设置定位回调监听
         mLocationClient.setLocationListener(this);
@@ -187,26 +182,27 @@ public class RunningActivity extends AppCompatActivity implements LocationSource
     }
 
     //当定位源获取的位置信息发生变化时回调此接口方法。
+    //AMapLocation定位信息类。定位完成后的位置信息。
     @Override
     public void onLocationChanged(AMapLocation amapLocation) {
         if (amapLocation != null) {
             if (amapLocation.getErrorCode() == 0) {
+                Log.d(TAG,"locationChanged");
                 //避免前两次定位不准
-                if (count-- < 0) {
-                    Log.d(TAG, "location changed");
+//                if (count-- < 0) {
                     //定位成功回调信息，设置相关消息
                     amapLocation.getLocationType();//获取当前定位结果来源，如网络定位结果，详见官方定位类型表
                     amapLocation.getAccuracy();//获取精度信息
                     amapLocation.getAddress();  // 地址，如果option中设置isNeedAddress为false，则没有此结果，网络定位结果中会有地址信息，GPS定位不返回地址信息。
-                    amapLocation.getCountry();  // 国家信息
-                    amapLocation.getProvince();  // 省信息
-                    amapLocation.getCity();  // 城市信息
-                    amapLocation.getDistrict();  // 城区信息
-                    amapLocation.getStreet();  // 街道信息
-                    amapLocation.getStreetNum();  // 街道门牌号信息
-                    amapLocation.getCityCode();  // 城市编码
-                    amapLocation.getAdCode();//地区编码
-                    amapLocation.getGpsAccuracyStatus();//GPS状态
+//                    amapLocation.getCountry();  // 国家信息
+//                    amapLocation.getProvince();  // 省信息
+//                    amapLocation.getCity();  // 城市信息
+//                    amapLocation.getDistrict();  // 城区信息
+//                    amapLocation.getStreet();  // 街道信息
+//                    amapLocation.getStreetNum();  // 街道门牌号信息
+//                    amapLocation.getCityCode();  // 城市编码
+//                    amapLocation.getAdCode();//地区编码
+//                    amapLocation.getGpsAccuracyStatus();//GPS状态
 
                     float nowSpeed = amapLocation.getSpeed();//获取速度
 
@@ -217,32 +213,32 @@ public class RunningActivity extends AppCompatActivity implements LocationSource
                     } else {
                         avgSpeed = (avgSpeed + nowSpeed) / 2;
                     }
-
-                    //如果不是第一次定位，则把上次定位信息传给lastLatLng
-                    if (!isFirstLoc) {
-                        if ((int) AMapUtils.calculateLineDistance(nowLatLng, lastLatLng) < 100) {
-                            lastLatLng = nowLatLng;
-                        } else {
-                            //定位出现问题，如突然瞬移，则取消此次定位修改
-                            Toast.makeText(getApplicationContext()
-                                    , "此次计算距离差异过大，取消此次修改"
-                                    , Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                    }
                     double latitude = amapLocation.getLatitude();//获取纬度
                     double longitude = amapLocation.getLongitude();//获取经度
                     //新位置
                     nowLatLng = new LatLng(latitude, longitude);
 
+                    //如果不是第一次定位，则把上次定位信息传给lastLatLng，并且计算距离
+                    if (!isFirstLoc) {
+                        if ((int) AMapUtils.calculateLineDistance(nowLatLng, lastLatLng) < 100) {
+                            Log.d("onLocationChanged00","Tempdistance:"+AMapUtils.calculateLineDistance(nowLatLng, lastLatLng));
+                            lastLatLng = nowLatLng;
+                        } else {
+                            //定位出现问题，如突然瞬移，则取消此次定位修改
+                            Toast.makeText(getApplicationContext()
+                                    , "此次计算距离过远，取消此次修改"
+                                    , Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }
                     //当前时间
                     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     Date date = new Date(amapLocation.getTime());
-                    String locTime = df.format(date);//定位时间
+                    //定位时间
+                    String locTime = df.format(date);
 
                     //路径添加当前位置
                     path.add(nowLatLng);
-
 
                     //绘制路径
                     aMap.addPolyline(
@@ -250,41 +246,44 @@ public class RunningActivity extends AppCompatActivity implements LocationSource
                                     .addAll(path)
                                     .width(20)
                                     .color(ContextCompat.getColor(this, R.color.green)));
-
+                    //Log.d("onLocationChanged000", String.valueOf(isFirstLoc));
                     //如果不是第一次定位，就计算距离
-                    if (!isFirstLoc) {
-                        int tempDistance = (int) AMapUtils.calculateLineDistance(nowLatLng, lastLatLng);
-
+                    if (isFirstLoc == false) {
+                        Log.d("onLocationChanged0","is not FirstLoc");
+                        float tempDistance = AMapUtils.calculateLineDistance(nowLatLng, lastLatLng);
                         //获得持续秒数
                         int duration = (int) (new Date().getTime() - startTime.getTime()) / 1000;
-                        //将持续秒数转化为HH:mm:ss并显示到控件
-                        tv_mapDuration.setText(DataUtil.getFormattedTime(duration));
-
+                        Log.d("onLocationChanged0","is2 not FirstLoc"+DataUtil.getFormattedTime(duration));
+                        //将持续秒数转化为mm:ss并显示到控件
+                        tv_passedTime.setText(DataUtil.getFormattedTime(duration));
+                        Log.d("onLocationChanged1",DataUtil.getFormattedTime(duration));
                         //计算总距离
                         distanceThisTime += tempDistance;
+
                         //将总距离显示到控件
                         if (distanceThisTime > 1000) {
                             //若大于1000米，则显示公里数
-                            double showDisKM = distanceThisTime / 1000.0;
-                            tv_mapDistance.setText(showDisKM + "");
+                            Log.d("onLocationChanged2", String.valueOf(distanceThisTime / 1000.0));
+                            tv_mapDistance.setText(String.valueOf(distanceThisTime / 1000.0));
                         } else {
-                            tv_mapDistance.setText(distanceThisTime + "");
+                            Log.d("onLocationChanged2", String.valueOf(distanceThisTime));
+                            tv_mapDistance.setText(String.valueOf(distanceThisTime));
                         }
                         //显示速度
                         if (nowSpeed == 0) {
-                            tv_mapSpeed.setText("--.--");
+                            tv_mapSpeed.setText("--");
                         } else {
                             tv_mapSpeed.setText(nowSpeed + "");
                         }
-
                     }
-
                     //将地图移动到定位点
                     aMap.moveCamera(CameraUpdateFactory.changeLatLng(nowLatLng));
                     //点击定位按钮 能够将地图的中心移动到定位点
                     mListener.onLocationChanged(amapLocation);
+                    //如果是第一次，那么改isFirstLoc为false，则之后都不是第一次了
                     if (isFirstLoc) {
                         //设置缩放级别
+                        Log.d("onLocationChanged0","isFirstLoc");
                         aMap.moveCamera(CameraUpdateFactory.zoomTo(18));
                         aMap.moveCamera(CameraUpdateFactory.changeTilt(0));
                         isFirstLoc = false;
@@ -296,10 +295,18 @@ public class RunningActivity extends AppCompatActivity implements LocationSource
                         + amapLocation.getErrorCode() + ", errInfo:"
                         + amapLocation.getErrorInfo());
                 Toast.makeText(getApplicationContext(), "定位似乎有些问题 Error: " + amapLocation.getErrorCode(), Toast.LENGTH_LONG).show();
-            }
+//            }
         }
     }
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            default:
+                break;
+            case R.id.btn_back:
 
+        }
+    }
     // 激活定位
     @Override
     public void activate(OnLocationChangedListener onLocationChangedListener) {
@@ -369,4 +376,6 @@ public class RunningActivity extends AppCompatActivity implements LocationSource
             return super.onKeyDown(keyCode, event);
         }
     }
+
+
 }

@@ -3,8 +3,8 @@
 ### 整体使用组件化， 使用ARouter路由， java为主， Kotlin为辅（可能有C， C#， C++）
 ### Room与文件存储作为本地数据处理， mvvm架构/mvc架构，Retrofit负责网络处理
 ### Glide负责图像处理，Hilt与Dagger负责依赖注入, 使用ViewModel与仓库模式来提供数据
- Copyright (C) <2022>  <Android Group of Xiyou 3g laboratory>
-
+ Copyright (C) <2022>  <Android Group of Xiyou 3g laboratory>         
+                                
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
