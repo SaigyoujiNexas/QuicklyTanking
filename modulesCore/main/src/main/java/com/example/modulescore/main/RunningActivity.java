@@ -39,15 +39,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import butterknife.BindView;
-
 
 public class RunningActivity extends BaseActivity implements LocationSource, AMapLocationListener, View.OnClickListener {
 
     private static final String TAG = "RunningActivity";
 
     private static final int WRITE_COARSE_LOCATION_REQUEST_CODE = 0;
-    @BindView(R.id.map)
     MapView mapView;
     private AMap aMap;
     //定位需要的声明

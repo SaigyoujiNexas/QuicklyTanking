@@ -10,12 +10,12 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        My.ActivityManager.pushOneActivity(this);
+        ActivityManager.pushOneActivity(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        My.ActivityManager.popOneActivity(this);
+        ActivityManager.popOneActivity(this);
     }
 }

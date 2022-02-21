@@ -28,7 +28,7 @@ public class TargetDistanceActivity extends BaseActivity implements View.OnClick
         btn_back = findViewById(R.id.btn_back_targetActivity);
         viewPager2 = findViewById(R.id.target_distance_viewpager2);
         tabLayout = findViewById(R.id.tabLayout_TargetDistance);
-        My.TargetAdapter targetAdapter = new My.TargetAdapter(this);
+        TargetAdapter targetAdapter = new TargetAdapter(this);
         viewPager2.setOrientation(viewPager2.ORIENTATION_HORIZONTAL);
         viewPager2.setAdapter(targetAdapter);
         viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {

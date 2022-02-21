@@ -34,7 +34,7 @@
         android:background="@color/colorAccent"
         app:layout_constraintLeft_toLeftOf="@id/scrollPickerView_target_item2"
         app:layout_constraintTop_toTopOf="@id/scrollPickerView_target_item2"/>
-    <My.ScrollPickerView
+    <com.example.modulescore.main.ScrollPickerView
         android:id="@+id/scrollPickerView_target_item2"
         android:layout_width="match_parent"
         android:layout_height="0dp"

@@ -15,14 +15,14 @@ import java.util.List;
 
 //支持任意数据类型，所以adapter就必须要泛型化。
 public class ScrollPickerAdapter<T> extends RecyclerView.Adapter<ScrollPickerAdapter
-        .ScrollPickerAdapterHolder> implements My.IPickerViewOperation {
+        .ScrollPickerAdapterHolder> implements IPickerViewOperation {
     private List<T> mDataList;
     private Context mContext;
     private OnClickListener mOnItemClickListener;
     private OnScrollListener mOnScrollListener;
     private int mSelectedItemOffset;
     private int mVisibleItemNum = 3;
-    private My.IViewProvider mViewProvider;
+    private IViewProvider mViewProvider;
     private int mLineColor;
     private int maxItemH = 0;
     private int maxItemW = 0;
@@ -38,7 +38,7 @@ public class ScrollPickerAdapter<T> extends RecyclerView.Adapter<ScrollPickerAda
     public ScrollPickerAdapterHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 //返回一个viewHolder，这里我们直接返回了ScrollPickerAdapterHolder
         if (mViewProvider == null) {
-            mViewProvider = new My.DefaultItemViewProvider(target);
+            mViewProvider = new DefaultItemViewProvider(target);
         }
         return new ScrollPickerAdapterHolder(LayoutInflater.from(mContext).inflate(mViewProvider.resLayout(), parent, false));
     }
@@ -156,7 +156,7 @@ public class ScrollPickerAdapter<T> extends RecyclerView.Adapter<ScrollPickerAda
             return this;
         }
 
-        public ScrollPickerAdapterBuilder<T> setItemViewProvider(My.IViewProvider viewProvider) {
+        public ScrollPickerAdapterBuilder<T> setItemViewProvider(IViewProvider viewProvider) {
             mAdapter.mViewProvider = viewProvider;
             return this;
         }

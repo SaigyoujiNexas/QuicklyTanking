@@ -79,7 +79,7 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
                 break;
             }
             case R.id.toMapCard:
-                Intent intent = new Intent(this, My.RunningActivity.class);
+                Intent intent = new Intent(this, RunningActivity.class);
                 startActivity(intent);
                 break;
         }

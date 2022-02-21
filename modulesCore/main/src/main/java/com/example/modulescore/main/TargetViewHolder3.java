@@ -16,7 +16,7 @@ import java.util.List;
 public class TargetViewHolder3 extends RecyclerView.ViewHolder {
     private final Context context;
     TextView TargetText;
-    My.ScrollPickerView scrollPickerView;
+    ScrollPickerView scrollPickerView;
     View line;
     ConstraintLayout constraintLayout;
     public TargetViewHolder3(@NonNull Context context, View itemView) {

@@ -45,11 +45,11 @@ public class PreRunActivity extends AppCompatActivity implements View.OnClickLis
 
                 break;
             case R.id.card_startRun_preRun:
-                 Intent startRunIntent = new Intent(this, My.RunActivity.class);
+                 Intent startRunIntent = new Intent(this, RunActivity.class);
                  startActivity(startRunIntent);
                 break;
             case R.id.card_targetDistance_preRun:
-                Intent targetDistanceIntent = new Intent(this, My.TargetDistanceActivity.class);
+                Intent targetDistanceIntent = new Intent(this, TargetDistanceActivity.class);
                 startActivity(targetDistanceIntent);
                 break;
             default:

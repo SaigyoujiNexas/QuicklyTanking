@@ -447,7 +447,7 @@ public class ScrollPickerView extends RecyclerView {
         if (operation != null && operation.getLineColor() != 0) {
             return operation.getLineColor();
         }
-        return getResources().getColor(R.color.colorPrimary);
+        return getResources().getColor(R.color.white);
     }
 
     //将选中的视图及其被选中的状态传递了出去，实际上是通过adapter（IPickerViewOperation）来进行传递的

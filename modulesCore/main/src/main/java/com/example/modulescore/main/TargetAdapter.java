@@ -28,10 +28,10 @@ public class TargetAdapter extends RecyclerView.Adapter {
             return new TargetViewHolder1(context,LayoutInflater.from(parent.getContext()).inflate(R.layout.target_item1,parent,false));
         }
         else if(viewType == ItemType.ITEM2.ordinal()){
-            return new My.TargetViewHolder2(context,LayoutInflater.from(parent.getContext()).inflate(R.layout.target_item2,parent,false));
+            return new TargetViewHolder2(context,LayoutInflater.from(parent.getContext()).inflate(R.layout.target_item2,parent,false));
         }
         else if(viewType == ItemType.ITEM3.ordinal()){
-            return new My.TargetViewHolder3(context,LayoutInflater.from(parent.getContext()).inflate(R.layout.target_item3,parent,false));
+            return new TargetViewHolder3(context,LayoutInflater.from(parent.getContext()).inflate(R.layout.target_item3,parent,false));
         }
         return null;
     }
@@ -46,12 +46,12 @@ public class TargetAdapter extends RecyclerView.Adapter {
             TargetViewHolder1 targetViewHolder1 = (TargetViewHolder1) holder;
             targetViewHolder1.initView();
             Log.d("onBindViewHolder1", "");
-        } else if (holder instanceof My.TargetViewHolder2) {
-            My.TargetViewHolder2 targetViewHolder2 = (My.TargetViewHolder2) holder;
+        } else if (holder instanceof TargetViewHolder2) {
+            TargetViewHolder2 targetViewHolder2 = (TargetViewHolder2) holder;
             targetViewHolder2.initView();
             Log.d("onBindViewHolder2", "");
-        } else if (holder instanceof My.TargetViewHolder3) {
-            My.TargetViewHolder3 targetViewHolder3 = (My.TargetViewHolder3) holder;
+        } else if (holder instanceof TargetViewHolder3) {
+            TargetViewHolder3 targetViewHolder3 = (TargetViewHolder3) holder;
             targetViewHolder3.initView();
             Log.d("onBindViewHolder3", "");
         }
