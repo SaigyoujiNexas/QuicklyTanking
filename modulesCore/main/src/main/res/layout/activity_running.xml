@@ -85,8 +85,8 @@
             app:layout_constraintStart_toStartOf="@+id/speedTitle"
             app:layout_constraintTop_toBottomOf="@id/speedTitle" />
 
-        <Chronometer
-            android:id="@+id/passedTime"
+        <TextView
+            android:id="@+id/passedTime_running"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="00:00"

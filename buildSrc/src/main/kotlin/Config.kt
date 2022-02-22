@@ -2,27 +2,27 @@ import org.gradle.api.JavaVersion
 
 const val isDebug = true
 val androidC = mapOf(
-"compileSdk" to 31,
-"minSdk" to 27,
-"targetSdk" to 31,
-"buildToolsVersion" to "31.0.0",
-"versionCode" to 1,
-"versionName" to "1.0"
+    "compileSdk" to 31,
+    "minSdk" to 27,
+    "targetSdk" to 31,
+    "buildToolsVersion" to "31.0.0",
+    "versionCode" to 1,
+    "versionName" to "1.0"
 )
 
 const val nav_version = "2.3.5"
 const val truth_version = "1.0"
 
 val libraryC = mapOf(
-"appcompat" to  "androidx.appcompat:appcompat:1.4.0",
-"material" to  "com.google.android.material:material:1.4.0",
-"constraintlayout" to "androidx.constraintlayout:constraintlayout:2.1.2",
+    "appcompat" to  "androidx.appcompat:appcompat:1.4.0",
+    "material" to  "com.google.android.material:material:1.4.0",
+    "constraintlayout" to "androidx.constraintlayout:constraintlayout:2.1.2",
     "core-ktx" to "androidx.core:core-ktx:1.7.0",
     "nav-fragment" to "androidx.navigation:navigation-fragment:$nav_version",
     "nav-ui" to "androidx.navigation:navigation-ui:$nav_version",
     "nav-dnmc-fragment" to "androidx.navigation:navigation-dynamic-features-fragment:$nav_version",
 
-)
+    )
 val librariesDebug = listOf(
     "com.google.truth:truth:$truth_version"
 )
