@@ -49,7 +49,7 @@ const val libRxPermissions = "com.github.qicodes:rxpermissions:1.3.0"
 const val libStatusBarUtil = "com.jaeger.statusbarutil:library:1.5.1"
 const  val libRecyclerAdapter = "com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.7"
 const  val libTicker = "com.robinhood.ticker:ticker:2.0.1"
-
+const val libEventbus = "org.greenrobot:eventbus:3.1.1"
 val apts = listOf(
     libARouterCompiler,
     libHiltCompiler,
@@ -73,7 +73,8 @@ val libs = listOf(
     libRxPermissions,
     libAMap3DMap,
     libAMapLocation,
-    libTicker
+    libTicker,
+    libEventbus
 )
 val tests = listOf(
     "androidx.navigation:navigation-testing:$nav_version"

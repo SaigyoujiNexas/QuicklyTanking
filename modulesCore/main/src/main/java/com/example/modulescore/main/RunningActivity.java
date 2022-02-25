@@ -214,7 +214,8 @@ public class RunningActivity extends BaseActivity implements LocationSource, AMa
                     //如果不是第一次定位，则把上次定位信息传给lastLatLng，并且计算距离
                     if (!isFirstLoc) {
                         if ((int) AMapUtils.calculateLineDistance(nowLatLng, lastLatLng) < 100) {
-                            Log.d("onLocationChanged00","Tempdistance:"+AMapUtils.calculateLineDistance(nowLatLng, lastLatLng));
+                            Log.d("onLocationChanged00","Tempdistance:"+
+                                    AMapUtils.calculateLineDistance(nowLatLng, lastLatLng));
                             lastLatLng = nowLatLng;
                         } else {
                             //定位出现问题，如突然瞬移，则取消此次定位修改
@@ -246,7 +247,7 @@ public class RunningActivity extends BaseActivity implements LocationSource, AMa
                                     .color(ContextCompat.getColor(this, R.color.green)));
                     //Log.d("onLocationChanged000", String.valueOf(isFirstLoc));
                     //如果不是第一次定位，就计算距离
-                    if (isFirstLoc == false) {
+                    if (!isFirstLoc) {
                         Log.d("onLocationChanged0","is not FirstLoc");
                         float tempDistance = AMapUtils.calculateLineDistance(nowLatLng, lastLatLng);
                         //获得持续秒数
@@ -262,10 +263,10 @@ public class RunningActivity extends BaseActivity implements LocationSource, AMa
                         if (distanceThisTime > 1000) {
                             //若大于1000米，则显示公里数
                             Log.d("onLocationChanged2", String.valueOf(distanceThisTime / 1000.0));
-                            tv_mapDistance.setText(String.valueOf(distanceThisTime / 1000.0));
+                            tv_mapDistance.setText(String.format("%.2f", distanceThisTime / 1000.0));
                         } else {
                             Log.d("onLocationChanged2", String.valueOf(distanceThisTime));
-                            tv_mapDistance.setText(String.valueOf(distanceThisTime));
+                            tv_mapDistance.setText(String.format("%.2f", distanceThisTime));
                         }
                         //显示速度
                         if (nowSpeed == 0) {
