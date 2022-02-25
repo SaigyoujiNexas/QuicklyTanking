@@ -210,10 +210,6 @@ public class RunningActivity extends BaseActivity implements LocationSource, AMa
                     } else {
                         avgSpeed = (avgSpeed + nowSpeed) / 2;
                     }
-                    double latitude = amapLocation.getLatitude();//获取纬度
-                    double longitude = amapLocation.getLongitude();//获取经度
-                    //新位置
-                    nowLatLng = new LatLng(latitude, longitude);
 
                     //如果不是第一次定位，则把上次定位信息传给lastLatLng，并且计算距离
                     if (!isFirstLoc) {
@@ -228,6 +224,11 @@ public class RunningActivity extends BaseActivity implements LocationSource, AMa
                             return;
                         }
                     }
+                    double latitude = amapLocation.getLatitude();//获取纬度
+                    double longitude = amapLocation.getLongitude();//获取经度
+                    //新位置
+                    nowLatLng = new LatLng(latitude, longitude);
+
                     //当前时间
                     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     Date date = new Date(amapLocation.getTime());
