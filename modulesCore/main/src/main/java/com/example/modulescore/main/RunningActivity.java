@@ -47,7 +47,6 @@ public class RunningActivity extends BaseActivity implements LocationSource, AMa
 
     private static final String TAG = "RunningActivity";
 
-    private static final int WRITE_COARSE_LOCATION_REQUEST_CODE = 0;
     MapView mapView;
     private AMap aMap;
     //定位需要的声明
@@ -140,6 +139,7 @@ public class RunningActivity extends BaseActivity implements LocationSource, AMa
         tv_mapSpeed = findViewById(R.id.speedText);
         //初始化开始时间
         startTime = new Date();
+
         tv_mapDistance = findViewById(R.id.distanceTicker);
         tv_mapDistance.setCharacterLists(TickerUtils.provideNumberList());
         tv_mapDistance.setAnimationDuration(500);
@@ -147,19 +147,7 @@ public class RunningActivity extends BaseActivity implements LocationSource, AMa
 
     //定位
     private void initLoc() throws Exception {
-        //ACCESS_FINE_LOCATION通过WiFi或移动基站的方式获取用户错略的经纬度信息，定位精度大概误差在30~1500米
-        //ACCESS_FINE_LOCATION，通过GPS芯片接收卫星的定位信息，定位精度达10米以内
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            //申请WRITE_EXTERNAL_STORAGE权限
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    WRITE_COARSE_LOCATION_REQUEST_CODE);//自定义的code
-        } else if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            //申请WRITE_EXTERNAL_STORAGE权限
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                    WRITE_COARSE_LOCATION_REQUEST_CODE);//自定义的code
-        }
+
         //定位发起端
         mLocationClient = new AMapLocationClient(getApplicationContext());
         //设置定位回调监听

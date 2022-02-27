@@ -1,11 +1,13 @@
 package com.example.modulescore.main;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -17,6 +19,8 @@ import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -31,6 +35,7 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
     boolean isRun = true;
     TextView animationText;
     ImageView animationBackGround;
+    private static final int WRITE_COARSE_LOCATION_REQUEST_CODE = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +68,22 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
         //ColorStateList stopColor = ContextCompat.getColorStateList(getApplicationContext(), R.color.red);
         //isRunColor = ContextCompat.getColorStateList(getApplicationContext(), R.color.green);
     }
+    private void initLoc(){
+        //ACCESS_FINE_LOCATION通过WiFi或移动基站的方式获取用户错略的经纬度信息，定位精度大概误差在30~1500米
+        //ACCESS_FINE_LOCATION，通过GPS芯片接收卫星的定位信息，定位精度达10米以内
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            //申请WRITE_EXTERNAL_STORAGE权限
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    WRITE_COARSE_LOCATION_REQUEST_CODE);//自定义的code
+        } else if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            //申请WRITE_EXTERNAL_STORAGE权限
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                    WRITE_COARSE_LOCATION_REQUEST_CODE);//自定义的code
+        }
 
+    }
     @Override
     public void onClick(View view) {
         switch (view.getId()){
