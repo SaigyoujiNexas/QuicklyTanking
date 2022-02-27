@@ -8,15 +8,19 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.greenrobot.eventbus.EventBus;
 
 public class RunActivity extends BaseActivity implements View.OnClickListener {
     FloatingActionButton startRunButton;
@@ -31,6 +35,7 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_run);
+        EventBus.getDefault().register(this);
         startRunButton = findViewById(R.id.startRunButton);
         stopRunButton = findViewById(R.id.stopRunButton);
         finishRunButton = findViewById(R.id.finishRunButton);
@@ -150,5 +155,28 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
                 constraintLayout_run.setVisibility(View.VISIBLE);
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    //用于检测是否连按两下
+    private long time = 0;
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if ((System.currentTimeMillis() - time > 1000)) {
+                Toast.makeText(this, "再按一次返回主界面", Toast.LENGTH_SHORT).show();
+                time = System.currentTimeMillis();
+            } else {
+                finish();
+            }
+            return true;
+        } else {
+            return super.onKeyDown(keyCode, event);
+        }
     }
 }

@@ -34,6 +34,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.robinhood.ticker.TickerUtils;
 import com.robinhood.ticker.TickerView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -80,6 +83,7 @@ public class RunningActivity extends BaseActivity implements LocationSource, AMa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_running);
+        EventBus.getDefault().register(this);
         //初始化 SDK context 全局变量，指定 sdcard 路径，设置鉴权所需的KEY。
         //注：如果在创建地图之前使用BitmapDescriptorFactory的功能，则必须通过MapsInitializer.initialize(Context)来设置一个可用的context。
         MapsInitializer mapsInitializer = new MapsInitializer();
@@ -259,15 +263,12 @@ public class RunningActivity extends BaseActivity implements LocationSource, AMa
                         //计算总距离
                         distanceThisTime += tempDistance;
 
-                        //将总距离显示到控件
-                        if (distanceThisTime > 1000) {
+
                             //若大于1000米，则显示公里数
-                            Log.d("onLocationChanged2", String.valueOf(distanceThisTime / 1000.0));
-                            tv_mapDistance.setText(String.format("%.2f", distanceThisTime / 1000.0));
-                        } else {
-                            Log.d("onLocationChanged2", String.valueOf(distanceThisTime));
-                            tv_mapDistance.setText(String.format("%.2f", distanceThisTime));
-                        }
+                        Log.d("onLocationChanged2", String.valueOf(distanceThisTime / 1000.0));
+                        tv_mapDistance.setText(String.format("%.2f", distanceThisTime / 1000.0));
+                        EventBus.getDefault().post(String.format("%.2f", distanceThisTime / 1000.0));
+
                         //显示速度
                         if (nowSpeed == 0) {
                             tv_mapSpeed.setText("--");
@@ -297,6 +298,11 @@ public class RunningActivity extends BaseActivity implements LocationSource, AMa
 //            }
         }
     }
+    @Subscribe
+    public void onEvent(String event) {
+        Log.d("onEvent_Running","");
+    };
+
     @Override
     public void onClick(View view) {
         switch (view.getId()){
@@ -323,8 +329,9 @@ public class RunningActivity extends BaseActivity implements LocationSource, AMa
         super.onDestroy();
         Log.d(TAG, "onDestroy");
         //在activity执行onDestroy时执行mapView.onDestroy()，销毁地图
-        mapView.onDestroy();
-        mLocationClient.onDestroy();
+//        mapView.onDestroy();
+//        mLocationClient.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -355,26 +362,11 @@ public class RunningActivity extends BaseActivity implements LocationSource, AMa
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         //在activity执行onSaveInstanceState时执行mMapView.onSaveInstanceState (outState)，保存地图当前的状态
-        mapView.onSaveInstanceState(outState);
+//        mapView.onSaveInstanceState(outState);
     }
 
 
-    //用于检测是否连按两下
-    private long time = 0;
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if ((System.currentTimeMillis() - time > 1000)) {
-                Toast.makeText(this, "再按一次返回主界面", Toast.LENGTH_SHORT).show();
-                time = System.currentTimeMillis();
-            } else {
-                finish();
-            }
-            return true;
-        } else {
-            return super.onKeyDown(keyCode, event);
-        }
-    }
+
 
 
 }
