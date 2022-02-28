@@ -1,4 +1,4 @@
-package com.example.modulescore.main;
+package com.example.modulescore.main.UI.Activity;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,6 +10,8 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+
+import com.example.modulescore.main.R;
 
 public class PreRunActivity extends AppCompatActivity implements View.OnClickListener{
     ImageView img_setting;
@@ -45,8 +47,8 @@ public class PreRunActivity extends AppCompatActivity implements View.OnClickLis
 
                 break;
             case R.id.card_startRun_preRun:
-                 Intent startRunIntent = new Intent(this, RunActivity.class);
-                 startActivity(startRunIntent);
+                Intent startRunningIntent = new Intent(this,RunningActivity.class);
+                startActivity(startRunningIntent);
                 break;
             case R.id.card_targetDistance_preRun:
                 Intent targetDistanceIntent = new Intent(this, TargetDistanceActivity.class);

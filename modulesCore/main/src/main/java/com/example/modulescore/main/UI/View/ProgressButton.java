@@ -1,4 +1,5 @@
-package com.example.modulescore.main;
+package com.example.modulescore.main.UI.View;
+
 
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -15,6 +16,7 @@ import android.view.animation.OvershootInterpolator;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.modulescore.main.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class ProgressButton extends FloatingActionButton {

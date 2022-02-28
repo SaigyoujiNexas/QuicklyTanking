@@ -25,12 +25,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true">
         <activity
-            android:name=".TargetDistanceActivity"
+            android:name=".UI.Activity.TargetDistanceActivity"
             android:exported="true"
             android:launchMode="singleTask">
         </activity>
         <activity
-            android:name=".PreRunActivity"
+            android:name=".UI.Activity.PreRunActivity"
             android:exported="true"
             android:launchMode="singleTask">
             <intent-filter>
@@ -39,13 +39,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".RunActivity"
+            android:name=".UI.Activity.RunActivity"
             android:exported="true"
             android:launchMode="singleTask"></activity>
         <activity
-            android:name=".RunningActivity"
+            android:name=".UI.Activity.RunningActivity"
             android:exported="true"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleInstance"/>
 
         <meta-data
             android:name="com.amap.api.v2.apikey"

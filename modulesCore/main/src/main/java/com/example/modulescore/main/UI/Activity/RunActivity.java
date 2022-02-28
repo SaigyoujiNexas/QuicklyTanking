@@ -1,30 +1,35 @@
-package com.example.modulescore.main;
+package com.example.modulescore.main.UI.Activity;
 
-import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
+import com.amap.api.maps.MapsInitializer;
+import com.example.modulescore.main.EventBus.MessageEvent;
+import com.example.modulescore.main.UI.View.ProgressButton;
+import com.example.modulescore.main.R;
+import com.example.modulescore.main.Util.TimeManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.robinhood.ticker.TickerUtils;
+import com.robinhood.ticker.TickerView;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 public class RunActivity extends BaseActivity implements View.OnClickListener {
     FloatingActionButton startRunButton;
@@ -35,7 +40,9 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
     boolean isRun = true;
     TextView animationText;
     ImageView animationBackGround;
-    private static final int WRITE_COARSE_LOCATION_REQUEST_CODE = 0;
+    TickerView distanceview;
+    TickerView passedTimeView;
+    TextView speedText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +55,13 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
         animationText = findViewById(R.id.text_animation);
         animationBackGround = findViewById(R.id.animationBackGround);
         constraintLayout_run = findViewById(R.id.constraintLayout_Run);
+        distanceview = findViewById(R.id.distanceView_Run);
+        speedText = findViewById(R.id.speedText_run);
+        passedTimeView = findViewById(R.id.passedTime_run);
+        passedTimeView.setCharacterLists(TickerUtils.provideNumberList());
+        passedTimeView.setAnimationDuration(500);//设置动画持续时间
+        distanceview.setCharacterLists(TickerUtils.provideNumberList());
+        distanceview.setAnimationDuration(500);
         startRunButton.hide();
         finishRunButton.hide();
         //设置监听器
@@ -65,57 +79,51 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
             public void onCancel() {
             }
         });
-        //ColorStateList stopColor = ContextCompat.getColorStateList(getApplicationContext(), R.color.red);
-        //isRunColor = ContextCompat.getColorStateList(getApplicationContext(), R.color.green);
-    }
-    private void initLoc(){
-        //ACCESS_FINE_LOCATION通过WiFi或移动基站的方式获取用户错略的经纬度信息，定位精度大概误差在30~1500米
-        //ACCESS_FINE_LOCATION，通过GPS芯片接收卫星的定位信息，定位精度达10米以内
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            //申请WRITE_EXTERNAL_STORAGE权限
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    WRITE_COARSE_LOCATION_REQUEST_CODE);//自定义的code
-        } else if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            //申请WRITE_EXTERNAL_STORAGE权限
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                    WRITE_COARSE_LOCATION_REQUEST_CODE);//自定义的code
-        }
 
+        //初始化 SDK context 全局变量，指定 sdcard 路径，设置鉴权所需的KEY。
+        //注：如果在创建地图之前使用BitmapDescriptorFactory的功能，则必须通过MapsInitializer.initialize(Context)来设置一个可用的context。
+        MapsInitializer mapsInitializer = new MapsInitializer();
+        //更新隐私合规状态,需要在初始化地图之前完成
+        mapsInitializer.updatePrivacyShow(this, true, true);
+        //更新同意隐私状态,需要在初始化地图之前完成
+        mapsInitializer.updatePrivacyAgree(this,true);
+
+        timeRunnable = new TimeRunnable();
+        mHandler.post(timeRunnable);
     }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            default: {
-                Log.d("11111", "!00");
+            case R.id.stopRunButton: {
+                changeButtonState();
+                mHandler.removeCallbacks(timeRunnable);//取消处理
                 break;
             }
-            case R.id.stopRunButton:
             case R.id.startRunButton:{
-                Log.d("11111", "!11");
-                if (isRun == true) {
-                    isRun = false;
-                    Log.d("11111", "!22");
-                    //startRunButton.setBackgroundTintList(stopColor);
-                    stopRunButton.hide();
-                    startRunButton.show();
-                    finishRunButton.show();
-                } else if (isRun == false) {
-                    isRun = true;
-                    Log.d("11111", "!33");
-                    stopRunButton.show();
-                    startRunButton.hide();
-                    finishRunButton.hide();
-                }
+                changeButtonState();
+                mHandler.post(timeRunnable);//开始计时
                 break;
             }
-            case R.id.finishRunButton:
-                break;
             case R.id.toMapCard:
-                Intent intent = new Intent(this, RunningActivity.class);
+                Log.d("","toMap");
+                Intent intent = new Intent(this,RunningActivity.class);
                 startActivity(intent);
                 break;
+        }
+    }
+
+    private void changeButtonState(){
+        if (isRun == true) {
+            isRun = false;
+            stopRunButton.hide();
+            startRunButton.show();
+            finishRunButton.show();
+        } else if (isRun == false) {
+            isRun = true;
+            stopRunButton.show();
+            startRunButton.hide();
+            finishRunButton.hide();
         }
     }
     private void startAnimation(){
@@ -176,7 +184,16 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
             }
         });
     }
-
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)//监听粘性事件
+    public void onEvent(MessageEvent event) {
+        Log.d("onEvent_RunActivity",event.getFormattedPassedTime()+event.getDistance()+event.getSpeed());
+        if(event.getDistance()!=null && distanceview!=null)
+            distanceview.setText(event.getDistance());
+        if (event.getFormattedPassedTime()!=null && passedTimeView!=null)
+            passedTimeView.setText(event.getFormattedPassedTime());
+        if(event.getSpeed()!=null && speedText!=null)
+            speedText.setText(event.getSpeed());
+    };
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -189,14 +206,23 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if ((System.currentTimeMillis() - time > 1000)) {
-                Toast.makeText(this, "再按一次返回主界面", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "结束跑步请点击完成按钮", Toast.LENGTH_SHORT).show();
                 time = System.currentTimeMillis();
-            } else {
-                finish();
             }
-            return true;
-        } else {
-            return super.onKeyDown(keyCode, event);
+        }
+        return true;
+    }
+    int passedSeconds;
+    private Handler mHandler = new Handler(Looper.getMainLooper());
+    private class TimeRunnable implements Runnable {
+        @Override
+        public void run() {
+            MessageEvent event = new MessageEvent();
+            event.setFormattedPassedTime(TimeManager.formatseconds(passedSeconds));
+            passedSeconds++;
+            EventBus.getDefault().post(event);
+            mHandler.postDelayed(this, 1000);
         }
     }
+    private TimeRunnable timeRunnable = null;
 }

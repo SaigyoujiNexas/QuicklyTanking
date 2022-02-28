@@ -1,4 +1,4 @@
-package com.example.modulescore.main;
+package com.example.modulescore.main.Util;
 
 /**
  * Created by Novo on 2019/5/29.
