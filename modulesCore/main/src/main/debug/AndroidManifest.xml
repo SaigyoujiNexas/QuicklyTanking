@@ -19,38 +19,16 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true">
+        android:name="com.example.modulespublic.common.base.BaseApplication">
         <activity
-            android:name=".TargetDistanceActivity"
-            android:exported="true"
-            android:launchMode="singleTask">
-        </activity>
-        <activity
-            android:name=".PreRunActivity"
-            android:exported="true"
-            android:launchMode="singleTask">
+            android:name=".MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".RunActivity"
-            android:exported="true"
-            android:launchMode="singleTask"></activity>
-        <activity
-            android:name=".RunningActivity"
-            android:exported="true"
-            android:launchMode="singleTask"/>
-
-        <meta-data
-            android:name="com.amap.api.v2.apikey"
-            android:value="880387c6ae5d46f295ff641256b984d3" />
-        07:E3:E4:1D:53:DF:2D:7A:26:E7:5A:79:34:0C:8B:7C:BA:36:9F:BA
-        <service android:name="com.amap.api.location.APSService" />
     </application>
+
 </manifest>

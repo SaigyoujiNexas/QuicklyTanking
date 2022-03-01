@@ -10,19 +10,25 @@ val androidC = mapOf(
     "versionName" to "1.0"
 )
 
-const val nav_version = "2.3.5"
+const val nav_version = "2.4.1"
 const val truth_version = "1.0"
 
 val libraryC = mapOf(
     "appcompat" to  "androidx.appcompat:appcompat:1.4.0",
     "material" to  "com.google.android.material:material:1.4.0",
     "constraintlayout" to "androidx.constraintlayout:constraintlayout:2.1.2",
-    "core-ktx" to "androidx.core:core-ktx:1.7.0",
     "nav-fragment" to "androidx.navigation:navigation-fragment:$nav_version",
     "nav-ui" to "androidx.navigation:navigation-ui:$nav_version",
     "nav-dnmc-fragment" to "androidx.navigation:navigation-dynamic-features-fragment:$nav_version",
-
+    "nav_compose" to "androidx.navigation:navigation-compose:$nav_version",
     )
+
+val libKtx = listOf(
+    "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-alpha02",
+    "androidx.lifecycle:lifecycle-runtime-ktx:2.3.1",
+    "androidx.core:core-ktx:1.7.0",
+
+)
 val librariesDebug = listOf(
     "com.google.truth:truth:$truth_version"
 )

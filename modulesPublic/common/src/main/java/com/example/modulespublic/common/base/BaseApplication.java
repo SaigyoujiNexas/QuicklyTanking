@@ -14,6 +14,8 @@ import dagger.hilt.android.HiltAndroidApp;
 public class BaseApplication extends Application {
     @Override
     public void onCreate() {
+        super.onCreate();
+
         var isRelease = PropertiesUtil.props.getProperty("isRelease");
         if(!TextUtils.equals(isRelease, "true"))
         {
@@ -23,6 +25,5 @@ public class BaseApplication extends Application {
         ARouter.init(this);
         DisplayUtil.Companion.init(this);
         ToastUtil.Companion.init(this);
-        super.onCreate();
     }
 }

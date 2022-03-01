@@ -17,10 +17,6 @@
             android:name=".PreRunActivity"
             android:exported="true"
             android:launchMode="singleTask">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".RunActivity"
@@ -30,5 +26,10 @@
             android:name=".RunningActivity"
             android:exported="true"
             android:launchMode="singleTask"/>
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="880387c6ae5d46f295ff641256b984d3" />
+        07:E3:E4:1D:53:DF:2D:7A:26:E7:5A:79:34:0C:8B:7C:BA:36:9F:BA
+        <service android:name="com.amap.api.location.APSService" />
     </application>
 </manifest>

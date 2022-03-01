@@ -15,27 +15,27 @@ class Logger {
         @JvmStatic
         fun i(tag: String = TAG, str: String){
             if(SHOW_LOG)
-                Log.i(TAG, str)
+                Log.i(tag, str)
         }
         @JvmStatic
         fun e(tag: String = TAG, str: String){
             if(SHOW_LOG)
-                Log.e(TAG, str)
+                Log.e(tag, str)
         }
         @JvmStatic
         fun v(tag: String = TAG, str: String){
             if(SHOW_LOG)
-                Log.v(TAG, str)
+                Log.v(tag, str)
         }
         @JvmStatic
         fun d(tag: String = TAG, str: String){
             if(SHOW_LOG)
-                Log.d(TAG, str)
+                Log.d(tag, str)
         }
         @JvmStatic
         fun w(tag: String = TAG, str: String){
             if(SHOW_LOG)
-                Log.w(TAG, str)
+                Log.w(tag, str)
         }
 
     }

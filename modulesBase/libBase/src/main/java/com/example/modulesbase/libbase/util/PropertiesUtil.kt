@@ -2,6 +2,7 @@ package com.example.modulesbase.libbase.util
 
 import android.content.Context
 import java.io.IOException
+import java.io.InputStream
 import java.util.*
 
 class PropertiesUtil {
@@ -11,11 +12,14 @@ class PropertiesUtil {
         @JvmStatic
         fun init(c: Context)
         {
+            var input: InputStream? = null
             try{
-                val input = c.assets.open("appConfig.properties");
+                input = c.assets.open("appConfig.properties");
                 props.load(input);
             }catch (e: IOException){
                 e.printStackTrace()
+            }finally {
+                input?.close()
             }
         }
     }

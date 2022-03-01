@@ -1,6 +1,9 @@
 package com.example.modulesbase.libbase.net.di;
 
 
+import com.example.modulesbase.libbase.util.Logger;
+import com.example.modulesbase.libbase.util.PropertiesUtil;
+
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
@@ -23,8 +26,10 @@ public class NetWorkModule {
     @Provides
     @Singleton
     public Retrofit provideRetrofit(OkHttpClient client){
+        var baseUrl = PropertiesUtil.props.getProperty("baseUrl");
+        Logger.i("Retrofit", "getbaseUrl: "+baseUrl);
         return new Retrofit.Builder()
-                .baseUrl("https://www.baidu.com/")
+                .baseUrl(baseUrl)
                 .client(client)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
