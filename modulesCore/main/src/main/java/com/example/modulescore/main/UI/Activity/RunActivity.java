@@ -1,10 +1,12 @@
 package com.example.modulescore.main.UI.Activity;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -17,6 +19,8 @@ import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.amap.api.maps.MapsInitializer;
 import com.example.modulescore.main.EventBus.MessageEvent;
@@ -43,6 +47,7 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
     TickerView distanceview;
     TickerView passedTimeView;
     TextView speedText;
+    private static final int WRITE_COARSE_LOCATION_REQUEST_CODE = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,17 +84,9 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
             public void onCancel() {
             }
         });
-
-        //初始化 SDK context 全局变量，指定 sdcard 路径，设置鉴权所需的KEY。
-        //注：如果在创建地图之前使用BitmapDescriptorFactory的功能，则必须通过MapsInitializer.initialize(Context)来设置一个可用的context。
-        MapsInitializer mapsInitializer = new MapsInitializer();
-        //更新隐私合规状态,需要在初始化地图之前完成
-        mapsInitializer.updatePrivacyShow(this, true, true);
-        //更新同意隐私状态,需要在初始化地图之前完成
-        mapsInitializer.updatePrivacyAgree(this,true);
-
         timeRunnable = new TimeRunnable();
         mHandler.post(timeRunnable);
+        requestPermissions();
     }
 
     @Override
@@ -225,4 +222,19 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
         }
     }
     private TimeRunnable timeRunnable = null;
+    private void requestPermissions(){
+        //ACCESS_FINE_LOCATION通过WiFi或移动基站的方式获取用户错略的经纬度信息，定位精度大概误差在30~1500米
+        //ACCESS_FINE_LOCATION，通过GPS芯片接收卫星的定位信息，定位精度达10米以内
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            //申请WRITE_EXTERNAL_STORAGE权限
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    WRITE_COARSE_LOCATION_REQUEST_CODE);
+        } else if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            //申请WRITE_EXTERNAL_STORAGE权限
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                    WRITE_COARSE_LOCATION_REQUEST_CODE);
+        }
+    }
 }

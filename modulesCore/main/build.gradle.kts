@@ -9,6 +9,14 @@ var applicationId : String? = null
 var versionCode: Int? = null
 var versionName: String? = null
 android{
+    signingConfigs {
+        getByName("debug") {
+            storeFile = file("E:\\learn\\Android\\Run00.jks")
+            storePassword = "llllll"
+            keyAlias = "key0"
+            keyPassword = "llllll"
+        }
+    }
     compileSdk = androidC["compileSdk"] as Int
     defaultConfig {
         if(isDebug)

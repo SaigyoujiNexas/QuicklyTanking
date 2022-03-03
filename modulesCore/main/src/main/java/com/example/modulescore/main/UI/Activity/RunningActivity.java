@@ -23,6 +23,7 @@ import com.amap.api.maps.AMapUtils;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
+import com.amap.api.maps.MapsInitializer;
 import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.MyLocationStyle;
@@ -35,6 +36,7 @@ import com.robinhood.ticker.TickerView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -96,8 +98,8 @@ public class RunningActivity extends BaseActivity implements LocationSource, AMa
         tv_mapDistance.setCharacterLists(TickerUtils.provideNumberList());
         tv_mapDistance.setAnimationDuration(500);
 
-        initMapUI();
         initLoc();
+        initMapUI();
         Intent startRunIntent = new Intent(this,RunActivity.class);
         startActivity(startRunIntent);
     }
@@ -132,12 +134,20 @@ public class RunningActivity extends BaseActivity implements LocationSource, AMa
     }
     //定位
     private void initLoc() {
+        //初始化 SDK context 全局变量，指定 sdcard 路径，设置鉴权所需的KEY。
+        //注：如果在创建地图之前使用BitmapDescriptorFactory的功能，则必须通过MapsInitializer.initialize(Context)来设置一个可用的context。
+        MapsInitializer mapsInitializer = new MapsInitializer();
+        //更新隐私合规状态,需要在初始化地图之前完成
+        mapsInitializer.updatePrivacyShow(this, true, true);
+        //更新同意隐私状态,需要在初始化地图之前完成
+        mapsInitializer.updatePrivacyAgree(this,true);
         //定位发起端
         try {
             mLocationClient = new AMapLocationClient(getApplicationContext());
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         //设置定位回调监听
         mLocationClient.setLocationListener(this);
         //初始化定位参数
@@ -164,11 +174,13 @@ public class RunningActivity extends BaseActivity implements LocationSource, AMa
     public void onLocationChanged(AMapLocation amapLocation) {
         String TAG = "RunningActivity_LocationChanged";
         MessageEvent messageEvent = new MessageEvent();//跑步时间
+        Log.d(TAG,"");
         if (amapLocation != null) {
             if (amapLocation.getErrorCode() == 0) {
                 float nowSpeed = amapLocation.getSpeed();//获取速度
                 //计算平均速度，即 (当前速度+当前平均速度)/2
                 //若为第一次定位，则当前速度为平均速度
+
                 if (isFirstLoc) {
                     avgSpeed = nowSpeed;
                 } else if (!isFirstLoc) {//如果不是第一次定位，则把上次定位信息传给lastLatLng，并且计算距离
@@ -185,6 +197,7 @@ public class RunningActivity extends BaseActivity implements LocationSource, AMa
                 }
                 double latitude = amapLocation.getLatitude();//获取纬度
                 double longitude = amapLocation.getLongitude();//获取经度
+                Log.d(TAG,latitude+","+longitude);
                 //新位置
                 nowLatLng = new LatLng(latitude, longitude);
 
@@ -221,20 +234,17 @@ public class RunningActivity extends BaseActivity implements LocationSource, AMa
                 aMap.moveCamera(CameraUpdateFactory.changeLatLng(nowLatLng));
                 //点击定位按钮 能够将地图的中心移动到定位点
                 mListener.onLocationChanged(amapLocation);
+            }else{
+                Log.d(TAG,"ERROR:"+amapLocation.getErrorCode());
             }
         } else {
-            //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
-            Log.e("AmapError", "location Error, ErrCode:"
-                    + amapLocation.getErrorCode() + ", errInfo:"
-                    + amapLocation.getErrorInfo());
-            Toast.makeText(getApplicationContext(), "定位似乎有些问题 Error: "
-                    + amapLocation.getErrorCode(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "ERROR!", Toast.LENGTH_LONG).show();
         }
     }
 
-    @Subscribe
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)//监听粘性事件
     public void onEvent(MessageEvent event) {
-        Log.d("onEvent_RunActivity",event.getFormattedPassedTime()+event.getDistance());
+        Log.d("onEvent_RunningActivity",event.getFormattedPassedTime()+event.getDistance());
         //将持续秒数转化为mm:ss并显示到控件
         if (event.getFormattedPassedTime()!=null && tv_passedTime!=null)
             tv_passedTime.setText(event.getFormattedPassedTime());
