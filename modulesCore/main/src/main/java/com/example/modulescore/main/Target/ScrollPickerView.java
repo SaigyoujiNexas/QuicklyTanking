@@ -1,4 +1,4 @@
-package com.example.modulescore.main;
+package com.example.modulescore.main.Target;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.modulescore.main.R;
 
 public class ScrollPickerView extends RecyclerView {
 //

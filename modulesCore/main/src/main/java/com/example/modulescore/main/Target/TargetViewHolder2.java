@@ -1,4 +1,4 @@
-package com.example.modulescore.main;
+package com.example.modulescore.main.Target;
 
 import android.content.Context;
 import android.util.Log;
@@ -10,41 +10,39 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.modulescore.main.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class TargetViewHolder0 extends RecyclerView.ViewHolder {
+public class TargetViewHolder2 extends RecyclerView.ViewHolder {
     private final Context context;
     TextView TargetText;
     ScrollPickerView scrollPickerView;
     View line;
     ConstraintLayout constraintLayout;
-    public TargetViewHolder0(@NonNull Context context, View itemView) {
+    public TargetViewHolder2(@NonNull Context context, View itemView) {
         super(itemView);
         this.context = context;
-        TargetText  = itemView.findViewById(R.id.text_targetdistance_TargetDistance_item0);
-        scrollPickerView = itemView.findViewById(R.id.scrollPickerView_target);
-        line = itemView.findViewById(R.id.line_target_item0);
-        constraintLayout = itemView.findViewById(R.id.item_constraint_item0);
+        TargetText = itemView.findViewById(R.id.text_targetdistance_TargetDistance_item2);
+        scrollPickerView = itemView.findViewById(R.id.scrollPickerView_target_item2);
+        line = itemView.findViewById(R.id.line_target_item2);
+        constraintLayout = itemView.findViewById(R.id.item_constraint_item2);
     }
 
     public void initView() {
-        scrollPickerView = itemView.findViewById(R.id.scrollPickerView_target);
+
         List<String> list = new ArrayList<>();
-        String itemData0 = "0.80";
-        String itemData1 = "1.00";
-        String itemData2 = "2.00";
-        String itemData3 = "3.00";
-        String itemData4 = "4.00";
-        String itemData5 = "5.00";
-        String itemData6 = "6.00";
-        String itemData7 = "7.00";
-        String itemData8 = "8.00";
-        String itemData9 = "9.00";
-        String itemData10 = "10.00";
-        String itemData11 = "15.00";
-        String itemData12 = "21.25";
-        String itemData13 = "42.25";
+        String itemData0 = "50";
+        String itemData1 = "100";
+        String itemData2 = "150";
+        String itemData3 = "200";
+        String itemData4 = "250";
+        String itemData5 = "300";
+        String itemData6 = "350";
+        String itemData7 = "400";
+        String itemData8 = "450";
+        String itemData9 = "500";
         list.add(itemData0);
         list.add(itemData1);
         list.add(itemData2);
@@ -55,10 +53,6 @@ public class TargetViewHolder0 extends RecyclerView.ViewHolder {
         list.add(itemData7);
         list.add(itemData8);
         list.add(itemData9);
-        list.add(itemData10);
-        list.add(itemData11);
-        list.add(itemData12);
-        list.add(itemData13);
         ScrollPickerAdapter.ScrollPickerAdapterBuilder<String> builder =
                 new ScrollPickerAdapter.ScrollPickerAdapterBuilder<String>(context,TargetText)
                         .setDataList(list)

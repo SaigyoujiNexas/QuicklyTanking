@@ -66,6 +66,9 @@ dependencies {
     implementation("org.greenrobot:eventbus:3.1.1")
     implementation("com.google.android.material:material:1.5.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.3")
+    val roomVersion = "2.4.2"
+    implementation("androidx.room:room-runtime:$roomVersion")
+    annotationProcessor("androidx.room:room-compiler:$roomVersion")
     libraryC.forEach { (_, s2) -> implementation(s2) }
     libs.forEach { implementation(it) }
     apts.forEach { annotationProcessor(it) }

@@ -12,7 +12,7 @@ val androidC = mapOf(
 
 const val nav_version = "2.3.5"
 const val truth_version = "1.0"
-
+const val  room_version = "2.4.2"
 val libraryC = mapOf(
     "appcompat" to  "androidx.appcompat:appcompat:1.4.0",
     "material" to  "com.google.android.material:material:1.4.0",
@@ -50,6 +50,7 @@ const val libStatusBarUtil = "com.jaeger.statusbarutil:library:1.5.1"
 const  val libRecyclerAdapter = "com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.7"
 const  val libTicker = "com.robinhood.ticker:ticker:2.0.1"
 const val libEventbus = "org.greenrobot:eventbus:3.1.1"
+const val libRoom =  "androidx.room:room-runtime:$room_version"
 val apts = listOf(
     libARouterCompiler,
     libHiltCompiler,
@@ -74,7 +75,8 @@ val libs = listOf(
     libAMap3DMap,
     libAMapLocation,
     libTicker,
-    libEventbus
+    libEventbus,
+    libRoom
 )
 val tests = listOf(
     "androidx.navigation:navigation-testing:$nav_version"

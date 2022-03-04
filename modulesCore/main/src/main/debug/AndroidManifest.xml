@@ -25,33 +25,36 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true">
         <activity
+            android:name=".UI.Activity.BaseActivity$AfterRunActivity"
+            android:exported="false" />
+        <activity
             android:name=".UI.Activity.TargetDistanceActivity"
             android:exported="true"
-            android:launchMode="singleTask">
-        </activity>
+            android:launchMode="singleTask"></activity>
         <activity
             android:name=".UI.Activity.PreRunActivity"
             android:exported="true"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".UI.Activity.RunActivity"
             android:exported="true"
-            android:launchMode="singleTask"></activity>
+            android:launchMode="singleTask" />
         <activity
             android:name=".UI.Activity.RunningActivity"
             android:exported="true"
-            android:launchMode="singleInstance"/>
+            android:launchMode="singleInstance" />
 
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="50d286f11504bd091ccc96099bcba9cb" />
-        07:E3:E4:1D:53:DF:2D:7A:26:E7:5A:79:34:0C:8B:7C:BA:36:9F:BA
-        F7:FA:FE:6A:BC:B9:A6:04:55:D9:98:AE:41:5A:5A:E8:77:77:74:3D
+
         <service android:name="com.amap.api.location.APSService" />
     </application>
+
 </manifest>

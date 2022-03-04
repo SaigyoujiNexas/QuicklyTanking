@@ -183,13 +183,16 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
     }
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)//监听粘性事件
     public void onEvent(MessageEvent event) {
-        Log.d("onEvent_RunActivity",event.getFormattedPassedTime()+event.getDistance()+event.getSpeed());
-        if(event.getDistance()!=null && distanceview!=null)
+        Log.d("onEvent_RunActivity", event.getFormattedPassedTime() + event.getDistance() + event.getSpeed());
+        if (event.getDistance() != null && distanceview != null) {
             distanceview.setText(event.getDistance());
-        if (event.getFormattedPassedTime()!=null && passedTimeView!=null)
-            passedTimeView.setText(event.getFormattedPassedTime());
-        if(event.getSpeed()!=null && speedText!=null)
+        }
+        if (event.getFormattedPassedTime() != null && passedTimeView != null){
+            passedTimeView.setText(TimeManager.formatseconds(event.getFormattedPassedTime()));
+        }
+        if(event.getSpeed()!=null && speedText!=null) {
             speedText.setText(event.getSpeed());
+        }
     };
     @Override
     protected void onDestroy() {
@@ -209,13 +212,13 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
         }
         return true;
     }
-    int passedSeconds;
+    Long passedSeconds = Long.valueOf(0);
     private Handler mHandler = new Handler(Looper.getMainLooper());
     private class TimeRunnable implements Runnable {
         @Override
         public void run() {
             MessageEvent event = new MessageEvent();
-            event.setFormattedPassedTime(TimeManager.formatseconds(passedSeconds));
+            event.setFormattedPassedTime(passedSeconds);
             passedSeconds++;
             EventBus.getDefault().post(event);
             mHandler.postDelayed(this, 1000);

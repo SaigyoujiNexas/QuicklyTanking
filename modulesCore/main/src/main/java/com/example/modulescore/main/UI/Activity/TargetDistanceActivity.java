@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.modulescore.main.R;
-import com.example.modulescore.main.TargetAdapter;
+import com.example.modulescore.main.Target.TargetAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 

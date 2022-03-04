@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.modulescore.main.R;
+
 public class BaseActivity extends AppCompatActivity {
 
     @Override
@@ -17,5 +19,14 @@ public class BaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         ActivityManager.popOneActivity(this);
+    }
+
+    public static class AfterRunActivity extends AppCompatActivity {
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_after_run);
+        }
     }
 }

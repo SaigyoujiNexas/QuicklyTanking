@@ -1,10 +1,21 @@
 package com.example.modulescore.main.EventBus;
 
 
+import com.example.modulescore.main.DataBase.RunningRecord;
+
 public class MessageEvent {
-    private String formattedPassedTime;
+    private Long formattedPassedTime;
     private String distance;
     private String speed;
+    private RunningRecord runningRecord;
+
+    public RunningRecord getRunningRecord() {
+        return runningRecord;
+    }
+
+    public void setRunningRecord(RunningRecord runningRecord) {
+        this.runningRecord = runningRecord;
+    }
 
     public String getSpeed() {
         return speed;
@@ -14,11 +25,11 @@ public class MessageEvent {
         this.speed = speed;
     }
 
-    public String getFormattedPassedTime() {
+    public Long getFormattedPassedTime() {
         return formattedPassedTime;
     }
 
-    public void setFormattedPassedTime(String formattedPassedTime) {
+    public void setFormattedPassedTime(Long formattedPassedTime) {
         this.formattedPassedTime = formattedPassedTime;
     }
 

@@ -30,6 +30,7 @@ import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.PolylineOptions;
 import com.example.modulescore.main.EventBus.MessageEvent;
 import com.example.modulescore.main.R;
+import com.example.modulescore.main.Util.TimeManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.robinhood.ticker.TickerUtils;
 import com.robinhood.ticker.TickerView;
@@ -246,13 +247,16 @@ public class RunningActivity extends BaseActivity implements LocationSource, AMa
     public void onEvent(MessageEvent event) {
         Log.d("onEvent_RunningActivity",event.getFormattedPassedTime()+event.getDistance());
         //将持续秒数转化为mm:ss并显示到控件
-        if (event.getFormattedPassedTime()!=null && tv_passedTime!=null)
-            tv_passedTime.setText(event.getFormattedPassedTime());
-        if (event.getDistance()!=null && tv_mapDistance!=null)
+        if (event.getFormattedPassedTime()!=null && tv_passedTime!=null) {
+            tv_passedTime.setText(TimeManager.formatseconds(event.getFormattedPassedTime()));
+        }
+        if (event.getDistance()!=null && tv_mapDistance!=null) {
             tv_mapDistance.setText(event.getDistance());
+        }
         //显示速度
-        if(event.getSpeed()!=null && tv_mapSpeed!=null)
+        if(event.getSpeed()!=null && tv_mapSpeed!=null) {
             tv_mapSpeed.setText(event.getSpeed());
+        }
     };
 
     @Override

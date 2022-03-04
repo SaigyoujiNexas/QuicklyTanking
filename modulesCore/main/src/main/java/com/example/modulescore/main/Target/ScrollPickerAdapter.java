@@ -1,4 +1,4 @@
-package com.example.modulescore.main;
+package com.example.modulescore.main.Target;
 
 import android.content.Context;
 import android.graphics.Color;

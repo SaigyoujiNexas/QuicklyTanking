@@ -1,4 +1,4 @@
-package com.example.modulescore.main;
+package com.example.modulescore.main.Target;
 
 import android.content.Context;
 import android.util.Log;
@@ -7,6 +7,12 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.modulescore.main.R;
+import com.example.modulescore.main.Target.TargetViewHolder0;
+import com.example.modulescore.main.Target.TargetViewHolder1;
+import com.example.modulescore.main.Target.TargetViewHolder2;
+import com.example.modulescore.main.Target.TargetViewHolder3;
 
 public class TargetAdapter extends RecyclerView.Adapter {
     public enum ItemType {

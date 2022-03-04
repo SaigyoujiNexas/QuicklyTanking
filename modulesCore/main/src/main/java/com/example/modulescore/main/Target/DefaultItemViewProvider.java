@@ -1,4 +1,4 @@
-package com.example.modulescore.main;
+package com.example.modulescore.main.Target;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.example.modulescore.main.R;
 
 //更多的是为自定义view provider提供思路。
 //view provider必须要实现IViewProvider接口，
