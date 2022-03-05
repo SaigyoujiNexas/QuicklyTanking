@@ -155,4 +155,14 @@ public class RunningRecord {
     public RunningRecord() {
     }
 
+    @Override
+    public String toString() {
+        return "RunningRecord{" +
+                "id=" + id +
+                ", mPathPointsLine=" + mPathPointsLine +
+                ", mDistance='" + mDistance + '\'' +
+                ", mCalorie=" + mCalorie +
+                ", mSpeed='" + mSpeed + '\'' +
+                '}';
+    }
 }

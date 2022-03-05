@@ -74,6 +74,7 @@ public class RunningActivity extends BaseActivity implements LocationSource, AMa
     //绘制路线
     List<LatLng> path = new ArrayList<LatLng>();
     Date startTime;
+    Long passedSeconds;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,8 +100,8 @@ public class RunningActivity extends BaseActivity implements LocationSource, AMa
         tv_mapDistance.setCharacterLists(TickerUtils.provideNumberList());
         tv_mapDistance.setAnimationDuration(500);
 
-        initLoc();
         initMapUI();
+        initLoc();
         Intent startRunIntent = new Intent(this,RunActivity.class);
         startActivity(startRunIntent);
     }
@@ -148,7 +149,6 @@ public class RunningActivity extends BaseActivity implements LocationSource, AMa
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         //设置定位回调监听
         mLocationClient.setLocationListener(this);
         //初始化定位参数
@@ -162,7 +162,7 @@ public class RunningActivity extends BaseActivity implements LocationSource, AMa
         //设置是否允许模拟位置,默认为false，不允许模拟位置
         mLocationOption.setMockEnable(false);
         //设置定位间隔,单位毫秒,默认为2000ms
-        mLocationOption.setInterval(1000);
+        mLocationOption.setInterval(2000);
         //给定位客户端对象设置定位参数
         mLocationClient.setLocationOption(mLocationOption);
         //启动定位
@@ -178,23 +178,19 @@ public class RunningActivity extends BaseActivity implements LocationSource, AMa
         Log.d(TAG,"");
         if (amapLocation != null) {
             if (amapLocation.getErrorCode() == 0) {
-                float nowSpeed = amapLocation.getSpeed();//获取速度
-                //计算平均速度，即 (当前速度+当前平均速度)/2
-                //若为第一次定位，则当前速度为平均速度
-
+                float nowSpeed = amapLocation.getSpeed();
                 if (isFirstLoc) {
-                    avgSpeed = nowSpeed;
                 } else if (!isFirstLoc) {//如果不是第一次定位，则把上次定位信息传给lastLatLng，并且计算距离
-                    avgSpeed = (avgSpeed + nowSpeed) / 2;
-                    if ((int) AMapUtils.calculateLineDistance(nowLatLng, lastLatLng) < 100) {
+                    Log.d(TAG,"Speed"+avgSpeed);
+                    //if ((int) AMapUtils.calculateLineDistance(nowLatLng, lastLatLng) < 100) {
                         lastLatLng = nowLatLng;
-                    } else {
-                        //定位出现问题，如突然瞬移，则取消此次定位修改
-                        Toast.makeText(getApplicationContext()
-                                , "此次计算距离过远，取消此次修改"
-                                , Toast.LENGTH_SHORT).show();
-                        return;
-                    }
+//                    } else {
+//                        //定位出现问题，如突然瞬移，则取消此次定位修改
+//                        Toast.makeText(getApplicationContext()
+//                                , "此次计算距离过远，取消此次修改"
+//                                , Toast.LENGTH_SHORT).show();
+//                        return;
+//                    }
                 }
                 double latitude = amapLocation.getLatitude();//获取纬度
                 double longitude = amapLocation.getLongitude();//获取经度
@@ -204,7 +200,6 @@ public class RunningActivity extends BaseActivity implements LocationSource, AMa
 
                 //路径添加当前位置
                 path.add(nowLatLng);
-
                 //绘制路径
                 aMap.addPolyline(
                         new PolylineOptions()
@@ -218,10 +213,11 @@ public class RunningActivity extends BaseActivity implements LocationSource, AMa
                     distanceThisTime += tempDistance;
                     messageEvent.setDistance(String.format("%.2f", distanceThisTime / 1000.0));
                     //发送速度
+                    nowSpeed = distanceThisTime/passedSeconds;
                     if (nowSpeed == 0) {
                         messageEvent.setSpeed("--");
                     } else {
-                        messageEvent.setSpeed(String.valueOf(nowSpeed));
+                        messageEvent.setSpeed(String.format("%.2f",nowSpeed));
                     }
                     EventBus.getDefault().post(messageEvent);
                 }else if(isFirstLoc){//如果是第一次，那么改isFirstLoc为false，则之后都不是第一次了
@@ -230,11 +226,13 @@ public class RunningActivity extends BaseActivity implements LocationSource, AMa
                     aMap.moveCamera(CameraUpdateFactory.zoomTo(18));
                     aMap.moveCamera(CameraUpdateFactory.changeTilt(0));
                     isFirstLoc = false;
+                    Log.d(TAG,"FirstLoc0");
                 }
                 //将地图移动到定位点
                 aMap.moveCamera(CameraUpdateFactory.changeLatLng(nowLatLng));
                 //点击定位按钮 能够将地图的中心移动到定位点
                 mListener.onLocationChanged(amapLocation);
+                Log.d(TAG,"FirstLoc00");
             }else{
                 Log.d(TAG,"ERROR:"+amapLocation.getErrorCode());
             }
@@ -248,6 +246,7 @@ public class RunningActivity extends BaseActivity implements LocationSource, AMa
         Log.d("onEvent_RunningActivity",event.getFormattedPassedTime()+event.getDistance());
         //将持续秒数转化为mm:ss并显示到控件
         if (event.getFormattedPassedTime()!=null && tv_passedTime!=null) {
+            passedSeconds = event.getFormattedPassedTime();
             tv_passedTime.setText(TimeManager.formatseconds(event.getFormattedPassedTime()));
         }
         if (event.getDistance()!=null && tv_mapDistance!=null) {
@@ -303,7 +302,7 @@ public class RunningActivity extends BaseActivity implements LocationSource, AMa
         super.onPause();
         Log.d(TAG, "onPause");
         //在activity执行onPause时执行mapView.onPause ()，暂停地图的绘制
-        mapView.onPause();
+        //mapView.onPause();
     }
 
     @Override
@@ -311,7 +310,7 @@ public class RunningActivity extends BaseActivity implements LocationSource, AMa
         super.onStop();
         Log.d(TAG, "onStop");
         //结束时停止更新位置
-        mLocationClient.stopLocation();
+        //mLocationClient.stopLocation();
     }
 
     @Override

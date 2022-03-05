@@ -23,6 +23,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.amap.api.maps.MapsInitializer;
+import com.example.modulescore.main.DataBase.MyDataBase;
+import com.example.modulescore.main.DataBase.RunningRecord;
 import com.example.modulescore.main.EventBus.MessageEvent;
 import com.example.modulescore.main.UI.View.ProgressButton;
 import com.example.modulescore.main.R;
@@ -48,6 +50,9 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
     TickerView passedTimeView;
     TextView speedText;
     private static final int WRITE_COARSE_LOCATION_REQUEST_CODE = 0;
+    RunningRecord record;
+    int weight = 60;
+    TextView calorieText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +68,7 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
         distanceview = findViewById(R.id.distanceView_Run);
         speedText = findViewById(R.id.speedText_run);
         passedTimeView = findViewById(R.id.passedTime_run);
+        calorieText = findViewById(R.id.consumedCalories);
         passedTimeView.setCharacterLists(TickerUtils.provideNumberList());
         passedTimeView.setAnimationDuration(500);//设置动画持续时间
         distanceview.setCharacterLists(TickerUtils.provideNumberList());
@@ -78,10 +84,15 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
         finishRunButton.setListener(new ProgressButton.ProgressButtonFinishCallback() {
             @Override
             public void onFinish() {
+                String TAG = "FINISH_RUNNING";
+                MyDataBase.getsInstance(getApplicationContext()).runningDao().insertRunningRecord();
+                Log.d(TAG,record.toString());
+                finish();
             }
 
             @Override
             public void onCancel() {
+
             }
         });
         timeRunnable = new TimeRunnable();
@@ -193,6 +204,10 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
         if(event.getSpeed()!=null && speedText!=null) {
             speedText.setText(event.getSpeed());
         }
+        if(event.getRunningRecord()!=null){
+            record = event.getRunningRecord();
+        }
+        calorieText.setText(String.valueOf(weight*Integer.valueOf(event.getDistance())*1.036));
     };
     @Override
     protected void onDestroy() {
