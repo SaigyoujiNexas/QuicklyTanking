@@ -1,4 +1,4 @@
-package com.example.modulescore.main.UI.Activity;
+package com.example.modulescore.main.Activities;
 
 import android.os.Bundle;
 

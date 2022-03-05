@@ -25,14 +25,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true">
         <activity
-            android:name=".UI.Activity.BaseActivity$AfterRunActivity"
+            android:name=".Activities.BaseActivity$AfterRunActivity"
             android:exported="false" />
         <activity
-            android:name=".UI.Activity.TargetDistanceActivity"
+            android:name=".Activities.TargetDistanceActivity"
             android:exported="true"
             android:launchMode="singleTask"></activity>
         <activity
-            android:name=".UI.Activity.PreRunActivity"
+            android:name=".Activities.PreRunActivity"
             android:exported="true"
             android:launchMode="singleTask">
             <intent-filter>
@@ -42,11 +42,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".UI.Activity.RunActivity"
+            android:name=".Activities.RunActivity"
             android:exported="true"
             android:launchMode="singleTask" />
         <activity
-            android:name=".UI.Activity.RunningActivity"
+            android:name=".Activities.RunningActivity"
             android:exported="true"
             android:launchMode="singleInstance" />
 

@@ -1,9 +1,7 @@
-package com.example.modulescore.main.UI.Activity;
-
+package com.example.modulescore.main.Activities;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -11,7 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.amap.api.location.AMapLocation;
@@ -44,7 +42,7 @@ import java.util.Date;
 import java.util.List;
 
 
-public class RunningActivity extends BaseActivity implements LocationSource, AMapLocationListener, View.OnClickListener {
+public class RunningActivity extends AppCompatActivity implements LocationSource, AMapLocationListener, View.OnClickListener {
 
     private static final String TAG = "RunningActivity";
 

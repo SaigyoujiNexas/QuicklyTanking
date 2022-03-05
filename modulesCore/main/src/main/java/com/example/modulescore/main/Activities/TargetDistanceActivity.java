@@ -1,4 +1,4 @@
-package com.example.modulescore.main.UI.Activity;
+package com.example.modulescore.main.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.modulescore.main.R;
@@ -14,7 +15,7 @@ import com.example.modulescore.main.Target.TargetAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-public class TargetDistanceActivity extends BaseActivity implements View.OnClickListener{
+public class TargetDistanceActivity extends AppCompatActivity implements View.OnClickListener{
     ViewPager2 viewPager2;
     TabLayout tabLayout;
     Button btn_back;

@@ -1,4 +1,4 @@
-package com.example.modulescore.main.UI.Activity;
+package com.example.modulescore.main.Activities;
 
 import android.Manifest;
 import android.animation.Animator;
@@ -17,12 +17,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.amap.api.maps.MapsInitializer;
 import com.example.modulescore.main.DataBase.MyDataBase;
 import com.example.modulescore.main.DataBase.RunningRecord;
 import com.example.modulescore.main.EventBus.MessageEvent;
@@ -37,7 +37,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-public class RunActivity extends BaseActivity implements View.OnClickListener {
+public class RunActivity extends AppCompatActivity implements View.OnClickListener {
     FloatingActionButton startRunButton;
     FloatingActionButton stopRunButton;
     ProgressButton finishRunButton;
@@ -115,7 +115,7 @@ public class RunActivity extends BaseActivity implements View.OnClickListener {
             }
             case R.id.toMapCard:
                 Log.d("","toMap");
-                Intent intent = new Intent(this,RunningActivity.class);
+                Intent intent = new Intent(this, RunningActivity.class);
                 startActivity(intent);
                 break;
         }
