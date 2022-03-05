@@ -71,10 +71,7 @@ public class TargetViewHolder0 extends RecyclerView.ViewHolder {
                         .setOnClickListener(new ScrollPickerAdapter.OnClickListener() {
                             @Override
                             public void onSelectedItemClicked(View v) {
-//                                String text = (String) v.getTag();
-//                                if (text != null) {
-//                                    Toast.makeText(SampleActivity.this, text, Toast.LENGTH_SHORT).show();
-//                                }
+                                String text = (String) v.getTag();
                             }
                         });
         ScrollPickerAdapter mScrollPickerAdapter = builder.build();

@@ -8,6 +8,7 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.modulescore.main.R;
@@ -15,11 +16,14 @@ import com.example.modulescore.main.Target.TargetAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import org.greenrobot.eventbus.EventBus;
+
 public class TargetDistanceActivity extends AppCompatActivity implements View.OnClickListener{
     ViewPager2 viewPager2;
     TabLayout tabLayout;
     Button btn_back;
     final String[] tabs = new String[]{"距离","时长","热量","配速"};
+    CardView startDistanceRunView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +37,7 @@ public class TargetDistanceActivity extends AppCompatActivity implements View.On
         tabLayout = findViewById(R.id.tabLayout_TargetDistance);
         TargetAdapter targetAdapter = new TargetAdapter(this);
         viewPager2.setOrientation(viewPager2.ORIENTATION_HORIZONTAL);
+        startDistanceRunView = findViewById(R.id.start_distanceRun_Card);
         viewPager2.setAdapter(targetAdapter);
         viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
@@ -42,12 +47,13 @@ public class TargetDistanceActivity extends AppCompatActivity implements View.On
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
+                String TAG = "onPageSelected_TAG";
                 if(position==0){
-                    Log.d("onPageSelected11111","1");
+                    Log.d(TAG,"0");
                 }else if(position == 1){
-                    Log.d("onPageSelected11111","2");
+                    Log.d(TAG,"1");
                 }else if(position == 2){
-                    Log.d("onPageSelected11111","3");
+                    Log.d(TAG,"2");
                 }
             }
             @Override
@@ -65,6 +71,7 @@ public class TargetDistanceActivity extends AppCompatActivity implements View.On
         }).attach();
 
         btn_back.setOnClickListener(this);
+        startDistanceRunView.setOnClickListener(this);
     }
 
     @Override
@@ -74,6 +81,9 @@ public class TargetDistanceActivity extends AppCompatActivity implements View.On
                 Log.d("btn_back_targetActivity","");
                 this.finish();
                 startActivity(new Intent(this,PreRunActivity.class));
+                break;
+            case R.id.start_distanceRun_Card:
+
                 break;
             default:
                 break;

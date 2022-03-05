@@ -1,5 +1,7 @@
 package com.example.modulescore.main.Target;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.Log;
@@ -15,10 +17,11 @@ import com.example.modulescore.main.R;
 //view provider必须要实现IViewProvider接口，
 //唯一注意的是IViewProvider本身是泛型的，所以我们需要提供item视图对应的数据类型
 //就是ScrollPickerAdapterHolder
-public class DefaultItemViewProvider implements IViewProvider<String> {
+public class ZPItemViewProvider implements IViewProvider<String> {
     TextView target;
-
-    public DefaultItemViewProvider(TextView target) {
+    Context context;
+    public ZPItemViewProvider(Context context,TextView target) {
+        this.context = context;
         this.target = target;
     }
 
@@ -42,7 +45,6 @@ public class DefaultItemViewProvider implements IViewProvider<String> {
 //这样就可以通过getTag获取到对应的item数据了。
         view.setTag(text);
         tv.setTextSize(30);
-
     }
 
     //ScrollPickerView滚动时调用
@@ -53,6 +55,12 @@ public class DefaultItemViewProvider implements IViewProvider<String> {
         tv.setTextSize(isSelected ? 30 : 30);
         tv.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         tv.setTextColor(Color.parseColor(isSelected ? "#F5F5F5" : "#999999"));
+        if(isSelected){
+            SharedPreferences sharedPreferences = context.getSharedPreferences("target",Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("targetString", String.valueOf(tv.getText()));
+            editor.commit();
+        }
         if(tv.getText().equals("")) {
             line.setVisibility(View.INVISIBLE);
         }else {

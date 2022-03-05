@@ -2,6 +2,7 @@ package com.example.modulescore.main.Target;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +39,7 @@ public class ScrollPickerAdapter<T> extends RecyclerView.Adapter<ScrollPickerAda
     public ScrollPickerAdapterHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 //返回一个viewHolder，这里我们直接返回了ScrollPickerAdapterHolder
         if (mViewProvider == null) {
-            mViewProvider = new DefaultItemViewProvider(target);
+            mViewProvider = new ZPItemViewProvider(mContext,target);
         }
         return new ScrollPickerAdapterHolder(LayoutInflater.from(mContext).inflate(mViewProvider.resLayout(), parent, false));
     }
@@ -178,16 +179,18 @@ public class ScrollPickerAdapter<T> extends RecyclerView.Adapter<ScrollPickerAda
         }
 
         private void adaptiveData(List list) {
-//该方法的功能是用于数据填充，比如两条分割线偏移量为n个item视图，
-//那么我们就需要在其前面补充n个item视图，这样才能保证能有机会选中所有的item视图
+        //该方法的功能是用于数据填充，比如两条分割线偏移量为n个item视图，
+        //那么我们就需要在其前面补充n个item视图，这样才能保证能有机会选中所有的item视图
+            String TAG = "adaptiveData_tag";
             int visibleItemNum = mAdapter.mVisibleItemNum;
             int selectedItemOffset = mAdapter.mSelectedItemOffset;
             for (int i = 0; i < mAdapter.mSelectedItemOffset; i++) {
                 list.add(0, null);//在滚动器前面增加数据，item数据值为空
             }
-
+            Log.d(TAG,list.size()-selectedItemOffset+"");
             for (int i = 0; i < visibleItemNum - selectedItemOffset - 2; i++) {
                 list.add(null);//在滚动器后面增加数据，item数据值为空
+                Log.d(TAG,visibleItemNum - selectedItemOffset - 2+","+visibleItemNum+","+selectedItemOffset);
             }
         }
     }
