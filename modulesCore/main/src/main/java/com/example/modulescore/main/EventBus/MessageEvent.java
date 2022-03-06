@@ -8,6 +8,15 @@ public class MessageEvent {
     private String distance;
     private String speed;
     private RunningRecord runningRecord;
+    private String calorie;
+
+    public String getCalorie() {
+        return calorie;
+    }
+
+    public void setCalorie(String calorie) {
+        this.calorie = calorie;
+    }
 
     public RunningRecord getRunningRecord() {
         return runningRecord;

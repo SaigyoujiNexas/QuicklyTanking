@@ -17,14 +17,15 @@ import java.util.List;
 
 public class TargetViewHolder1 extends RecyclerView.ViewHolder {
     private final Context context;
-    TextView TargetText;
+    TextView topTargetText;
     ScrollPickerView scrollPickerView;
+
     View line;
     ConstraintLayout constraintLayout;
     public TargetViewHolder1(@NonNull Context context, View itemView) {
         super(itemView);
         this.context = context;
-        TargetText = itemView.findViewById(R.id.text_targetdistance_TargetDistance_item1);
+        topTargetText = itemView.findViewById(R.id.text_targetdistance_TargetDistance_item1);
         scrollPickerView = itemView.findViewById(R.id.scrollPickerView_target_item1);
         line = itemView.findViewById(R.id.line_target_item1);
         constraintLayout = itemView.findViewById(R.id.item_constraint_item1);
@@ -62,7 +63,7 @@ public class TargetViewHolder1 extends RecyclerView.ViewHolder {
         list.add(itemData12);
         list.add(itemData13);
         ScrollPickerAdapter.ScrollPickerAdapterBuilder<String> builder =
-                new ScrollPickerAdapter.ScrollPickerAdapterBuilder<String>(context,TargetText)
+                new ScrollPickerAdapter.ScrollPickerAdapterBuilder<String>(context,topTargetText)
                         .setDataList(list)
                         .selectedItemOffset(5)
                         .visibleItemNumber(10)
@@ -94,5 +95,8 @@ public class TargetViewHolder1 extends RecyclerView.ViewHolder {
                 line.bringToFront();
             }
         },200);
+    }
+    public ScrollPickerView getScrollPickerView() {
+        return scrollPickerView;
     }
 }

@@ -27,11 +27,11 @@ public class ScrollPickerAdapter<T> extends RecyclerView.Adapter<ScrollPickerAda
     private int mLineColor;
     private int maxItemH = 0;
     private int maxItemW = 0;
-    private TextView target;
-    private ScrollPickerAdapter(Context context, TextView target) {
+    private TextView topTarget;
+    private ScrollPickerAdapter(Context context, TextView topTarget) {
         mContext = context;
         mDataList = new ArrayList<>();
-        this.target = target;
+        this.topTarget = topTarget;
     }
 
     @NonNull
@@ -39,7 +39,7 @@ public class ScrollPickerAdapter<T> extends RecyclerView.Adapter<ScrollPickerAda
     public ScrollPickerAdapterHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 //返回一个viewHolder，这里我们直接返回了ScrollPickerAdapterHolder
         if (mViewProvider == null) {
-            mViewProvider = new ZPItemViewProvider(mContext,target);
+            mViewProvider = new ZPItemViewProvider(mContext,topTarget);
         }
         return new ScrollPickerAdapterHolder(LayoutInflater.from(mContext).inflate(mViewProvider.resLayout(), parent, false));
     }
@@ -132,8 +132,8 @@ public class ScrollPickerAdapter<T> extends RecyclerView.Adapter<ScrollPickerAda
     public static class ScrollPickerAdapterBuilder<T> {
         private ScrollPickerAdapter mAdapter;
 
-        public ScrollPickerAdapterBuilder(Context context,TextView target) {
-            mAdapter = new ScrollPickerAdapter<T>(context,target);
+        public ScrollPickerAdapterBuilder(Context context,TextView toptarget) {
+            mAdapter = new ScrollPickerAdapter<T>(context,toptarget);
         }
 
         public ScrollPickerAdapterBuilder<T> selectedItemOffset(int offset) {
@@ -194,5 +194,6 @@ public class ScrollPickerAdapter<T> extends RecyclerView.Adapter<ScrollPickerAda
             }
         }
     }
+
 
 }

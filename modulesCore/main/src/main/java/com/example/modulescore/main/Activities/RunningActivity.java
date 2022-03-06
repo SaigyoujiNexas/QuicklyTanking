@@ -1,6 +1,8 @@
 package com.example.modulescore.main.Activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -73,12 +75,12 @@ public class RunningActivity extends AppCompatActivity implements LocationSource
     List<LatLng> path = new ArrayList<LatLng>();
     Date startTime;
     Long passedSeconds;
+    int weight = 60;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_running);
         EventBus.getDefault().register(this);
-
         setContentView(R.layout.activity_running);
         //在activity执行onCreate时执行mapView.onCreate(savedInstanceState)，创建地图
         mapView = findViewById(R.id.map);
@@ -102,6 +104,15 @@ public class RunningActivity extends AppCompatActivity implements LocationSource
         initLoc();
         Intent startRunIntent = new Intent(this,RunActivity.class);
         startActivity(startRunIntent);
+        if(getIntent().getType()!= null && getIntent().getType().equals(TargetDistanceActivity.isTarget)){
+            Log.d(TAG+"hasTarget","");
+            checkTarget();
+        }
+    }
+    private void checkTarget(){
+        final String TAG = "checkTargetTAG";
+        SharedPreferences sharedPreferences = getSharedPreferences("target", Context.MODE_PRIVATE);
+        Log.d(TAG,sharedPreferences.getString("targetString","000000"));
     }
 
     private void initMapUI(){
@@ -217,6 +228,7 @@ public class RunningActivity extends AppCompatActivity implements LocationSource
                     } else {
                         messageEvent.setSpeed(String.format("%.2f",nowSpeed));
                     }
+                    messageEvent.setCalorie(String.format("%.2f",weight*distanceThisTime*1.036));
                     EventBus.getDefault().post(messageEvent);
                 }else if(isFirstLoc){//如果是第一次，那么改isFirstLoc为false，则之后都不是第一次了
                     //设置缩放级别

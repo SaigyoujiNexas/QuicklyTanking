@@ -92,4 +92,8 @@ public class TargetViewHolder0 extends RecyclerView.ViewHolder {
             }
         },200);
     }
+
+    public ScrollPickerView getScrollPickerView() {
+        return scrollPickerView;
+    }
 }

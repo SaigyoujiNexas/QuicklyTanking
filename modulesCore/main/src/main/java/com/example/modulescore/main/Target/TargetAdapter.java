@@ -20,6 +20,11 @@ public class TargetAdapter extends RecyclerView.Adapter {
     }
 
     Context context;
+    private ScrollPickerView scrollPickerView0;
+    private ScrollPickerView scrollPickerView1;
+    private ScrollPickerView scrollPickerView2;
+    private ScrollPickerView scrollPickerView3;
+    private int viewPagerPostion = 0;
     public TargetAdapter(Context context) {
         this.context = context;
     }
@@ -29,7 +34,6 @@ public class TargetAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if(viewType == ItemType.ITEM0.ordinal()) {
             return new TargetViewHolder0(context, LayoutInflater.from(parent.getContext()).inflate(R.layout.target_item0, parent, false));
-
         }else if(viewType == ItemType.ITEM1.ordinal()){
             return new TargetViewHolder1(context,LayoutInflater.from(parent.getContext()).inflate(R.layout.target_item1,parent,false));
         }
@@ -47,19 +51,27 @@ public class TargetAdapter extends RecyclerView.Adapter {
         if (holder instanceof TargetViewHolder0) {
             TargetViewHolder0 targetViewHolder0 = (TargetViewHolder0) holder;
             targetViewHolder0.initView();
-            Log.d("onBindViewHolder0", "");
+            scrollPickerView0 = targetViewHolder0.getScrollPickerView();
+            //scrollPickerView0.onScrolled(0,0);
+            Log.i("onBindViewHolder0", "");
         } else if (holder instanceof TargetViewHolder1) {
             TargetViewHolder1 targetViewHolder1 = (TargetViewHolder1) holder;
             targetViewHolder1.initView();
-            Log.d("onBindViewHolder1", "");
+            scrollPickerView1 = targetViewHolder1.getScrollPickerView();
+            //scrollPickerView1.onScrolled(0,0);
+            Log.i("onBindViewHolder1", "");
         } else if (holder instanceof TargetViewHolder2) {
             TargetViewHolder2 targetViewHolder2 = (TargetViewHolder2) holder;
             targetViewHolder2.initView();
-            Log.d("onBindViewHolder2", "");
+            scrollPickerView2 = targetViewHolder2.getScrollPickerView();
+            //scrollPickerView2.onScrolled(0,0);
+            Log.i("onBindViewHolder2", "");
         } else if (holder instanceof TargetViewHolder3) {
             TargetViewHolder3 targetViewHolder3 = (TargetViewHolder3) holder;
             targetViewHolder3.initView();
-            Log.d("onBindViewHolder3", "");
+            scrollPickerView3 = targetViewHolder3.getScrollPickerView();
+            //scrollPickerView3.onScrolled(0,0);
+            Log.i("onBindViewHolder3", "");
         }
     }
 
@@ -70,15 +82,44 @@ public class TargetAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
+        String TAG = "getItemViewType";
         if(position == 0) {
+            Log.d(TAG,"0");
             return ItemType.ITEM0.ordinal();        //获取某个枚举对象的位置索引值
         }else if(position == 1){
+            Log.d(TAG,"1");
             return ItemType.ITEM1.ordinal();
         }else if(position == 2){
+            Log.d(TAG,"2");
             return ItemType.ITEM2.ordinal();
         }else if(position == 3){
+            Log.d(TAG,"3");
             return ItemType.ITEM3.ordinal();
         }
         return 0;
+    }
+    public int getViewPagerPostion() {
+        return viewPagerPostion;
+    }
+
+    public void setViewPagerPostion(int viewPagerPostion) {
+        this.viewPagerPostion = viewPagerPostion;
+    }
+
+
+    public ScrollPickerView getScrollPickerView0() {
+        return scrollPickerView0;
+    }
+
+    public ScrollPickerView getScrollPickerView1() {
+        return scrollPickerView1;
+    }
+
+    public ScrollPickerView getScrollPickerView2() {
+        return scrollPickerView2;
+    }
+
+    public ScrollPickerView getScrollPickerView3() {
+        return scrollPickerView3;
     }
 }

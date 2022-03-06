@@ -51,7 +51,6 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
     TextView speedText;
     private static final int WRITE_COARSE_LOCATION_REQUEST_CODE = 0;
     RunningRecord record;
-    int weight = 60;
     TextView calorieText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -207,7 +206,9 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
         if(event.getRunningRecord()!=null){
             record = event.getRunningRecord();
         }
-        calorieText.setText(String.valueOf(weight*Integer.valueOf(event.getDistance())*1.036));
+        if(event.getCalorie()!=null) {
+            calorieText.setText(event.getCalorie());
+        }
     };
     @Override
     protected void onDestroy() {

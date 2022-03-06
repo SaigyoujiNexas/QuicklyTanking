@@ -3,6 +3,7 @@ package com.example.modulescore.main.Target;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.view.View;
@@ -18,11 +19,11 @@ import com.example.modulescore.main.R;
 //唯一注意的是IViewProvider本身是泛型的，所以我们需要提供item视图对应的数据类型
 //就是ScrollPickerAdapterHolder
 public class ZPItemViewProvider implements IViewProvider<String> {
-    TextView target;
+    TextView topTarget;
     Context context;
-    public ZPItemViewProvider(Context context,TextView target) {
+    public ZPItemViewProvider(Context context,TextView topTarget) {
         this.context = context;
-        this.target = target;
+        this.topTarget = topTarget;
     }
 
     @Override
@@ -50,23 +51,27 @@ public class ZPItemViewProvider implements IViewProvider<String> {
     //ScrollPickerView滚动时调用
     @Override
     public void updateView(@NonNull View itemView, boolean isSelected) {
+        String TAG = "updateView_ZPViewProvider";
+        Log.d(TAG,"");
         TextView tv = itemView.findViewById(R.id.tv_content);
         View line = itemView.findViewById(R.id.tv_line);
         tv.setTextSize(isSelected ? 30 : 30);
         tv.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         tv.setTextColor(Color.parseColor(isSelected ? "#F5F5F5" : "#999999"));
-        if(isSelected){
+        if(isSelected && itemView.getVisibility()  == View.VISIBLE){
+            String TAG1 = "ZPupdateView";
             SharedPreferences sharedPreferences = context.getSharedPreferences("target",Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("targetString", String.valueOf(tv.getText()));
+            Log.i(TAG1,String.valueOf(tv.getText()));
             editor.commit();
+            topTarget.setText(tv.getText());
         }
         if(tv.getText().equals("")) {
             line.setVisibility(View.INVISIBLE);
         }else {
-            Log.d("updateView",tv.getText()+",,");
             line.setVisibility(View.VISIBLE);
-            if(isSelected)  target.setText(tv.getText());
         }
     }
+
 }

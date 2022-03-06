@@ -3,8 +3,10 @@ package com.example.modulescore.main.Target;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -246,6 +248,7 @@ public class ScrollPickerView extends RecyclerView {
 //        //从第0个到第一个能看见的高+第一个能看见的到父容器的高
 //        return (position) * itemHeight - firstVisibleChildView.getTop();
 //    }
+
     private Runnable mSmoothScrollTask;
     private Paint mBgPaint;
     private int mItemHeight;
@@ -297,6 +300,8 @@ public class ScrollPickerView extends RecyclerView {
     @Override
     public void onScrolled(int dx, int dy) {
         super.onScrolled(dx, dy);
+        String TAG = "ScrollViewScrolledTAG";
+        Log.d(TAG,"");
         freshItemView();
     }
 
@@ -452,7 +457,7 @@ public class ScrollPickerView extends RecyclerView {
         return getResources().getColor(R.color.white);
     }
 
-    //将选中的视图及其被选中的状态传递了出去，实际上是通过adapter（IPickerViewOperation）来进行传递的
+    //将选中的视图及其被选中的状态传递出去给Adapter的updateView执行，实际上是通过adapter（IPickerViewOperation）来进行传递的
     private void updateView(View itemView, boolean isSelected) {
         IPickerViewOperation operation = (IPickerViewOperation) getAdapter();
         if (operation != null) {
@@ -490,4 +495,5 @@ public class ScrollPickerView extends RecyclerView {
         measureSize();
         return getChildAt(0).getMeasuredHeight();
     }
+
 }
