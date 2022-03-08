@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <include
+        layout="@layout/predistance"
+        app:layout_constraintTop_toBottomOf="@id/text_preRunTitle"
+        android:layout_marginTop="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        />
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_startRun_preRun"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:cardCornerRadius="100dp"
+        android:backgroundTint="@color/teal_200"
+        android:clickable="true"
+        android:src="@drawable/img_2"
+        app:fabCustomSize="100dp"
+        app:elevation="6dp"
+        app:borderWidth="0dp"
+        app:pressedTranslationZ="120dp"
+        android:layout_marginBottom="130dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:fabSize="normal" >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="20sp"
+            android:text="开始"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:gravity="center"/>
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_targetDistance_preRun"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:cardCornerRadius="100dp"
+        android:backgroundTint="@color/white"
+        android:clickable="true"
+        android:src="@drawable/img_2"
+        app:fabCustomSize="100dp"
+        app:elevation="6dp"
+        app:borderWidth="0dp"
+        app:pressedTranslationZ="120dp"
+        android:layout_marginBottom="155dp"
+        android:layout_marginRight="250dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:fabSize="normal" >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="14sp"
+            android:text="目标"
+            android:textColor="@color/black"
+            android:layout_gravity="center"
+            android:gravity="center"/>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

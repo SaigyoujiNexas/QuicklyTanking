@@ -5,18 +5,29 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.example.modulescore.main.Pre.BottomAdapter;
+import com.example.modulescore.main.Pre.PreRunFragment;
 import com.example.modulescore.main.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
+
 public class PreRunActivity extends AppCompatActivity implements View.OnClickListener{
     ImageView img_setting;
     ImageView img_close;
-    CardView card_startRun_preRun;
-    CardView card_targetDistance_preRun;
+
+    BottomNavigationView bottomNavigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,10 +36,22 @@ public class PreRunActivity extends AppCompatActivity implements View.OnClickLis
         img_close = findViewById(R.id.image_close_prerun);
         img_close.setOnClickListener(this);
         img_setting.setOnClickListener(this);
-        card_startRun_preRun = findViewById(R.id.card_startRun_preRun);
-        card_targetDistance_preRun = findViewById(R.id.card_targetDistance_preRun);
-        card_targetDistance_preRun.setOnClickListener(this);
-        card_startRun_preRun.setOnClickListener(this);
+        bottomNavigationView = findViewById(R.id.preRunBottomNavigation);
+        BottomAdapter bottomAdapter = new BottomAdapter(this);
+        PreRunFragment preRunFragment = new PreRunFragment();
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.runPage:
+                        replaceFragment(preRunFragment);
+                        break;
+                    case R.id.dataPage:
+                        break;
+                }
+                return true;
+            }
+        });
     }
 
     @Override
@@ -43,19 +66,17 @@ public class PreRunActivity extends AppCompatActivity implements View.OnClickLis
                 sendBroadcast(intent);
                 break;
             case R.id.image_setting_prerun:
+                break;
 
-                break;
-            case R.id.card_startRun_preRun:
-                Intent startRunningIntent = new Intent(this, RunningActivity.class);
-                startActivity(startRunningIntent);
-                break;
-            case R.id.card_targetDistance_preRun:
-                Intent targetDistanceIntent = new Intent(this, TargetDistanceActivity.class);
-                startActivity(targetDistanceIntent);
-                break;
             default:
                 break;
         }
+    }
+    private void replaceFragment(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.preRunFragment_layout,fragment);
+        fragmentTransaction.commit();
     }
     public class CloseActivityReceiver extends BroadcastReceiver {
         @Override
