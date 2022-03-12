@@ -13,8 +13,8 @@
         android:layout_height="60dp"
         app:menu="@menu/bottommenu"
         app:layout_constraintBottom_toBottomOf="parent"/>
-    <fragment
-        android:id="@+id/preRunFragment_layout"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewpager2_preRun"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:name="com.example.modulescore.main.Pre.PreRunFragment"

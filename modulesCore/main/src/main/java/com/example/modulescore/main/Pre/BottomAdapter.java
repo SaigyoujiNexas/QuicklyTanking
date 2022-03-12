@@ -23,7 +23,7 @@ public class BottomAdapter extends FragmentStateAdapter {
         super(fragmentManager, lifecycle);
     }
 
-    private List<Fragment> fragmentList = new ArrayList<>();
+    private List<Fragment> fragmentList;
     @NonNull
     @Override
     public Fragment createFragment(int position) {

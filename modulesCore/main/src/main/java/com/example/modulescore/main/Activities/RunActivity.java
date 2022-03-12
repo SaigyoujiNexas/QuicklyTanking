@@ -86,7 +86,7 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
         finishRunButton.setListener(new ProgressButton.ProgressButtonFinishCallback() {
             @Override
             public void onFinish() {
-                String TAG = "FINISH_RUNNING";
+                final String TAG = "FINISH_RUNNING";
                 Log.d(TAG,"start finish");
                 record.setCalorie((String) calorieText.getText());
                 record.setDistance( distanceview.getText());
