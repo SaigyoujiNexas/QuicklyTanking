@@ -28,6 +28,7 @@ import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.PolylineOptions;
+import com.example.modulescore.main.DataBase.RunningRecord;
 import com.example.modulescore.main.EventBus.MessageEvent;
 import com.example.modulescore.main.R;
 import com.example.modulescore.main.Util.TimeManager;
@@ -39,6 +40,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -76,6 +78,8 @@ public class RunningActivity extends AppCompatActivity implements LocationSource
     Date startTime;
     Long passedSeconds;
     int weight = 60;
+    RunningRecord record = new RunningRecord();
+    private DecimalFormat decimalFormat = new DecimalFormat("0.00");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,6 +113,7 @@ public class RunningActivity extends AppCompatActivity implements LocationSource
             checkTarget();
         }
     }
+
     private void checkTarget(){
         final String TAG = "checkTargetTAG";
         SharedPreferences sharedPreferences = getSharedPreferences("target", Context.MODE_PRIVATE);
@@ -188,18 +193,9 @@ public class RunningActivity extends AppCompatActivity implements LocationSource
         if (amapLocation != null) {
             if (amapLocation.getErrorCode() == 0) {
                 float nowSpeed = amapLocation.getSpeed();
-                if (isFirstLoc) {
-                } else if (!isFirstLoc) {//如果不是第一次定位，则把上次定位信息传给lastLatLng，并且计算距离
+                if (!isFirstLoc) {//如果不是第一次定位，则把上次定位信息传给lastLatLng，并且计算距离
                     Log.d(TAG,"Speed"+avgSpeed);
-                    //if ((int) AMapUtils.calculateLineDistance(nowLatLng, lastLatLng) < 100) {
                         lastLatLng = nowLatLng;
-//                    } else {
-//                        //定位出现问题，如突然瞬移，则取消此次定位修改
-//                        Toast.makeText(getApplicationContext()
-//                                , "此次计算距离过远，取消此次修改"
-//                                , Toast.LENGTH_SHORT).show();
-//                        return;
-//                    }
                 }
                 double latitude = amapLocation.getLatitude();//获取纬度
                 double longitude = amapLocation.getLongitude();//获取经度
@@ -220,15 +216,16 @@ public class RunningActivity extends AppCompatActivity implements LocationSource
                     float tempDistance = AMapUtils.calculateLineDistance(nowLatLng, lastLatLng);
                     //计算总距离
                     distanceThisTime += tempDistance;
-                    messageEvent.setDistance(String.format("%.2f", distanceThisTime / 1000.0));
+                    messageEvent.setDistance(decimalFormat.format(distanceThisTime / 1000.0));
                     //发送速度
                     nowSpeed = distanceThisTime/passedSeconds;
                     if (nowSpeed == 0) {
                         messageEvent.setSpeed("--");
                     } else {
-                        messageEvent.setSpeed(String.format("%.2f",nowSpeed));
+                        messageEvent.setSpeed(decimalFormat.format(nowSpeed));
                     }
-                    messageEvent.setCalorie(String.format("%.2f",weight*distanceThisTime*1.036));
+                    messageEvent.setCalorie(decimalFormat.format(weight*distanceThisTime/1000*1.036));
+                    messageEvent.setmPathPointsLine(path);
                     EventBus.getDefault().post(messageEvent);
                 }else if(isFirstLoc){//如果是第一次，那么改isFirstLoc为false，则之后都不是第一次了
                     //设置缩放级别

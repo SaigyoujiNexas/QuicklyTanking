@@ -20,40 +20,41 @@ public class RunningRecord {
     // 当这个主键是一个字符串时，还要加上@NonNull注解，不然会出现编译错误。
     @PrimaryKey
     private Long id;
-    @Ignore
-    //运动开始点
-    private LatLng mStartPoint;
-    @Ignore
-    //运动结束点
-    private LatLng mEndPoint;
 
     //运动轨迹
     //表示这是数据库表中的一个列。其中的name表示此对象在表中对应的类名，
     // 如果不添加此注解，Room默认会以此变量名作为其在表中的列名。
     @TypeConverters(LatLngTypeConverter.class)
-    private List<LatLng> mPathPointsLine;
+    private List<LatLng> PathPointsLine;
     //运动距离
-    private String mDistance;
+    private String Distance;
     //运动时长
-    private Long mRunningtime;
+    private Long Runningtime;
     //运动开始时间
-    @Ignore
-    private Long mStartTime;
-    //运动结束时间
-    @Ignore
-    private Long mEndTime;
+    private Long StartTime;
     //消耗卡路里
-    @Ignore
-    private Double mCalorie;
+    private String Calorie;
     //平均时速(公里/小时)
-    @Ignore
-    private String mSpeed;
+    private String Speed;
     //平均配速(分钟/公里)
-    @Ignore
-    private Double mDistribution;
+    private Double Distribution;
     //日期标记
-    @Ignore
-    private String mDateTag;
+    private String DateTag;
+
+    @Override
+    public String toString() {
+        return "RunningRecord{" +
+                "id=" + id +
+                ", PathPointsLine=" + PathPointsLine +
+                ", Distance='" + Distance + '\'' +
+                ", Runningtime=" + Runningtime +
+                ", StartTime=" + StartTime +
+                ", Calorie='" + Calorie + '\'' +
+                ", Speed='" + Speed + '\'' +
+                ", Distribution=" + Distribution +
+                ", DateTag='" + DateTag + '\'' +
+                '}';
+    }
 
     public Long getId() {
         return id;
@@ -63,106 +64,67 @@ public class RunningRecord {
         this.id = id;
     }
 
-    public LatLng getMStartPoint() {
-        return mStartPoint;
+    public List<LatLng> getPathPointsLine() {
+        return PathPointsLine;
     }
 
-    public void setMStartPoint(LatLng mStartPoint) {
-        this.mStartPoint = mStartPoint;
+    public void setPathPointsLine(List<LatLng> pathPointsLine) {
+        PathPointsLine = pathPointsLine;
     }
 
-    public LatLng getMEndPoint() {
-        return mEndPoint;
+    public String getDistance() {
+        return Distance;
     }
 
-    public void setMEndPoint(LatLng mEndPoint) {
-        this.mEndPoint = mEndPoint;
+    public void setDistance(String distance) {
+        Distance = distance;
     }
 
-    public List<LatLng> getMPathPointsLine() {
-        return mPathPointsLine;
+    public Long getRunningtime() {
+        return Runningtime;
     }
 
-    public void setMPathPointsLine(List<LatLng> mPathPointsLine) {
-        this.mPathPointsLine = mPathPointsLine;
+    public void setRunningtime(Long runningtime) {
+        Runningtime = runningtime;
     }
 
-    public String getMDistance() {
-        return mDistance;
+    public Long getStartTime() {
+        return StartTime;
     }
 
-    public void setMDistance(String mDistance) {
-        this.mDistance = mDistance;
+    public void setStartTime(Long startTime) {
+        StartTime = startTime;
     }
 
-    public Long getMRunningtime() {
-        return mRunningtime;
+    public String getCalorie() {
+        return Calorie;
     }
 
-    public void setMRunningtime(Long mRunningtime) {
-        this.mRunningtime = mRunningtime;
+    public void setCalorie(String calorie) {
+        Calorie = calorie;
     }
 
-    public Long getmStartTime() {
-        return mStartTime;
+    public String getSpeed() {
+        return Speed;
     }
 
-    public void setmStartTime(Long mStartTime) {
-        this.mStartTime = mStartTime;
+    public void setSpeed(String speed) {
+        Speed = speed;
     }
 
-    public Long getmEndTime() {
-        return mEndTime;
+    public Double getDistribution() {
+        return Distribution;
     }
 
-    public void setmEndTime(Long mEndTime) {
-        this.mEndTime = mEndTime;
+    public void setDistribution(Double distribution) {
+        Distribution = distribution;
     }
 
-    public Double getmCalorie() {
-        return mCalorie;
+    public String getDateTag() {
+        return DateTag;
     }
 
-    public void setmCalorie(Double mCalorie) {
-        this.mCalorie = mCalorie;
-    }
-
-    public String getmSpeed() {
-        return mSpeed;
-    }
-
-    public void setMSpeed(String mSpeed) {
-        this.mSpeed = mSpeed;
-    }
-
-    public Double getmDistribution() {
-        return mDistribution;
-    }
-
-    public void setmDistribution(Double mDistribution) {
-        this.mDistribution = mDistribution;
-    }
-
-    public String getmDateTag() {
-        return mDateTag;
-    }
-
-    public void setmDateTag(String mDateTag) {
-        this.mDateTag = mDateTag;
-    }
-
-
-    public RunningRecord() {
-    }
-
-    @Override
-    public String toString() {
-        return "RunningRecord{" +
-                "id=" + id +
-                ", mPathPointsLine=" + mPathPointsLine +
-                ", mDistance='" + mDistance + '\'' +
-                ", mCalorie=" + mCalorie +
-                ", mSpeed='" + mSpeed + '\'' +
-                '}';
+    public void setDateTag(String dateTag) {
+        DateTag = dateTag;
     }
 }

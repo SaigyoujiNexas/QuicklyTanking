@@ -23,6 +23,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.amap.api.maps.model.LatLng;
 import com.example.modulescore.main.DataBase.MyDataBase;
 import com.example.modulescore.main.DataBase.RunningRecord;
 import com.example.modulescore.main.EventBus.MessageEvent;
@@ -37,6 +38,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.List;
+
 public class RunActivity extends AppCompatActivity implements View.OnClickListener {
     FloatingActionButton startRunButton;
     FloatingActionButton stopRunButton;
@@ -49,9 +52,9 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
     TickerView distanceview;
     TickerView passedTimeView;
     TextView speedText;
-    private static final int WRITE_COARSE_LOCATION_REQUEST_CODE = 0;
-    RunningRecord record;
+    RunningRecord record = new RunningRecord();
     TextView calorieText;
+    List<LatLng> mPathPointsLine;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,8 +87,25 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
             @Override
             public void onFinish() {
                 String TAG = "FINISH_RUNNING";
-                MyDataBase.getsInstance(getApplicationContext()).runningDao().insertRunningRecord();
-                Log.d(TAG,record.toString());
+                Log.d(TAG,"start finish");
+                record.setCalorie((String) calorieText.getText());
+                record.setDistance( distanceview.getText());
+                Log.d(TAG,passedSeconds.toString());
+                record.setRunningtime(passedSeconds);
+                Log.d(TAG,"0");
+                record.setSpeed((String) speedText.getText());
+                Log.d(TAG,"1");
+                record.setPathPointsLine(mPathPointsLine);
+                Log.d(TAG,"2");
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        MyDataBase.getsInstance(getApplicationContext()).runningDao().insertRunningRecord(record);
+                        Log.d(TAG,record.toString());
+                        Log.d(TAG,MyDataBase.getsInstance(getApplicationContext()).runningDao().loadAllRunningRecordss().toString());
+                    }
+                }).start();
+                Log.d(TAG,"finish finish");
                 finish();
             }
 
@@ -96,7 +116,6 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
         });
         timeRunnable = new TimeRunnable();
         mHandler.post(timeRunnable);
-        requestPermissions();
     }
 
     @Override
@@ -209,6 +228,9 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
         if(event.getCalorie()!=null) {
             calorieText.setText(event.getCalorie());
         }
+        if(event.getmPathPointsLine()!=null){
+            mPathPointsLine = event.getmPathPointsLine();
+        }
     };
     @Override
     protected void onDestroy() {
@@ -241,19 +263,4 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
         }
     }
     private TimeRunnable timeRunnable = null;
-    private void requestPermissions(){
-        //ACCESS_FINE_LOCATION通过WiFi或移动基站的方式获取用户错略的经纬度信息，定位精度大概误差在30~1500米
-        //ACCESS_FINE_LOCATION，通过GPS芯片接收卫星的定位信息，定位精度达10米以内
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            //申请WRITE_EXTERNAL_STORAGE权限
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    WRITE_COARSE_LOCATION_REQUEST_CODE);
-        } else if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            //申请WRITE_EXTERNAL_STORAGE权限
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                    WRITE_COARSE_LOCATION_REQUEST_CODE);
-        }
-    }
 }

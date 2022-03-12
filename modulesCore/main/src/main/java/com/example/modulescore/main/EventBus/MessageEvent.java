@@ -1,7 +1,10 @@
 package com.example.modulescore.main.EventBus;
 
 
+import com.amap.api.maps.model.LatLng;
 import com.example.modulescore.main.DataBase.RunningRecord;
+
+import java.util.List;
 
 public class MessageEvent {
     private Long formattedPassedTime;
@@ -9,6 +12,15 @@ public class MessageEvent {
     private String speed;
     private RunningRecord runningRecord;
     private String calorie;
+    private  List<LatLng> mPathPointsLine;
+
+    public List<LatLng> getmPathPointsLine() {
+        return mPathPointsLine;
+    }
+
+    public void setmPathPointsLine(List<LatLng> mPathPointsLine) {
+        this.mPathPointsLine = mPathPointsLine;
+    }
 
     public String getCalorie() {
         return calorie;
