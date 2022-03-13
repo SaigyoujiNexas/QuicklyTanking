@@ -77,7 +77,6 @@ constructor(
             override fun onFailure(throwable: Throwable?) {
                     ToastUtil.showToast(throwable?.localizedMessage?:"未知错误")
             }
-
         })
     }
 }

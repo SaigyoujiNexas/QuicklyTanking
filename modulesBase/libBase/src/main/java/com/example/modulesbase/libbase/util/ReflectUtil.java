@@ -4,6 +4,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 public class ReflectUtil {
+
     public static Class<?> analysisClassInfo(Object obj){
         Type genType = obj.getClass().getGenericSuperclass();
         ParameterizedType pType = (ParameterizedType) genType;

@@ -54,6 +54,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 private const val TAG = "MainActivity"
+
 @Route(path = RoutePath.LOG_IN)
 @AndroidEntryPoint
 @ExperimentalAnimationApi

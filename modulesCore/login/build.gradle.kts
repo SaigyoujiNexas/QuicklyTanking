@@ -1,10 +1,17 @@
 plugins {
-    id("com.android.application")
+
+    if(isDebug)
+        id("com.android.application")
+    else
+        id("com.android.library")
+
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
 }
-
+var applicationId : String? = null
+var versionCode: Int? = null
+var versionName: String? = null
 android {
     compileSdk = androidC["compileSdk"] as Int
 
@@ -48,8 +55,8 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-    sourceSets["main"].manifest.srcFile{
-        if(isDebug)
+    sourceSets["main"].manifest.srcFile {
+        if (isDebug)
             "src/main/debug/AndroidManifest.xml"
         else
             "src/main/AndroidManifest.xml"
