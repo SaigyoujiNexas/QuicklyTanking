@@ -12,7 +12,7 @@ val androidC = mapOf(
 
 const val nav_version = "2.4.1"
 const val truth_version = "1.0"
-
+const val  room_version = "2.4.2"
 val libraryC = mapOf(
     "appcompat" to  "androidx.appcompat:appcompat:1.4.0",
     "material" to  "com.google.android.material:material:1.4.0",
@@ -60,11 +60,15 @@ const  val libTicker = "com.robinhood.ticker:ticker:2.0.1"
 const val libCoil = "io.coil-kt:coil:1.4.0"
 const val libCoilCompose = "io.coil-kt:coil-compose:2.0.0-rc01"
 
+const val libEventbus = "org.greenrobot:eventbus:3.1.1"
+const val libRoom =  "androidx.room:room-runtime:$room_version"
+const val libRoomCompiler = "androidx.room:room-compiler:$room_version"
 val apts = listOf(
     libARouterCompiler,
     libHiltCompiler,
     libHiltAndroidCompiler,
-    libGlideCompiler
+    libGlideCompiler,
+    libRoomCompiler
 )
 val libs = listOf(
     libUCropper,
@@ -85,7 +89,10 @@ val libs = listOf(
     libAMap3DMap,
     libAMapLocation,
     libTicker,
-    libCoil
+    libCoil,
+    libTicker,
+    libEventbus,
+    libRoom
 )
 val tests = listOf(
     "androidx.navigation:navigation-testing:$nav_version"

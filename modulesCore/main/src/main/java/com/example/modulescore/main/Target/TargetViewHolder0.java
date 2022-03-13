@@ -1,4 +1,4 @@
-package com.example.modulescore.main;
+package com.example.modulescore.main.Target;
 
 import android.content.Context;
 import android.util.Log;
@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.modulescore.main.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,10 +71,7 @@ public class TargetViewHolder0 extends RecyclerView.ViewHolder {
                         .setOnClickListener(new ScrollPickerAdapter.OnClickListener() {
                             @Override
                             public void onSelectedItemClicked(View v) {
-//                                String text = (String) v.getTag();
-//                                if (text != null) {
-//                                    Toast.makeText(SampleActivity.this, text, Toast.LENGTH_SHORT).show();
-//                                }
+                                String text = (String) v.getTag();
                             }
                         });
         ScrollPickerAdapter mScrollPickerAdapter = builder.build();
@@ -92,5 +91,9 @@ public class TargetViewHolder0 extends RecyclerView.ViewHolder {
                 line.bringToFront();
             }
         },200);
+    }
+
+    public ScrollPickerView getScrollPickerView() {
+        return scrollPickerView;
     }
 }

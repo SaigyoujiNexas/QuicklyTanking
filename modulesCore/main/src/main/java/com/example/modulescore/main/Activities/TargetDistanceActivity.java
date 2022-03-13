@@ -1,4 +1,4 @@
-package com.example.modulescore.main;
+package com.example.modulescore.main.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,16 +7,26 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.modulescore.main.R;
+import com.example.modulescore.main.Target.TargetAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-public class TargetDistanceActivity extends BaseActivity implements View.OnClickListener{
+import org.greenrobot.eventbus.EventBus;
+
+public class TargetDistanceActivity extends AppCompatActivity implements View.OnClickListener{
     ViewPager2 viewPager2;
     TabLayout tabLayout;
     Button btn_back;
     final String[] tabs = new String[]{"距离","时长","热量","配速"};
+    CardView startDistanceRunView;
+    static final String isTarget = "1";
+    static final String notTarget = "0";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,26 +40,60 @@ public class TargetDistanceActivity extends BaseActivity implements View.OnClick
         tabLayout = findViewById(R.id.tabLayout_TargetDistance);
         TargetAdapter targetAdapter = new TargetAdapter(this);
         viewPager2.setOrientation(viewPager2.ORIENTATION_HORIZONTAL);
+        startDistanceRunView = findViewById(R.id.start_distanceRun_Card);
         viewPager2.setAdapter(targetAdapter);
         viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+                String TAG = "onPageScrolled_TAG";
+                Log.d(TAG,position+"");
             }
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
+                String TAG = "onPageSelected_TAG";
+                TargetAdapter targetAdapter1 = (TargetAdapter) viewPager2.getAdapter();
+                targetAdapter1.setViewPagerPostion(position);
                 if(position==0){
-                    Log.d("onPageSelected11111","1");
+                    Log.d(TAG,"0");
+                    viewPager2.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            targetAdapter1.getScrollPickerView0().onScrolled(0,0);
+                        }
+                    },300);
                 }else if(position == 1){
-                    Log.d("onPageSelected11111","2");
+                    Log.d(TAG,"1");
+                    viewPager2.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            targetAdapter1.getScrollPickerView1().onScrolled(0,0);
+                        }
+                    },300);
                 }else if(position == 2){
-                    Log.d("onPageSelected11111","3");
+                    Log.d(TAG,"2");
+                    viewPager2.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            targetAdapter1.getScrollPickerView2().onScrolled(0,0);
+                        }
+                    },300);
+                }else if(position == 3){
+                    Log.d(TAG,"3");
+                    viewPager2.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            targetAdapter1.getScrollPickerView3().onScrolled(0,0);
+                        }
+                    },300);
                 }
             }
             @Override
             public void onPageScrollStateChanged(int state) {
                 super.onPageScrollStateChanged(state);
+                String TAG = "onPageScrollStateChanged_TAG";
+                Log.d(TAG,state+"");
             }
         });
         viewPager2.setOffscreenPageLimit(3);
@@ -62,6 +106,7 @@ public class TargetDistanceActivity extends BaseActivity implements View.OnClick
         }).attach();
 
         btn_back.setOnClickListener(this);
+        startDistanceRunView.setOnClickListener(this);
     }
 
     @Override
@@ -71,6 +116,13 @@ public class TargetDistanceActivity extends BaseActivity implements View.OnClick
                 Log.d("btn_back_targetActivity","");
                 this.finish();
                 startActivity(new Intent(this,PreRunActivity.class));
+                break;
+            case R.id.start_distanceRun_Card:
+                Intent startRunIntent = new Intent(this,RunningActivity.class);
+                startRunIntent.setType(isTarget);
+                startRunIntent.setFlags(viewPager2.getCurrentItem());
+                this.finish();
+                startActivity(startRunIntent);
                 break;
             default:
                 break;

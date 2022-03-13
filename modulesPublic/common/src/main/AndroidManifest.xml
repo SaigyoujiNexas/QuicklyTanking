@@ -29,10 +29,7 @@
         android:theme="@style/Theme.QuicklyTanking">
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="448821f4c94e88606d42d7d401e40915" />
-        SHA1:07:E3:E4:1D:53:DF:2D:7A:26:E7:5A:79:34:0C:8B:7C:BA:36:9F:BA
-        common key：448821f4c94e88606d42d7d401e40915
-        debug key：880387c6ae5d46f295ff641256b984d3
+            android:value="50d286f11504bd091ccc96099bcba9cb" />
         <service android:name="com.amap.api.location.APSService" />
     </application>
 </manifest>

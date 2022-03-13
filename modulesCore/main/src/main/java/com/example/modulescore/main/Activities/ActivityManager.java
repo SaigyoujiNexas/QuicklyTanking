@@ -1,4 +1,4 @@
-package com.example.modulescore.main;
+package com.example.modulescore.main.Activities;
 
 import android.app.Activity;
 import android.util.Log;

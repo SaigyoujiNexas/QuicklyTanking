@@ -1,4 +1,4 @@
-package com.example.modulescore.main;
+package com.example.modulescore.main.Target;
 
 import android.content.Context;
 import android.util.Log;
@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.modulescore.main.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,5 +86,8 @@ public class TargetViewHolder2 extends RecyclerView.ViewHolder {
                 line.bringToFront();
             }
         },200);
+    }
+    public ScrollPickerView getScrollPickerView() {
+        return scrollPickerView;
     }
 }
