@@ -1,4 +1,4 @@
-package com.example.modulescore.main;
+package com.example.modulescore.main.Target;
 
 import android.content.Context;
 import android.util.Log;
@@ -10,41 +10,66 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.modulescore.main.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class TargetViewHolder1 extends RecyclerView.ViewHolder {
+public class TargetViewHolder3 extends RecyclerView.ViewHolder {
     private final Context context;
     TextView TargetText;
     ScrollPickerView scrollPickerView;
     View line;
     ConstraintLayout constraintLayout;
-    public TargetViewHolder1(@NonNull Context context, View itemView) {
+    public TargetViewHolder3(@NonNull Context context, View itemView) {
         super(itemView);
         this.context = context;
-        TargetText = itemView.findViewById(R.id.text_targetdistance_TargetDistance_item1);
-        scrollPickerView = itemView.findViewById(R.id.scrollPickerView_target_item1);
-        line = itemView.findViewById(R.id.line_target_item1);
-        constraintLayout = itemView.findViewById(R.id.item_constraint_item1);
+        TargetText = itemView.findViewById(R.id.text_targetdistance_TargetDistance_item3);
+        scrollPickerView = itemView.findViewById(R.id.scrollPickerView_target_item3);
+        line = itemView.findViewById(R.id.line_target_item3);
+        constraintLayout = itemView.findViewById(R.id.item_constraint_item3);
     }
 
     public void initView() {
 
         List<String> list = new ArrayList<>();
-        String itemData0 = "00:10:00";
-        String itemData1 = "00:20:00";
-        String itemData2 = "00:30:00";
-        String itemData3 = "00:40:00";
-        String itemData4 = "00:50:00";
-        String itemData5 = "01:00:00";
-        String itemData6 = "01:10:00";
-        String itemData7 = "01:20:00";
-        String itemData8 = "01:30:00";
-        String itemData9 = "01:40:00";
-        String itemData10 = "01:50:00";
-        String itemData11 = "02:00:00";
-        String itemData12 = "02:10:00";
-        String itemData13 = "02:20:00";
+        String itemData0 = "02'00\"";
+        String itemData1 = "02'10\"";
+        String itemData2 = "02'20\"";
+        String itemData3 = "02'30\"";
+        String itemData4 = "02'40\"";
+        String itemData5 = "02'50\"";
+        String itemData6 = "03'00\"";
+        String itemData7 = "03'10\"";
+        String itemData8 = "03'20\"";
+        String itemData9 = "03'30\"";
+        String itemData10 = "03'40\"";
+        String itemData11 = "03'50\"";
+        String itemData12 = "04'00\"";
+        String itemData13 = "04'10\"";
+        String itemData14 = "04'20\"";
+        String itemData15 = "04'30\"";
+        String itemData16 = "04'40\"";
+        String itemData17 = "04'50\"";
+        String itemData18 = "05'00\"";
+        String itemData19 = "05'10\"";
+        String itemData20 = "05'20\"";
+        String itemData21 = "05'30\"";
+        String itemData22 = "05'40\"";
+        String itemData23 = "05'50\"";
+        String itemData24 = "06'10\"";
+        String itemData25 = "06'20\"";
+        String itemData26 = "06'30\"";
+        String itemData27 = "06'40\"";
+        String itemData28 = "06'50\"";
+        String itemData29 = "07'00\"";
+        String itemData30 = "07'10\"";
+        String itemData31 = "07'20\"";
+        String itemData32 = "07'30\"";
+        String itemData33 = "07'40\"";
+        String itemData34 = "07'50\"";
+        String itemData35 = "08'00\"";
+
         list.add(itemData0);
         list.add(itemData1);
         list.add(itemData2);
@@ -59,6 +84,28 @@ public class TargetViewHolder1 extends RecyclerView.ViewHolder {
         list.add(itemData11);
         list.add(itemData12);
         list.add(itemData13);
+        list.add(itemData14);
+        list.add(itemData15);
+        list.add(itemData16);
+        list.add(itemData17);
+        list.add(itemData18);
+        list.add(itemData19);
+        list.add(itemData20);
+        list.add(itemData21);
+        list.add(itemData22);
+        list.add(itemData23);
+        list.add(itemData24);
+        list.add(itemData25);
+        list.add(itemData26);
+        list.add(itemData27);
+        list.add(itemData28);
+        list.add(itemData29);
+        list.add(itemData30);
+        list.add(itemData31);
+        list.add(itemData32);
+        list.add(itemData33);
+        list.add(itemData34);
+        list.add(itemData35);
         ScrollPickerAdapter.ScrollPickerAdapterBuilder<String> builder =
                 new ScrollPickerAdapter.ScrollPickerAdapterBuilder<String>(context,TargetText)
                         .setDataList(list)
@@ -92,5 +139,8 @@ public class TargetViewHolder1 extends RecyclerView.ViewHolder {
                 line.bringToFront();
             }
         },200);
+    }
+    public ScrollPickerView getScrollPickerView() {
+        return scrollPickerView;
     }
 }

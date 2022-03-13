@@ -4,224 +4,251 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RunActivity"
     android:background="@color/lightDark"
     >
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/constraintLayout_Run">
+        <com.robinhood.ticker.TickerView
+            android:id="@+id/distanceView_Run"
+            android:layout_width="164dp"
+            android:layout_height="71dp"
+            android:text="0.00"
+            android:textSize="60sp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="90dp"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="公里"
+            android:textColor="@color/white"
+            android:textSize="19sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/distanceView_Run"
+            android:layout_marginTop="10dp"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/speedText_run"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:text="- -"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="@+id/passedTime_run"
+            app:layout_constraintBottom_toBottomOf="@id/passedTime_run"
+            app:layout_constraintLeft_toLeftOf="parent"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="配速"
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="@+id/speedText_run"
+            app:layout_constraintStart_toStartOf="@+id/speedText_run"
+            app:layout_constraintTop_toBottomOf="@+id/speedText_run"
+            android:layout_marginTop="10dp"
+            tools:ignore="MissingConstraints" />
+
+        <com.robinhood.ticker.TickerView
+            android:id="@+id/passedTime_run"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:00"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginTop="60dp"
+            app:layout_constraintEnd_toEndOf="@+id/distanceView_Run"
+            app:layout_constraintStart_toStartOf="@+id/distanceView_Run"
+            app:layout_constraintTop_toBottomOf="@+id/textView2"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/time_run"
+            android:layout_width="wrap_content"
+            android:layout_height="17dp"
+            android:text="用时"
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/passedTime_run"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/energyTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="千卡"
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="@+id/consumedCalories"
+            app:layout_constraintStart_toStartOf="@+id/consumedCalories"
+            app:layout_constraintTop_toBottomOf="@+id/consumedCalories"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/consumedCalories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginRight="40dp"
+            app:layout_constraintTop_toTopOf="@+id/passedTime_run"
+            app:layout_constraintBottom_toBottomOf="@id/passedTime_run"
+            />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/stopRunButton"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:clickable="true"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:src="@drawable/stop"
+            app:fabCustomSize="90dp"
+            app:fabSize="normal"
+            app:tint="@color/black"
+            android:backgroundTint="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="200dp"
+            tools:ignore="MissingConstraints">
+        </com.google.android.material.floatingactionbutton.FloatingActionButton>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/startRunButton"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:clickable="true"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:src="@drawable/play_fill"
+            app:fabCustomSize="90dp"
+            app:fabSize="normal"
+            android:layout_marginRight="110dp"
+            app:tint="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="200dp"
+            tools:ignore="MissingConstraints">
+        </com.google.android.material.floatingactionbutton.FloatingActionButton>
+        <com.example.modulescore.main.UI.View.ProgressButton
+            android:id="@+id/finishRunButton"
+            android:layout_centerInParent="true"
+            android:layout_width="90dp"
+            app:radius="39dp"
+            app:squaresidelength="14dp"
+            app:strokeWidth="3dp"
+            app:circleColor="#FF405C"
+            app:ringColor="@color/white"
+            app:centerColor="@color/white"
+            app:ringCColor="#FA0C45"
+            android:layout_height="90dp"
+            android:layout_marginLeft="110dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="200dp"
+            android:clickable="true"/>
+        <androidx.cardview.widget.CardView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            app:cardCornerRadius="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="215dp"
+            android:layout_marginLeft="26dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            tools:ignore="MissingConstraints">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/unlock"
+                android:layout_margin="9dp"/>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/toMapCard"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            app:cardCornerRadius="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="215dp"
+            android:layout_marginRight="26dp"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:ignore="MissingConstraints" >
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_margin="3dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/map"/>
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/runTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="户外跑"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="30dp"
+            tools:ignore="MissingConstraints"/>
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/icon_settings_black_18dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="30dp"
+            android:backgroundTint="@color/white"
+            tools:ignore="MissingConstraints"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:id="@+id/animationBackGround"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="100dp"
+        android:background="@color/btn_green_p"/>
 
     <TextView
-        android:id="@+id/distanceView"
-        android:layout_width="164dp"
-        android:layout_height="71dp"
-        android:text="0.00"
-        android:textSize="60sp"
+        android:id="@+id/text_animation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3"
+        android:textSize="100sp"
         android:gravity="center"
+        android:textColor="@color/white"
         android:textStyle="bold"
-        android:textColor="@color/white"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="90dp"
-        tools:ignore="MissingConstraints" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="公里"
-        android:textColor="@color/white"
-        android:textSize="19sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/distanceView"
-        android:layout_marginTop="10dp"
-        tools:ignore="MissingConstraints" />
-
-    <TextView
-        android:id="@+id/speedText_run"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="40dp"
-        android:text="- -"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="@+id/passedTime_run"
-        app:layout_constraintBottom_toBottomOf="@id/passedTime_run"
-        app:layout_constraintLeft_toLeftOf="parent"
-        tools:ignore="MissingConstraints" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="配速"
-        android:textColor="@color/white"
-        android:textSize="10sp"
-        app:layout_constraintEnd_toEndOf="@+id/speedText_run"
-        app:layout_constraintStart_toStartOf="@+id/speedText_run"
-        app:layout_constraintTop_toBottomOf="@+id/speedText_run"
-        android:layout_marginTop="10dp"
-        tools:ignore="MissingConstraints" />
-
-    <TextView
-        android:id="@+id/passedTime_run"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="00:00"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginTop="60dp"
-        app:layout_constraintEnd_toEndOf="@+id/distanceView"
-        app:layout_constraintStart_toStartOf="@+id/distanceView"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        tools:ignore="MissingConstraints" />
-
-    <TextView
-        android:id="@+id/time_run"
-        android:layout_width="wrap_content"
-        android:layout_height="17dp"
-        android:text="用时"
-        android:textColor="@color/white"
-        android:textSize="10sp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passedTime_run"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints" />
-
-    <TextView
-        android:id="@+id/energyTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="千卡"
-        android:textColor="@color/white"
-        android:textSize="10sp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintEnd_toEndOf="@+id/consumedCalories"
-        app:layout_constraintStart_toStartOf="@+id/consumedCalories"
-        app:layout_constraintTop_toBottomOf="@+id/consumedCalories"
-        tools:ignore="MissingConstraints" />
-
-    <TextView
-        android:id="@+id/consumedCalories"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="0"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        tools:ignore="MissingConstraints"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginRight="40dp"
-        app:layout_constraintTop_toTopOf="@+id/passedTime_run"
-        app:layout_constraintBottom_toBottomOf="@id/passedTime_run"
-        />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/stopRunButton"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
-        android:clickable="true"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:src="@drawable/stop"
-        app:fabCustomSize="90dp"
-        app:fabSize="normal"
-        app:tint="@color/black"
-        android:backgroundTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="200dp"
-        tools:ignore="MissingConstraints">
-    </com.google.android.material.floatingactionbutton.FloatingActionButton>
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/startRunButton"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
-        android:clickable="true"
-        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:src="@drawable/play_fill"
-        app:fabCustomSize="90dp"
-        app:fabSize="normal"
-        android:layout_marginRight="110dp"
-        app:tint="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="200dp"
-        tools:ignore="MissingConstraints">
-    </com.google.android.material.floatingactionbutton.FloatingActionButton>
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/finishRunButton"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
-        android:clickable="true"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:src="@drawable/square"
-        app:fabCustomSize="90dp"
-        app:fabSize="normal"
-        android:layout_marginLeft="110dp"
-        android:backgroundTint="@color/red"
-        app:tint="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="200dp"
-        tools:ignore="MissingConstraints">
-    </com.google.android.material.floatingactionbutton.FloatingActionButton>
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        app:cardCornerRadius="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="215dp"
-        android:layout_marginLeft="26dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        tools:ignore="MissingConstraints">
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/unlock"
-            android:layout_margin="9dp"/>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/toMapCard"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        app:cardCornerRadius="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="215dp"
-        android:layout_marginRight="26dp"
-        app:layout_constraintRight_toRightOf="parent"
-         tools:ignore="MissingConstraints" >
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_margin="3dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/map"/>
-    </androidx.cardview.widget.CardView>
-
-    <TextView
-        android:id="@+id/runTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="户外跑"
-        android:textColor="@color/white"
-        android:textSize="25sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_margin="30dp"
-        tools:ignore="MissingConstraints"/>
-
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:background="@drawable/icon_settings_black_18dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_margin="30dp"
-        android:backgroundTint="@color/white"
-        tools:ignore="MissingConstraints"/>
-
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

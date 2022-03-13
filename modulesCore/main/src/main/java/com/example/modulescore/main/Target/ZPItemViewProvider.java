@@ -1,6 +1,9 @@
-package com.example.modulescore.main;
+package com.example.modulescore.main.Target;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.view.View;
@@ -9,15 +12,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.modulescore.main.R;
+
 //更多的是为自定义view provider提供思路。
 //view provider必须要实现IViewProvider接口，
 //唯一注意的是IViewProvider本身是泛型的，所以我们需要提供item视图对应的数据类型
 //就是ScrollPickerAdapterHolder
-public class DefaultItemViewProvider implements IViewProvider<String> {
-    TextView target;
-
-    public DefaultItemViewProvider(TextView target) {
-        this.target = target;
+public class ZPItemViewProvider implements IViewProvider<String> {
+    TextView topTarget;
+    Context context;
+    public ZPItemViewProvider(Context context,TextView topTarget) {
+        this.context = context;
+        this.topTarget = topTarget;
     }
 
     @Override
@@ -40,23 +46,32 @@ public class DefaultItemViewProvider implements IViewProvider<String> {
 //这样就可以通过getTag获取到对应的item数据了。
         view.setTag(text);
         tv.setTextSize(30);
-
     }
 
     //ScrollPickerView滚动时调用
     @Override
     public void updateView(@NonNull View itemView, boolean isSelected) {
+        String TAG = "updateView_ZPViewProvider";
+        Log.d(TAG,"");
         TextView tv = itemView.findViewById(R.id.tv_content);
         View line = itemView.findViewById(R.id.tv_line);
         tv.setTextSize(isSelected ? 30 : 30);
         tv.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         tv.setTextColor(Color.parseColor(isSelected ? "#F5F5F5" : "#999999"));
+        if(isSelected && itemView.getVisibility()  == View.VISIBLE){
+            String TAG1 = "ZPupdateView";
+            SharedPreferences sharedPreferences = context.getSharedPreferences("target",Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("targetString", String.valueOf(tv.getText()));
+            Log.i(TAG1,String.valueOf(tv.getText()));
+            editor.commit();
+            topTarget.setText(tv.getText());
+        }
         if(tv.getText().equals("")) {
             line.setVisibility(View.INVISIBLE);
         }else {
-            Log.d("updateView",tv.getText()+",,");
             line.setVisibility(View.VISIBLE);
-            if(isSelected)  target.setText(tv.getText());
         }
     }
+
 }
