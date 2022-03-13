@@ -1,67 +1,88 @@
 plugins {
-    if(isDebug)
-        id("com.android.application")
-    else
-        id("com.android.library")
-    id("dagger.hilt.android.plugin")
+    id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
 }
-var applicationId :String? = null
-var versionCode : Int? = null
-var versionName : String? = null
+
 android {
     compileSdk = androidC["compileSdk"] as Int
 
     defaultConfig {
-        applicationId = applicationIds["login"]
+        applicationId = "com.saigyouji.android.composetest"
         minSdk = androidC["minSdk"] as Int
         targetSdk = androidC["targetSdk"] as Int
         versionCode = androidC["versionCode"] as Int
         versionName = androidC["versionName"] as String
 
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments += mapOf("AROUTER_MODULE_NAME" to project.name)
-            }
+        vectorDrawables {
+            useSupportLibrary = true
         }
     }
 
-
     buildTypes {
-        val release by getting{
+        release {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
-        sourceCompatibility(javaVersion)
-        targetCompatibility(javaVersion)
+        sourceCompatibility = javaVersion
+        targetCompatibility = javaVersion
+    }
+    kotlinOptions {
+        jvmTarget = JvmTarget
     }
     buildFeatures {
-        viewBinding = true
-        dataBinding = true
+        compose = true
     }
-
-    sourceSets["main"].manifest.srcFile {
-        if (isDebug)
+    composeOptions {
+        kotlinCompilerExtensionVersion = rootProject.extra["compose_version"] as String
+    }
+    packagingOptions {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
+    sourceSets["main"].manifest.srcFile{
+        if(isDebug)
             "src/main/debug/AndroidManifest.xml"
         else
             "src/main/AndroidManifest.xml"
     }
 }
 
+kapt{
+    arguments {
+        arg("AROUTER_MODULE_NAME", project.name)
+    }
+}
 dependencies {
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.0")
+    implementation("androidx.compose.ui:ui:${rootProject.extra["compose_version"]}")
+    implementation("androidx.compose.material:material:${rootProject.extra["compose_version"]}")
+    implementation("androidx.compose.ui:ui-tooling-preview:${rootProject.extra["compose_version"]}")
+    implementation("androidx.activity:activity-compose:1.4.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:${rootProject.extra["compose_version"]}")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+    implementation("com.google.android.material:material:1.5.0")
+    implementation(libCoilCompose)
+    libraryC.forEach { (_, v) -> implementation(v)}
 
+    libKtx.forEach { implementation(it) }
     implementation(project(":modulesPublic:common"))
-    libraryC.forEach { (_, s2) -> implementation(s2) }
     libs.forEach { implementation(it) }
-    apts.forEach { annotationProcessor(it) }
+    apts.forEach { kapt(it) }
     tests.forEach { androidTestImplementation(it) }
     librariesDebug.forEach { debugImplementation(it)}
-    testImplementation("junit:junit:4.+")
+
+    testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:${rootProject.extra["compose_version"]}")
+    debugImplementation("androidx.compose.ui:ui-tooling:${rootProject.extra["compose_version"]}")
 }

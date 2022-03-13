@@ -1,6 +1,6 @@
 import org.gradle.api.JavaVersion
 
-const val isDebug = true
+const val isDebug = false
 val androidC = mapOf(
     "compileSdk" to 31,
     "minSdk" to 27,
@@ -32,6 +32,7 @@ val libKtx = listOf(
 val librariesDebug = listOf(
     "com.google.truth:truth:$truth_version"
 )
+const val libUCropper = "com.github.yalantis:ucrop:2.2.6"
 const val libAMap3DMap = "com.amap.api:3dmap:latest.integration"
 const val libAMapLocation = "com.amap.api:location:latest.integration"
 const val libHttpLogger = "com.squareup.okhttp3:logging-interceptor:4.9.3"
@@ -46,6 +47,7 @@ const val libRetrofit = "com.squareup.retrofit2:retrofit:2.9.0"
 const val libRxAndroid = "io.reactivex.rxjava2:rxandroid:2.0.2"
 const val libRetrofit2RxJava = "com.squareup.retrofit2:adapter-rxjava2:2.9.0"
 const val libRetrofit2Gson = "com.squareup.retrofit2:converter-gson:2.9.0"
+const val libRetrofit2Moshi = "com.squareup.retrofit2:converter-moshi:2.9.0"
 
 const val libGlide = "com.github.bumptech.glide:glide:4.12.0"
 const val libGlideCompiler = "com.github.bumptech.glide:compiler:4.12.0"
@@ -55,6 +57,8 @@ const val libRxPermissions = "com.github.qicodes:rxpermissions:1.3.0"
 const val libStatusBarUtil = "com.jaeger.statusbarutil:library:1.5.1"
 const  val libRecyclerAdapter = "com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.7"
 const  val libTicker = "com.robinhood.ticker:ticker:2.0.1"
+const val libCoil = "io.coil-kt:coil:1.4.0"
+const val libCoilCompose = "io.coil-kt:coil-compose:2.0.0-rc01"
 
 val apts = listOf(
     libARouterCompiler,
@@ -63,6 +67,7 @@ val apts = listOf(
     libGlideCompiler
 )
 val libs = listOf(
+    libUCropper,
     libStartUp,
     libARouter,
     libHilt,
@@ -79,7 +84,8 @@ val libs = listOf(
     libRxPermissions,
     libAMap3DMap,
     libAMapLocation,
-    libTicker
+    libTicker,
+    libCoil
 )
 val tests = listOf(
     "androidx.navigation:navigation-testing:$nav_version"
