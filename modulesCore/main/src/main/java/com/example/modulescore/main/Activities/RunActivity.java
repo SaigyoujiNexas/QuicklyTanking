@@ -38,6 +38,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.Date;
 import java.util.List;
 
 public class RunActivity extends AppCompatActivity implements View.OnClickListener {
@@ -55,6 +56,8 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
     RunningRecord record = new RunningRecord();
     TextView calorieText;
     List<LatLng> mPathPointsLine;
+    Date startTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,10 +95,10 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
                 record.setDistance( distanceview.getText());
                 Log.d(TAG,passedSeconds.toString());
                 record.setRunningtime(passedSeconds);
-                Log.d(TAG,"0");
                 record.setSpeed((String) speedText.getText());
                 Log.d(TAG,"1");
                 record.setPathPointsLine(mPathPointsLine);
+                record.setStartTime(startTime);
                 Log.d(TAG,"2");
                 new Thread(new Runnable() {
                     @Override
@@ -230,6 +233,9 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
         }
         if(event.getmPathPointsLine()!=null){
             mPathPointsLine = event.getmPathPointsLine();
+        }
+        if(event.getStartTime()!=null){
+            startTime = event.getStartTime();
         }
     };
     @Override

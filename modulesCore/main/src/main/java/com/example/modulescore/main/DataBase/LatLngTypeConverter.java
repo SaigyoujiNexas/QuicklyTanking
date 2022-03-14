@@ -12,21 +12,4 @@ import java.util.List;
 
 public class LatLngTypeConverter {
 
-    Gson gson = new Gson();
-
-    @TypeConverter
-    public List<LatLng> stringToSomeObjectList(String data) {
-        if (data == null) {
-            return Collections.emptyList();
-        }
-
-        Type listType = new TypeToken<List<LatLng>>() {}.getType();
-
-        return gson.fromJson(data, listType);
-    }
-
-    @TypeConverter
-    public String someObjectListToString(List<LatLng> someObjects) {
-        return gson.toJson(someObjects);
-    }
 }

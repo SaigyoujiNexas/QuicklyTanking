@@ -1,4 +1,4 @@
-package com.example.modulescore.main.Target;
+package com.example.modulescore.main.Util;
 
 import android.content.res.Resources;
 import android.util.DisplayMetrics;

@@ -4,6 +4,7 @@ package com.example.modulescore.main.EventBus;
 import com.amap.api.maps.model.LatLng;
 import com.example.modulescore.main.DataBase.RunningRecord;
 
+import java.util.Date;
 import java.util.List;
 
 public class MessageEvent {
@@ -13,6 +14,15 @@ public class MessageEvent {
     private RunningRecord runningRecord;
     private String calorie;
     private  List<LatLng> mPathPointsLine;
+    private Date startTime;
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
 
     public List<LatLng> getmPathPointsLine() {
         return mPathPointsLine;

@@ -10,6 +10,7 @@ import androidx.room.TypeConverters;
 import com.amap.api.maps.model.LatLng;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity(tableName = "RunningRecord")
@@ -24,14 +25,13 @@ public class RunningRecord {
     //运动轨迹
     //表示这是数据库表中的一个列。其中的name表示此对象在表中对应的类名，
     // 如果不添加此注解，Room默认会以此变量名作为其在表中的列名。
-    @TypeConverters(LatLngTypeConverter.class)
     private List<LatLng> PathPointsLine;
     //运动距离
     private String Distance;
     //运动时长
     private Long Runningtime;
     //运动开始时间
-    private Long StartTime;
+    private Date StartTime;
     //消耗卡路里
     private String Calorie;
     //平均时速(公里/小时)
@@ -54,6 +54,14 @@ public class RunningRecord {
                 ", Distribution=" + Distribution +
                 ", DateTag='" + DateTag + '\'' +
                 '}';
+    }
+
+    public Date getStartTime() {
+        return StartTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        StartTime = startTime;
     }
 
     public Long getId() {
@@ -86,14 +94,6 @@ public class RunningRecord {
 
     public void setRunningtime(Long runningtime) {
         Runningtime = runningtime;
-    }
-
-    public Long getStartTime() {
-        return StartTime;
-    }
-
-    public void setStartTime(Long startTime) {
-        StartTime = startTime;
     }
 
     public String getCalorie() {

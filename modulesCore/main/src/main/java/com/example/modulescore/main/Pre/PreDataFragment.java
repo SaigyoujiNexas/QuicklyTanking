@@ -2,10 +2,8 @@ package com.example.modulescore.main.Pre;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
@@ -19,6 +17,8 @@ import com.example.modulescore.main.DataBase.MyDataBase;
 import com.example.modulescore.main.DataBase.RunningRecord;
 import com.example.modulescore.main.R;
 import com.example.modulescore.main.Util.TimeManager;
+
+import java.text.SimpleDateFormat;
 
 public class PreDataFragment extends Fragment {
     public PreDataFragment() {
@@ -37,15 +37,15 @@ public class PreDataFragment extends Fragment {
                              Bundle savedInstanceState) {
         final String TAG = "PreDataFragmentonCreateViewTAG";
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_pre_data, container, false);
+        View view = inflater.inflate(R.layout.pre_data_item0, container, false);
         linearLayout = view.findViewById(R.id.linearlayout_pre_data);
-        Handler handler = new Handler(Looper.getMainLooper()){
-            @Override
-            public void handleMessage(@NonNull Message msg) {
-                super.handleMessage(msg);
-                RefreshDataItem();
-            }
-        };
+//        Handler handler = new Handler(Looper.getMainLooper()){
+//            @Override
+//            public void handleMessage(@NonNull Message msg) {
+//                super.handleMessage(msg);
+//                RefreshDataItem();
+//            }
+//        };
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -72,10 +72,13 @@ public class PreDataFragment extends Fragment {
         TextView distancetext = view.findViewById(R.id.distancetext_runrecord);
         TextView durationtext = view.findViewById(R.id.duration_text_runrecorditem);
         TextView calorietext = view.findViewById(R.id.calorietext_runrecoritem);
-        //startTimetext.setText(TimeManager.formatseconds(record.getStartTime()));
+        TextView speedtext = view.findViewById(R.id.speedtext_runrecoritem);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");
+        startTimetext.setText(simpleDateFormat.format(record.getStartTime()));
         distancetext.setText(record.getDistance());
         durationtext.setText(TimeManager.formatseconds(record.getRunningtime()));
         calorietext.setText(record.getCalorie());
+        speedtext.setText(record.getSpeed());
         linearLayout.addView(view);
         Log.d("LinearAddView","FINISH");
     }

@@ -80,6 +80,8 @@ public class RunningActivity extends AppCompatActivity implements LocationSource
     int weight = 60;
     RunningRecord record = new RunningRecord();
     private DecimalFormat decimalFormat = new DecimalFormat("0.00");
+    MessageEvent messageEvent = new MessageEvent();//跑步时间
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,9 +105,9 @@ public class RunningActivity extends AppCompatActivity implements LocationSource
         tv_mapDistance = findViewById(R.id.distanceTicker);
         tv_mapDistance.setCharacterLists(TickerUtils.provideNumberList());
         tv_mapDistance.setAnimationDuration(500);
-
         initMapUI();
         initLoc();
+        messageEvent.setStartTime(startTime);
         Intent startRunIntent = new Intent(this,RunActivity.class);
         startActivity(startRunIntent);
         if(getIntent().getType()!= null && getIntent().getType().equals(TargetDistanceActivity.isTarget)){
@@ -188,8 +190,6 @@ public class RunningActivity extends AppCompatActivity implements LocationSource
     @Override
     public void onLocationChanged(AMapLocation amapLocation) {
         String TAG = "RunningActivity_LocationChanged";
-        MessageEvent messageEvent = new MessageEvent();//跑步时间
-        Log.d(TAG,"");
         if (amapLocation != null) {
             if (amapLocation.getErrorCode() == 0) {
                 float nowSpeed = amapLocation.getSpeed();
