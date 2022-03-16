@@ -1,16 +1,11 @@
 package com.example.modulescore.main.Trace;
 
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.amap.api.location.AMapLocationClient;
@@ -26,7 +21,7 @@ import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.Polyline;
 import com.amap.api.maps.model.PolylineOptions;
-import com.example.modulescore.main.DataBase.RunningRecord;
+import com.example.modulespublic.common.base.RunningRecord;
 import com.example.modulescore.main.R;
 
 import java.util.List;

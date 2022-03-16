@@ -8,16 +8,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.amap.api.maps.model.LatLng;
-import com.example.modulescore.main.DataBase.RunningRecord;
+import com.example.modulespublic.common.base.RunningRecord;
 import com.example.modulescore.main.R;
-import com.example.modulescore.main.Target.TargetAdapter;
-import com.example.modulescore.main.Target.TargetViewHolder0;
-import com.example.modulescore.main.Target.TargetViewHolder1;
-import com.example.modulescore.main.Target.TargetViewHolder2;
-import com.example.modulescore.main.Target.TargetViewHolder3;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class TraceAdapter extends RecyclerView.Adapter {
     private RunningRecord selectedRecord;

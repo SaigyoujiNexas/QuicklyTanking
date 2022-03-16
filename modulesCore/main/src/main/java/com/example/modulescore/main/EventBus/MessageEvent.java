@@ -2,7 +2,7 @@ package com.example.modulescore.main.EventBus;
 
 
 import com.amap.api.maps.model.LatLng;
-import com.example.modulescore.main.DataBase.RunningRecord;
+import com.example.modulespublic.common.base.RunningRecord;
 
 import java.util.Date;
 import java.util.List;

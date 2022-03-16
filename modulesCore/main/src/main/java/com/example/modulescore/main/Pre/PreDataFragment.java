@@ -14,8 +14,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.modulescore.main.DataBase.MyDataBase;
-import com.example.modulescore.main.DataBase.RunningRecord;
+import com.example.modulespublic.common.base.MyDataBase;
+import com.example.modulespublic.common.base.RunningRecord;
 import com.example.modulescore.main.R;
 import com.example.modulescore.main.Trace.TraceActivity;
 import com.example.modulescore.main.Util.TimeManager;

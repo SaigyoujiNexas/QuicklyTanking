@@ -1,4 +1,4 @@
-package com.example.modulescore.main.DataBase;
+package com.example.modulespublic.common.base;
 
 import androidx.room.TypeConverter;
 
