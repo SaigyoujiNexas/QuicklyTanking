@@ -41,13 +41,6 @@ public class PreDataFragment extends Fragment implements View.OnClickListener{
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.pre_data_item0, container, false);
         linearLayout = view.findViewById(R.id.linearlayout_pre_data);
-//        Handler handler = new Handler(Looper.getMainLooper()){
-//            @Override
-//            public void handleMessage(@NonNull Message msg) {
-//                super.handleMessage(msg);
-//                RefreshDataItem();
-//            }
-//        };
         QueryAllRunningRecords();
         return view;
     }
@@ -79,8 +72,12 @@ public class PreDataFragment extends Fragment implements View.OnClickListener{
         TextView durationtext = view.findViewById(R.id.duration_text_runrecorditem);
         TextView calorietext = view.findViewById(R.id.calorietext_runrecoritem);
         TextView speedtext = view.findViewById(R.id.speedtext_runrecoritem);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");
-        startTimetext.setText(simpleDateFormat.format(record.getStartTime()));
+        TextView recordDateText = view.findViewById(R.id.runrecord_Date);
+        SimpleDateFormat yearFormat = new SimpleDateFormat ("yyyy年");
+        SimpleDateFormat dateFormat = new SimpleDateFormat ("MM月dd日");
+        SimpleDateFormat minuteFormat = new SimpleDateFormat ("hh:mm");
+        recordDateText.setText(dateFormat.format(record.getStartTime()));
+        startTimetext.setText(minuteFormat.format(record.getStartTime()));
         distancetext.setText(record.getDistance()+","+record.getId());
         durationtext.setText(TimeManager.formatseconds(record.getRunningtime()));
         calorietext.setText(record.getCalorie());
