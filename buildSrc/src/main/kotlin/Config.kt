@@ -63,6 +63,7 @@ const val libCoilCompose = "io.coil-kt:coil-compose:2.0.0-rc01"
 const val libEventbus = "org.greenrobot:eventbus:3.1.1"
 const val libRoom =  "androidx.room:room-runtime:$room_version"
 const val libRoomCompiler = "androidx.room:room-compiler:$room_version"
+
 val apts = listOf(
     libARouterCompiler,
     libHiltCompiler,

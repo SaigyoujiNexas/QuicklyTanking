@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.common.utils.ToastUtil
 import com.example.modulesbase.libbase.cache.Preferences
 import com.example.modulespublic.common.constant.KeyPool
+import com.example.modulespublic.common.net.BaseResponse
 import com.saigyouji.android.composetest.net.response.LoginResponse
 import com.saigyouji.android.composetest.net.LoginService
 import com.saigyouji.android.composetest.net.VerifyService
@@ -26,18 +27,35 @@ class LoginViewModel
     var passwd by mutableStateOf("")
     var verifyCode by mutableStateOf("")
 
+    fun sendCode(onSuccess: () -> Unit) = viewModelScope.launch {
+        var res: BaseResponse<String?>?
+        try{
+            res = loginService.sendCode(LoginService.Companion.SendCodeRequest(tel))
+        }catch(e: Exception)
+        {
+            res = BaseResponse( e.localizedMessage, 200, e.localizedMessage)
+        }
+        res?.let {
+            when(it.isSuccess){
+                true -> onSuccess.invoke()
+                else -> ToastUtil.showToast(it.msg)
+            }
+        }
+    }
+
         fun loginByPasswd( onSuccess: () -> Unit = {}) =
 
             viewModelScope.launch {
                 var res: LoginResponse? = null
                 try {
                     res = loginService.login(
+                        LoginService.Companion.LoginRequest(
                         LoginService.MODE_PASSWD,
                         tel,
                         passwd,
                         null,
                         UUID.randomUUID().toString(),
-                        null
+                        null)
                     )
                 }catch (e: Exception)
                 {
@@ -52,7 +70,7 @@ class LoginViewModel
                     when(it.isSuccess){
                         true -> {
                             Preferences.saveString(KeyPool.PUBLIC_KEY, it.data)
-                            onSuccess
+                            onSuccess.invoke()
                         }
                         else -> {
                             ToastUtil.showToast("登陆失败: ${res.msg}")
@@ -65,18 +83,19 @@ class LoginViewModel
             var res: LoginResponse? = null
         try {
             res = loginService.login(
+                LoginService.Companion.LoginRequest(
                 LoginService.MODE_VERIFY,
                 null,
                 null,
                 tel,
-                UUID.randomUUID().toString(),
+                Preferences.getString(KeyPool.ID, ""),
                 verifyCode
             )
+            )
         }catch (e: Exception){
-            res = LoginResponse(
-                e.message,
+            res = LoginResponse(e.localizedMessage,
                 200,
-                null
+                e.localizedMessage
             )
         }
         res?.let {

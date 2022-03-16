@@ -5,12 +5,12 @@ import com.example.modulesbase.libbase.net.response.NetResponse;
 public class BaseResponse<T> implements NetResponse<T> {
     T data;
     int code;
-    String msg;
+    String message;
 
     public BaseResponse(T data, int code, String msg) {
         this.data = data;
         this.code = code;
-        this.msg = msg;
+        this.message = msg;
     }
 
     public void setData(T data) {
@@ -22,7 +22,7 @@ public class BaseResponse<T> implements NetResponse<T> {
     }
 
     public void setMsg(String msg) {
-        this.msg = msg;
+        this.message = msg;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class BaseResponse<T> implements NetResponse<T> {
 
     @Override
     public String getMsg() {
-        return msg;
+        return message;
     }
 
     @Override

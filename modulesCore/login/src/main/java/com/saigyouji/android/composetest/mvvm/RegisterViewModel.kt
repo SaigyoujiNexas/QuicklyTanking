@@ -44,13 +44,14 @@ constructor(
     var height: String by mutableStateOf("")
     var gender: String by mutableStateOf("")
 
-    fun register(onSuccess: (RegisterResponse<String?>) -> Unit) = viewModelScope.launch {
-        var registerResponse : RegisterResponse<String?>? = null
+    fun register(onSuccess: (BaseResponse<String?>) -> Unit) = viewModelScope.launch {
+        var registerResponse : BaseResponse<String?>?
         try {
-            registerResponse = registerService.register(name, tel, verify, passwd)
+            val request = RegisterService.Companion.RegisterRequest(name, tel, verify, passwd)
+            registerResponse = registerService.register(request)
         }
         catch (e: Exception){
-            registerResponse = RegisterResponse(200, e.localizedMessage, null)
+            registerResponse = BaseResponse( e.localizedMessage, 200, e.localizedMessage)
         }
         registerResponse?.let{
             when(it.isSuccess){
@@ -66,11 +67,13 @@ constructor(
 
     fun setUserInfo(lifecycleOwner: LifecycleOwner, onSuccess: (String?) -> Unit) {
 
-        RequestModel.request(apiService.setUserInfo(
+        RequestModel.request(
+            apiService.setUserInfo(
             Preferences.getString(KeyPool.PUBLIC_KEY, ""),
             FileUtil.ImageFileToMultpartBody(head.toFile()),
             name, gender, birthday, height, weight
-        ), lifecycleOwner, object:NetCallback<String?>{
+        ),
+            lifecycleOwner, object:NetCallback<String?>{
             override fun onSuccess(data: String?) {
                 onSuccess.invoke(data)
             }

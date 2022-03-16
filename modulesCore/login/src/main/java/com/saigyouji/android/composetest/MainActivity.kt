@@ -39,6 +39,12 @@ import androidx.navigation.compose.rememberNavController
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.example.common.utils.ToastUtil
 import com.example.modulespublic.common.constant.RoutePath
+import com.saigyouji.android.composetest.NavPath.login
+import com.saigyouji.android.composetest.NavPath.register_fifth
+import com.saigyouji.android.composetest.NavPath.register_first
+import com.saigyouji.android.composetest.NavPath.register_fourth
+import com.saigyouji.android.composetest.NavPath.register_second
+import com.saigyouji.android.composetest.NavPath.register_third
 import com.saigyouji.android.composetest.mvvm.LoginViewModel
 import com.saigyouji.android.composetest.mvvm.RegisterViewModel
 import com.saigyouji.android.composetest.mvvm.VerifyViewModel
@@ -78,17 +84,17 @@ class MainActivity : AppCompatActivity(){
                     color = MaterialTheme.colors.background
                 ) {
                     navController = rememberNavController()
-                    NavHost(navController = navController, startDestination = "register_fifth"){
-                        composable("login"){
+                    NavHost(navController = navController, startDestination = login){
+                        composable(login){
                             val verifyViewModel = hiltViewModel<VerifyViewModel>()
                             LoginFrontPage.LoginFrontPage(navController,loginViewModel,verifyViewModel) }
-                        composable("register_first"){
+                        composable(register_first){
                             val verifyViewModel = hiltViewModel<VerifyViewModel>()
                             RegisterFirstPage(verifyViewModel,registerViewModel, navController)}
-                        composable("register_second"){ RegisterSecondPage(registerViewModel, navController)}
-                        composable("register_third"){ RegisterThirdPage(registerViewModel, navController)}
-                        composable("register_forth"){ RegisterForthPage(registerViewModel, navController)}
-                        composable("register_fifth"){ RegisterFifthPage(registerViewModel, navController)}
+                        composable(register_second){ RegisterSecondPage(registerViewModel, navController)}
+                        composable(register_third){ RegisterThirdPage(registerViewModel, navController)}
+                        composable(register_fourth){ RegisterForthPage(registerViewModel, navController)}
+                        composable(register_fifth){ RegisterFifthPage(registerViewModel, navController)}
                     }
                 }
                 

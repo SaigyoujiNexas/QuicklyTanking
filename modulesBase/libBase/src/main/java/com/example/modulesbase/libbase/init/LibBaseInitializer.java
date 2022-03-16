@@ -8,6 +8,7 @@ import androidx.startup.Initializer;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.modulesbase.libbase.cache.AppCache;
+import com.example.modulesbase.libbase.cache.Preferences;
 import com.example.modulesbase.libbase.util.Logger;
 import com.example.modulesbase.libbase.util.PropertiesUtil;
 

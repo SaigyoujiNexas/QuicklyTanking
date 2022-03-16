@@ -30,15 +30,18 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.room.util.UUIDUtil
 import com.alibaba.android.arouter.launcher.ARouter
 import com.example.common.utils.ToastUtil
 import com.example.modulespublic.common.constant.RoutePath
+import com.saigyouji.android.composetest.NavPath.register_first
 import com.saigyouji.android.composetest.mvvm.LoginViewModel
 import com.saigyouji.android.composetest.mvvm.VerifyViewModel
 import com.saigyouji.android.composetest.net.LoginService
 import com.saigyouji.android.composetest.status.AnimatorController
 import com.saigyouji.android.composetest.ui.register.RegisterFirstPage
 import com.saigyouji.android.composetest.util.findActivity
+import java.util.*
 
 object LoginFrontPage {
     sealed class LoginState {
@@ -71,7 +74,7 @@ object LoginFrontPage {
                         ) {
                             Text(text = "没有账号?创建一个",
                                 Modifier.clickable(enabled = true) {
-                                    navController.navigate("register")
+                                    navController.navigate(register_first)
                                 }.padding(start = 24.dp)
                             )
                         }
@@ -84,23 +87,25 @@ object LoginFrontPage {
                         if (loginState.value.isLoginByPasswd()) {
                             if(checkInput(loginViewModel.passwd, "密码不能为空"))
                                 loginViewModel.loginByPasswd(onSuccess = {
-                                    ARouter.getInstance().build(RoutePath.MAIN).navigation(
-                                        context)
-                                    context?.finish()
+                                    ToastUtil.showToast("login success")
+                              //      ARouter.getInstance().build(RoutePath.MAIN).navigation(
+                              //          context)
+                              //      context?.finish()
                                 })
                         }
                         else {
                             if(checkInput(loginViewModel.verifyCode, "验证码不能为空", otherJudge = {
-                                if(it.length < 6)
+                                if(it.length < 4)
                                 {
-                                    ToastUtil.showToast("验证码应为6位数字")
+                                    ToastUtil.showToast("验证码应为4位数字")
                                     false
                                 }
                                 true
                             }))
                                 loginViewModel.loginByVerify(onSuccess = {
-                                    ARouter.getInstance().build(RoutePath.MAIN).navigation(context)
-                                    context?.finish()
+                                    ToastUtil.showToast("login success")
+                                //    ARouter.getInstance().build(RoutePath.MAIN).navigation(context)
+                                //    context?.finish()
                                 })
                         }
                     }
@@ -119,6 +124,7 @@ object LoginFrontPage {
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center
                     )
+                    Text(text = UUID.randomUUID().toString())
                     OutlinedTextField(
                         value = loginViewModel.tel,
                         onValueChange = { loginViewModel.tel = it },
@@ -164,7 +170,7 @@ object LoginFrontPage {
                                 onClick = {
                                     if(checkInput(str = loginViewModel.tel, toastMsg = "手机号不可为空"))
                                     {
-                                        verifyViewModel.verify(loginViewModel.tel) {
+                                        loginViewModel.sendCode{
                                             AnimatorController(verifyViewModel).start()
                                         }
                                     }

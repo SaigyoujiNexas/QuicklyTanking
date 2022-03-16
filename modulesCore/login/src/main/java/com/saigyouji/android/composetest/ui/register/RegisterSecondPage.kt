@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.saigyouji.android.composetest.NavPath.register_third
 import com.saigyouji.android.composetest.mvvm.RegisterViewModel
 import com.saigyouji.android.composetest.mvvm.VerifyViewModel
 import com.saigyouji.android.composetest.util.checkInput
@@ -59,7 +60,7 @@ fun RegisterSecondPage(registerViewModel: RegisterViewModel = viewModel(),
                         TextUtils.equals(registerViewModel.passwd, passwdVrf)
                     })
                 {
-                    navController.navigate("register_third")
+                    navController.navigate(register_third)
                 }
             }) {
                 Icon(Icons.Filled.ArrowForward, contentDescription = "next")
@@ -118,5 +119,5 @@ fun RegisterSecondPage(registerViewModel: RegisterViewModel = viewModel(),
 @Preview
 @Composable
 fun RegisterSecondPreview(){
-    RegisterFirstPage()
+    RegisterSecondPage()
 }

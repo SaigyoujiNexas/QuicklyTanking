@@ -23,6 +23,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.common.utils.ToastUtil
 import com.example.modulespublic.common.utils.StringCountDownTimer
+import com.saigyouji.android.composetest.NavPath.register_second
 import com.saigyouji.android.composetest.mvvm.RegisterViewModel
 import com.saigyouji.android.composetest.mvvm.VerifyViewModel
 import com.saigyouji.android.composetest.status.AnimatorController
@@ -53,15 +54,15 @@ fun RegisterFirstPage(verifyViewModel: VerifyViewModel = viewModel(),
         floatingActionButton = {
             FloatingActionButton(onClick = {
                 if(registerViewModel.tel.checkInput("请输入手机号") && registerViewModel.verify.checkInput("请输入短信验证码"){
-                    if(it.length != 6) {
-                        ToastUtil.showToast("请输入6位有效数字")
+                    if(it.length != 4) {
+                        ToastUtil.showToast("请输入4位有效数字")
                         false }
                         true
                     })
                 {
-                    verifyViewModel.checkVerify(registerViewModel.tel, registerViewModel.verify) {
-                        navController.navigate("register_second")
-                    }
+                //    verifyViewModel.checkVerify(registerViewModel.tel, registerViewModel.verify) {
+                        navController.navigate(register_second)
+                //    }
                 }
             }) {
                 Icon(Icons.Filled.ArrowForward, contentDescription = "next")

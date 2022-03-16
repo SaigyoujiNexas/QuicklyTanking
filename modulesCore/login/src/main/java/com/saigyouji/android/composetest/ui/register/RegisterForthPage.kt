@@ -23,6 +23,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.saigyouji.android.composetest.NavPath.register_fifth
 import com.saigyouji.android.composetest.mvvm.RegisterViewModel
 import com.saigyouji.android.composetest.util.findActivity
 
@@ -59,7 +60,7 @@ fun RegisterForthPage(registerViewModel: RegisterViewModel = viewModel(),
         isFloatingActionButtonDocked = true,
         floatingActionButton = {
             FloatingActionButton(onClick = {
-                navController.navigate("register_fifth")
+                navController.navigate(register_fifth)
             }) {
                 Icon(Icons.Filled.ArrowForward, contentDescription = "next")
             }

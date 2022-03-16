@@ -35,7 +35,6 @@ public class NetWorkModule {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
-
     @Provides
     @Singleton
     public OkHttpClient provideClient(){

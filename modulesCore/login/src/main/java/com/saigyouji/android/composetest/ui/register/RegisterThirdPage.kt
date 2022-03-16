@@ -56,7 +56,10 @@ fun RegisterThirdPage(registerViewModel: RegisterViewModel = viewModel(),
         floatingActionButton = {
             FloatingActionButton(onClick = {
                 if(registerViewModel.name.checkInput("用户昵称不能为空")) {
-                    navController.navigate("register_forth")
+                    registerViewModel.register {
+                        navController.navigate("register_forth")
+                    }
+
                 }
             }) {
                 Icon(Icons.Filled.ArrowForward, contentDescription = "next")
@@ -78,8 +81,6 @@ fun RegisterThirdPage(registerViewModel: RegisterViewModel = viewModel(),
                     onValueChange = { registerViewModel.name = it },
                     label = { Text(text = "用户昵称") },
                     maxLines = 1,
-                    visualTransformation = PasswordVisualTransformation(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 24.dp)

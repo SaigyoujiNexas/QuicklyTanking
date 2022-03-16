@@ -6,7 +6,11 @@ import android.text.TextUtils;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.example.common.utils.DisplayUtil;
 import com.example.common.utils.ToastUtil;
+import com.example.modulesbase.libbase.cache.Preferences;
 import com.example.modulesbase.libbase.util.PropertiesUtil;
+import com.example.modulespublic.common.constant.KeyPool;
+
+import java.util.UUID;
 
 import dagger.hilt.android.HiltAndroidApp;
 
@@ -25,5 +29,10 @@ public class BaseApplication extends Application {
         ARouter.init(this);
         DisplayUtil.Companion.init(this);
         ToastUtil.Companion.init(this);
+        if(TextUtils.isEmpty(Preferences.getString(KeyPool.ID, "")))
+        {
+            var uuid = UUID.randomUUID().toString();
+            Preferences.saveString(KeyPool.ID, uuid);
+        }
     }
 }
