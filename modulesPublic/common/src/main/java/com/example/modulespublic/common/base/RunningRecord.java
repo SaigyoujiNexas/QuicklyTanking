@@ -21,7 +21,6 @@ public class RunningRecord {
     // 当这个主键是一个字符串时，还要加上@NonNull注解，不然会出现编译错误。
     @PrimaryKey
     private Long id;
-
     //运动轨迹
     //表示这是数据库表中的一个列。其中的name表示此对象在表中对应的类名，
     // 如果不添加此注解，Room默认会以此变量名作为其在表中的列名。
@@ -38,8 +37,6 @@ public class RunningRecord {
     private String Speed;
     //平均配速(分钟/公里)
     private Double Distribution;
-    //日期标记
-    private String DateTag;
     private String UserId;
 
     public String getUserId() {
@@ -61,7 +58,6 @@ public class RunningRecord {
                 ", Calorie='" + Calorie + '\'' +
                 ", Speed='" + Speed + '\'' +
                 ", Distribution=" + Distribution +
-                ", DateTag='" + DateTag + '\'' +
                 '}';
     }
 
@@ -123,17 +119,5 @@ public class RunningRecord {
 
     public Double getDistribution() {
         return Distribution;
-    }
-
-    public void setDistribution(Double distribution) {
-        Distribution = distribution;
-    }
-
-    public String getDateTag() {
-        return DateTag;
-    }
-
-    public void setDateTag(String dateTag) {
-        DateTag = dateTag;
     }
 }
