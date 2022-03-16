@@ -17,16 +17,17 @@ import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.Polyline;
 import com.amap.api.maps.model.PolylineOptions;
+import com.example.modulescore.main.DataBase.RunningRecord;
 import com.example.modulescore.main.R;
 
 import java.util.List;
 
 public class TraceViewHolder1 extends RecyclerView.ViewHolder {
 
-
-    public TraceViewHolder1(@NonNull View itemView) {
+    private RunningRecord selectedRecord;
+    public TraceViewHolder1(RunningRecord selectedRecord,@NonNull View itemView) {
         super(itemView);
-
+        this.selectedRecord = selectedRecord;
     }
 
 }

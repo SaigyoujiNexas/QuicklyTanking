@@ -91,24 +91,23 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
             public void onFinish() {
                 final String TAG = "FINISH_RUNNING";
                 Log.d(TAG,"start finish");
+                //record.setId(Long.valueOf(001));
+                record.setUserId("1");
                 record.setCalorie((String) calorieText.getText());
                 record.setDistance( distanceview.getText());
                 Log.d(TAG,passedSeconds.toString());
                 record.setRunningtime(passedSeconds);
                 record.setSpeed((String) speedText.getText());
-                Log.d(TAG,"1");
                 record.setPathPointsLine(mPathPointsLine);
                 record.setStartTime(startTime);
-                Log.d(TAG,"2");
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         MyDataBase.getsInstance(getApplicationContext()).runningDao().insertRunningRecord(record);
                         Log.d(TAG,record.toString());
-                        Log.d(TAG,MyDataBase.getsInstance(getApplicationContext()).runningDao().loadAllRunningRecordss().toString());
+                        Log.d(TAG+"length", String.valueOf(MyDataBase.getsInstance(getApplicationContext()).runningDao().loadAllRunningRecordss().length));
                     }
                 }).start();
-                Log.d(TAG,"finish finish");
                 finish();
             }
 

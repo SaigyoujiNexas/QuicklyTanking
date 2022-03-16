@@ -230,13 +230,13 @@ public class RunningActivity extends AppCompatActivity implements LocationSource
                 }else if(isFirstLoc){//如果是第一次，那么改isFirstLoc为false，则之后都不是第一次了
                     //设置缩放级别
                     Log.d(TAG,"FirstLoc");
-                    aMap.moveCamera(CameraUpdateFactory.zoomTo(18));
-                    aMap.moveCamera(CameraUpdateFactory.changeTilt(0));
+                    aMap.moveCamera(CameraUpdateFactory.zoomTo(18));//设置地图缩放级别。
+                    aMap.moveCamera(CameraUpdateFactory.changeTilt(0));//设置地图倾斜度。
                     isFirstLoc = false;
                     Log.d(TAG,"FirstLoc0");
                 }
                 //将地图移动到定位点
-                aMap.moveCamera(CameraUpdateFactory.changeLatLng(nowLatLng));
+                aMap.moveCamera(CameraUpdateFactory.changeLatLng(nowLatLng));//设置地图的中心点。
                 //点击定位按钮 能够将地图的中心移动到定位点
                 mListener.onLocationChanged(amapLocation);
                 Log.d(TAG,"FirstLoc00");

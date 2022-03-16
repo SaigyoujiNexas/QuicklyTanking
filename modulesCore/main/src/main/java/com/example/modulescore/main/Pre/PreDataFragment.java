@@ -1,5 +1,6 @@
 package com.example.modulescore.main.Pre;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -16,11 +17,12 @@ import android.widget.TextView;
 import com.example.modulescore.main.DataBase.MyDataBase;
 import com.example.modulescore.main.DataBase.RunningRecord;
 import com.example.modulescore.main.R;
+import com.example.modulescore.main.Trace.TraceActivity;
 import com.example.modulescore.main.Util.TimeManager;
 
 import java.text.SimpleDateFormat;
 
-public class PreDataFragment extends Fragment {
+public class PreDataFragment extends Fragment implements View.OnClickListener{
     public PreDataFragment() {
     }
     LinearLayout linearLayout;
@@ -35,7 +37,7 @@ public class PreDataFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final String TAG = "PreDataFragmentonCreateViewTAG";
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.pre_data_item0, container, false);
         linearLayout = view.findViewById(R.id.linearlayout_pre_data);
@@ -46,6 +48,12 @@ public class PreDataFragment extends Fragment {
 //                RefreshDataItem();
 //            }
 //        };
+        QueryAllRunningRecords();
+        return view;
+    }
+
+    private void QueryAllRunningRecords(){
+        final String TAG = "QueryAllRunningRecordsTAG";
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -56,9 +64,7 @@ public class PreDataFragment extends Fragment {
                 preHandler.sendMessage(message);
             }
         }).start();
-        return view;
     }
-
     public void RefreshDataItem(){
         final String TAG = "RefreshDataItem";
         Log.d(TAG, String.valueOf(runningRecords.length));
@@ -75,12 +81,26 @@ public class PreDataFragment extends Fragment {
         TextView speedtext = view.findViewById(R.id.speedtext_runrecoritem);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");
         startTimetext.setText(simpleDateFormat.format(record.getStartTime()));
-        distancetext.setText(record.getDistance());
+        distancetext.setText(record.getDistance()+","+record.getId());
         durationtext.setText(TimeManager.formatseconds(record.getRunningtime()));
         calorietext.setText(record.getCalorie());
         speedtext.setText(record.getSpeed());
         linearLayout.addView(view);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), TraceActivity.class);
+                intent.setType(String.valueOf(record.getId()));
+                startActivity(intent);
+            }
+        });
         Log.d("LinearAddView","FINISH");
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+
+        }
+    }
 }

@@ -40,6 +40,15 @@ public class RunningRecord {
     private Double Distribution;
     //日期标记
     private String DateTag;
+    private String UserId;
+
+    public String getUserId() {
+        return UserId;
+    }
+
+    public void setUserId(String userId) {
+        UserId = userId;
+    }
 
     @Override
     public String toString() {

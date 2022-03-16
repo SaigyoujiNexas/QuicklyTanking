@@ -6,6 +6,8 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 
 import com.amap.api.location.AMapLocationClient;
@@ -18,6 +20,9 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.Polyline;
 import com.amap.api.maps.model.PolylineOptions;
+import com.example.modulescore.main.DataBase.MyDataBase;
+import com.example.modulescore.main.DataBase.RunningRecord;
+import com.example.modulescore.main.Pre.PreHandler;
 import com.example.modulescore.main.R;
 import com.example.modulescore.main.Target.TargetAdapter;
 import com.google.android.material.tabs.TabLayout;
@@ -30,16 +35,27 @@ public class TraceActivity extends AppCompatActivity {
     final String[] tabs = new String[]{"轨迹","信息"};
     ViewPager2 viewPager2;
     TabLayout tabLayout;
-
+    RunningRecord selectedRecord;
+    Bundle savedInstanceState;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.savedInstanceState = savedInstanceState;
         setContentView(R.layout.activity_trace);
+        Long recordId = Long.parseLong(getIntent().getType());
+        TraceHandler traceHandler = new TraceHandler(this,Looper.getMainLooper());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                selectedRecord = MyDataBase.getsInstance(getApplicationContext()).runningDao().queryRunningRecordById(recordId);
+                Message message = new Message();
+                message.what = traceHandler.finishQuery;
+                traceHandler.sendMessage(message);
+            }
+        }).start();
         viewPager2 = findViewById(R.id.viewpager2_TarceActivity);
         tabLayout = findViewById(R.id.tabLayout_TarceActivity);
         viewPager2.setOrientation(viewPager2.ORIENTATION_HORIZONTAL);
-        TraceAdapter traceAdapter = new TraceAdapter();
-        viewPager2.setAdapter(traceAdapter);
         viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -54,7 +70,11 @@ public class TraceActivity extends AppCompatActivity {
                 super.onPageScrollStateChanged(state);
             }
         });
-        viewPager2.setOffscreenPageLimit(2);
+        viewPager2.setOffscreenPageLimit(1);
+    }
+    public void initViewPager2Adapter(){
+        TraceAdapter traceAdapter = new TraceAdapter(selectedRecord,this,savedInstanceState);
+        viewPager2.setAdapter(traceAdapter);
         new TabLayoutMediator(tabLayout, viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
