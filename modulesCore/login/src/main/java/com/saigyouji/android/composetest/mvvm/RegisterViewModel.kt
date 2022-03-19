@@ -1,6 +1,5 @@
 package com.saigyouji.android.composetest.mvvm
 
-import android.media.Image
 import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -17,13 +16,9 @@ import com.example.modulespublic.common.constant.KeyPool
 import com.example.modulespublic.common.net.ApiService
 import com.example.modulespublic.common.net.BaseResponse
 import com.example.modulespublic.common.utils.FileUtil
-import com.saigyouji.android.composetest.net.LoginService
 import com.saigyouji.android.composetest.net.RegisterService
-import com.saigyouji.android.composetest.net.VerifyService
-import com.saigyouji.android.composetest.net.response.RegisterResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -70,7 +65,7 @@ constructor(
         RequestModel.request(
             apiService.setUserInfo(
             Preferences.getString(KeyPool.PUBLIC_KEY, ""),
-            FileUtil.ImageFileToMultpartBody(head.toFile()),
+            FileUtil.imageFileToMultipartBody(head.toFile()),
             name, gender, birthday, height, weight
         ),
             lifecycleOwner, object:NetCallback<String?>{

@@ -58,7 +58,7 @@ object LoginFrontPage {
     @ExperimentalAnimationApi
     @Composable
     fun LoginFrontPage(
-        navController: NavHostController,
+        navController: NavHostController = rememberNavController(),
         loginViewModel: LoginViewModel = viewModel(),
         verifyViewModel: VerifyViewModel = viewModel(),
         loginState: MutableState<LoginState> = rememberLoginState()
@@ -73,9 +73,11 @@ object LoginFrontPage {
                             )
                         ) {
                             Text(text = "没有账号?创建一个",
-                                Modifier.clickable(enabled = true) {
-                                    navController.navigate(register_first)
-                                }.padding(start = 24.dp)
+                                Modifier
+                                    .clickable(enabled = true) {
+                                        navController.navigate(register_first)
+                                    }
+                                    .padding(start = 24.dp)
                             )
                         }
             },
@@ -198,26 +200,33 @@ object LoginFrontPage {
 
                     Surface(
                         modifier = Modifier
+                            .fillMaxWidth()
                             .padding(start = 24.dp, top = 24.dp)
                     ) {
-                        Text(
-                            text = if (loginState.value.isLoginByPasswd())
-                                "使用短信验证码登录"
-                            else
-                                "使用账号密码登录",
-                            color = Color.Gray,
-                            modifier = Modifier
-                                .background(color = Color.Transparent)
-                                .clickable(
-                                    enabled = true,
-                                    role = Role.Button,
-                                    onClick = {
-                                        loginState.value = loginState.value.toggleValue()
-                                    })
-                                .wrapContentSize()
+                        Row {
+                            Text(
+                                text = if (loginState.value.isLoginByPasswd())
+                                    "使用短信验证码登录"
+                                else
+                                    "使用账号密码登录",
+                                color = Color.Gray,
+                                modifier = Modifier
+                                    .background(color = Color.Transparent)
+                                    .clickable(
+                                        enabled = true,
+                                        role = Role.Button,
+                                        onClick = {
+                                            loginState.value = loginState.value.toggleValue()
+                                        })
+                                    .wrapContentSize()
+                            )
+                            Text(text = "忘记密码", color = Color.Gray,
+                                modifier = Modifier.background(Color.Transparent)
+                                    .clickable {
 
-
-                        )
+                                    }
+                            )
+                        }
                     }
                 }
             }
@@ -232,4 +241,14 @@ object LoginFrontPage {
         }
         return otherJudge.invoke(str)
     }
+
+
 }
+
+@ExperimentalAnimationApi
+@Preview
+@Composable
+fun previewLoginFrontPage(){
+    LoginFrontPage.LoginFrontPage()
+}
+

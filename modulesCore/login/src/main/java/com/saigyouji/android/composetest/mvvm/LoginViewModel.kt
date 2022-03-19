@@ -28,14 +28,12 @@ class LoginViewModel
     var verifyCode by mutableStateOf("")
 
     fun sendCode(onSuccess: () -> Unit) = viewModelScope.launch {
-        var res: BaseResponse<String?>?
-        try{
-            res = loginService.sendCode(LoginService.Companion.SendCodeRequest(tel))
-        }catch(e: Exception)
-        {
-            res = BaseResponse( e.localizedMessage, 200, e.localizedMessage)
+        val res: BaseResponse<String?> = try{
+            loginService.sendCode(LoginService.Companion.SendCodeRequest(tel))
+        }catch(e: Exception) {
+            BaseResponse( e.localizedMessage, 200, e.localizedMessage)
         }
-        res?.let {
+        res.let {
             when(it.isSuccess){
                 true -> onSuccess.invoke()
                 else -> ToastUtil.showToast(it.msg)
@@ -46,7 +44,7 @@ class LoginViewModel
         fun loginByPasswd( onSuccess: () -> Unit = {}) =
 
             viewModelScope.launch {
-                var res: LoginResponse? = null
+                var res: LoginResponse?
                 try {
                     res = loginService.login(
                         LoginService.Companion.LoginRequest(
@@ -54,7 +52,7 @@ class LoginViewModel
                         tel,
                         passwd,
                         null,
-                        UUID.randomUUID().toString(),
+                        Preferences.getString(KeyPool.ID, ""),
                         null)
                     )
                 }catch (e: Exception)

@@ -8,7 +8,7 @@ import java.io.File
 class FileUtil {
     companion object{
         @JvmStatic
-        fun ImageFileToMultpartBody(file: File): MultipartBody.Part {
+        fun imageFileToMultipartBody(file: File): MultipartBody.Part {
             val requestFile =
                 file.asRequestBody("image".toMediaTypeOrNull())
             return MultipartBody.Part.createFormData("image", file.name, requestFile)

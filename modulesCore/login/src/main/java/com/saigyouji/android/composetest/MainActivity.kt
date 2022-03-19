@@ -95,6 +95,7 @@ class MainActivity : AppCompatActivity(){
                         composable(register_third){ RegisterThirdPage(registerViewModel, navController)}
                         composable(register_fourth){ RegisterForthPage(registerViewModel, navController)}
                         composable(register_fifth){ RegisterFifthPage(registerViewModel, navController)}
+
                     }
                 }
                 

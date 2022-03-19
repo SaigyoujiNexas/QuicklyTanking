@@ -71,7 +71,9 @@ fun RegisterFifthPage(
             val file = File(context.cacheDir, File(url.path).name)
             if(file.exists())
                 file.delete()
+
             registerViewModel.head = Uri.fromFile(file)
+
             val intent = UCrop.of(url, registerViewModel.head)
                 .withAspectRatio(1f, 1f)
                 .getIntent(context)
