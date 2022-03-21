@@ -26,6 +26,7 @@ import com.example.modulescore.main.EventBus.MessageEvent;
 import com.example.modulescore.main.UI.View.ProgressButton;
 import com.example.modulescore.main.R;
 import com.example.modulescore.main.Util.TimeManager;
+import com.example.modulespublic.common.net.GetRequest_Interface;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.robinhood.ticker.TickerUtils;
 import com.robinhood.ticker.TickerView;
@@ -37,6 +38,12 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Date;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RunActivity extends AppCompatActivity implements View.OnClickListener {
     FloatingActionButton startRunButton;
@@ -103,6 +110,26 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
                         MyDataBase.getsInstance(getApplicationContext()).runningDao().insertRunningRecord(record);
                         Log.d(TAG,record.toString());
                         Log.d(TAG+"length", String.valueOf(MyDataBase.getsInstance(getApplicationContext()).runningDao().loadAllRunningRecordss().length));
+                        String baseUrl = "http://116.62.180.44:8080/upLoadRoad/";
+                        Retrofit retrofit = new Retrofit.Builder()
+                                .baseUrl(baseUrl)
+                                .addConverterFactory(GsonConverterFactory.create())
+                                .build();
+                        GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
+                        Call<RunningRecord> call = request.getJsonData(record);	//获得call对象
+                        call.enqueue(new Callback<RunningRecord>() {
+                            @Override
+                            public void onResponse(Call<RunningRecord> call, Response<RunningRecord> response) {
+                                //assert response.body() != null;
+                                Log.d(TAG,"RunActivityRetrofit: onResponse "+response.body());
+                            }
+
+                            @Override
+                            public void onFailure(Call<RunningRecord> call, Throwable t) {
+                                Log.d(TAG,"RunActivityRetrofit: onFailure "+t.toString()+t);
+                                Toast.makeText(RunActivity.this, "连接错误", Toast.LENGTH_LONG).show();
+                            }
+                        });
                     }
                 }).start();
                 finish();

@@ -124,16 +124,19 @@ public class PreRunActivity extends AppCompatActivity implements View.OnClickLis
             //申请WRITE_EXTERNAL_STORAGE权限
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     WRITE_COARSE_LOCATION_REQUEST_CODE);
-        } else if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             //申请WRITE_EXTERNAL_STORAGE权限
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
                     WRITE_COARSE_LOCATION_REQUEST_CODE);
-        } else if(ContextCompat.checkSelfPermission(this, Manifest.permission.WAKE_LOCK)
+        }
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.WAKE_LOCK)
                 != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WAKE_LOCK},
                     WRITE_COARSE_LOCATION_REQUEST_CODE);
-        }else if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     WRITE_COARSE_LOCATION_REQUEST_CODE);
