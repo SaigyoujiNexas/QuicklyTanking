@@ -39,13 +39,18 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.Date;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+@AndroidEntryPoint
 public class RunActivity extends AppCompatActivity implements View.OnClickListener {
+
     FloatingActionButton startRunButton;
     FloatingActionButton stopRunButton;
     ProgressButton finishRunButton;
@@ -110,7 +115,7 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
                         MyDataBase.getsInstance(getApplicationContext()).runningDao().insertRunningRecord(record);
                         Log.d(TAG,record.toString());
                         Log.d(TAG+"length", String.valueOf(MyDataBase.getsInstance(getApplicationContext()).runningDao().loadAllRunningRecordss().length));
-                        String baseUrl = "http://116.62.180.44:8080/upLoadRoad/";
+                        String baseUrl = "http://116.62.180.44:8080/";
                         Retrofit retrofit = new Retrofit.Builder()
                                 .baseUrl(baseUrl)
                                 .addConverterFactory(GsonConverterFactory.create())
