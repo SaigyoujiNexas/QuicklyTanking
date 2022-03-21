@@ -54,7 +54,7 @@ public class TraceActivity extends AppCompatActivity {
                 super.onPageScrollStateChanged(state);
             }
         });
-        viewPager2.setOffscreenPageLimit(1);
+        viewPager2.setOffscreenPageLimit(2);
     }
     public void initViewPager2Adapter(){
         TraceAdapter traceAdapter = new TraceAdapter(selectedRecord,this,savedInstanceState);
