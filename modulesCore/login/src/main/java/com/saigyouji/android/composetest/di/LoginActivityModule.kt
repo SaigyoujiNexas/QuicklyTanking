@@ -3,6 +3,7 @@ package com.saigyouji.android.composetest.di
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.saigyouji.android.composetest.net.ForgetService
 import com.saigyouji.android.composetest.net.LoginService
 import com.saigyouji.android.composetest.net.RegisterService
 import com.saigyouji.android.composetest.net.VerifyService
@@ -29,5 +30,8 @@ object LoginActivityModule {
     fun provideVerifyService(retrofit: Retrofit): VerifyService{
         return retrofit.create(VerifyService::class.java)
     }
-
+    @Provides
+    fun provideForgetService(retrofit: Retrofit): ForgetService {
+        return retrofit.create(ForgetService::class.java)
+    }
 }

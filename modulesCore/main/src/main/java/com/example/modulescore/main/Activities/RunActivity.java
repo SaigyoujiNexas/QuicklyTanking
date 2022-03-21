@@ -57,7 +57,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RunActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Inject
-    GetRequest_Interface getRequestInterface;
+    public GetRequest_Interface getRequestInterface;
 
     FloatingActionButton startRunButton;
     FloatingActionButton stopRunButton;

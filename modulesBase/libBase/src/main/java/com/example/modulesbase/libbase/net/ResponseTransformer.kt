@@ -31,7 +31,7 @@ class ResponseTransformer<T> : ObservableTransformer<NetResponse<T>, T>, Default
                 if(it.isSuccess){
                     if(it.data != null)
                     {
-                            Observable.just(it.data)
+                        Observable.just(it.data)
                     }
                     else
                     {

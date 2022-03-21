@@ -49,7 +49,7 @@ public class RunningRecord {
 
     @Override
     public String toString() {
-        return "RunningRecord{" +
+        return "RunningRecord{"+
                 "id=" + id +
                 ", PathPointsLine=" + PathPointsLine +
                 ", Distance='" + Distance + '\'' +

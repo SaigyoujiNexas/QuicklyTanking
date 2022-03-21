@@ -7,6 +7,7 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface RegisterService {
+
     @POST(REGISTER)
     suspend fun register(@Body request: RegisterRequest): BaseResponse<String?>
 

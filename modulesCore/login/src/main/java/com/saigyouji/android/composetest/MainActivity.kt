@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity(){
                     color = MaterialTheme.colors.background
                 ) {
                     navController = rememberNavController()
-                    NavHost(navController = navController, startDestination = register_fourth){
+                    NavHost(navController = navController, startDestination = login){
                         composable(login){
                             val verifyViewModel = hiltViewModel<VerifyViewModel>()
                             LoginFrontPage.LoginFrontPage(navController,loginViewModel,verifyViewModel) }
