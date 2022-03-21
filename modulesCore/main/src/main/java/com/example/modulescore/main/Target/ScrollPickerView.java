@@ -3,10 +3,8 @@ package com.example.modulescore.main.Target;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -16,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.modulescore.main.R;
+import com.example.modulescore.main.Util.ScreenUtil;
 
 public class ScrollPickerView extends RecyclerView {
 //

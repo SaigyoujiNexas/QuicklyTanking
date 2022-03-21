@@ -1,8 +1,16 @@
 package com.example.modulescore.main.Util;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class TimeManager {
     //开始时间
     String settedTime;
+
+
+    static SimpleDateFormat yearFormat = new SimpleDateFormat ("yyyy年");
+    static SimpleDateFormat dateFormat = new SimpleDateFormat ("MM月dd日");
+    static SimpleDateFormat minuteFormat = new SimpleDateFormat ("hh:mm");
 //    public static String calculatePassedTime(Date startTime){
 //
 //        //获得持续秒数
@@ -52,5 +60,14 @@ public class TimeManager {
                 : "0" + (passedSeconds % 3600) % 60;
 
         return  mm + ":" + ss;
+    }
+    public static String formatYears(Date date){
+        return yearFormat.format(date);
+    }
+    public static String formatMinutes(Date date){
+        return minuteFormat.format(date);
+    }
+    public static String formatDates(Date date){
+        return dateFormat.format(date);
     }
 }

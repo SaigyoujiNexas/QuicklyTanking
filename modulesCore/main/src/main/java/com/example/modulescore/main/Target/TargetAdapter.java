@@ -98,6 +98,7 @@ public class TargetAdapter extends RecyclerView.Adapter {
         }
         return 0;
     }
+
     public int getViewPagerPostion() {
         return viewPagerPostion;
     }

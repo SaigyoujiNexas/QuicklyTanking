@@ -2,25 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.modulescore.main">
 
-    <application android:name="com.example.modulespublic.common.base.BaseApplication">
-        <activity
-            android:name=".Activities.AfterRunActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Activities.TargetDistanceActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Activities.PreRunActivity"
-            android:exported="true"
-            android:launchMode="singleTask" >
-        </activity>
-        <activity
-            android:name=".Activities.RunActivity"
-            android:exported="true"
-            android:launchMode="singleTask" />
-        <activity
-            android:name=".Activities.RunningActivity"
-            android:exported="true"
-            android:launchMode="singleInstance" />
-    </application>
+    <application android:name="com.example.modulespublic.common.base.BaseApplication"></application>
+
 </manifest>

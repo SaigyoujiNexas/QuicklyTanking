@@ -28,7 +28,7 @@ import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.PolylineOptions;
-import com.example.modulescore.main.DataBase.RunningRecord;
+import com.example.modulespublic.common.base.RunningRecord;
 import com.example.modulescore.main.EventBus.MessageEvent;
 import com.example.modulescore.main.R;
 import com.example.modulescore.main.Util.TimeManager;
@@ -55,7 +55,7 @@ public class RunningActivity extends AppCompatActivity implements LocationSource
     //定位需要的声明
     private AMapLocationClient mLocationClient = null;//定位发起端
     private AMapLocationClientOption mLocationOption = null;//定位参数
-    private LocationSource.OnLocationChangedListener mListener = null;//定位监听器
+    private OnLocationChangedListener mListener = null;//定位监听器
     //数据显示
     TextView tv_mapSpeed;
 
@@ -80,6 +80,8 @@ public class RunningActivity extends AppCompatActivity implements LocationSource
     int weight = 60;
     RunningRecord record = new RunningRecord();
     private DecimalFormat decimalFormat = new DecimalFormat("0.00");
+    MessageEvent messageEvent = new MessageEvent();//跑步时间
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,9 +105,9 @@ public class RunningActivity extends AppCompatActivity implements LocationSource
         tv_mapDistance = findViewById(R.id.distanceTicker);
         tv_mapDistance.setCharacterLists(TickerUtils.provideNumberList());
         tv_mapDistance.setAnimationDuration(500);
-
         initMapUI();
         initLoc();
+        messageEvent.setStartTime(startTime);
         Intent startRunIntent = new Intent(this,RunActivity.class);
         startActivity(startRunIntent);
         if(getIntent().getType()!= null && getIntent().getType().equals(TargetDistanceActivity.isTarget)){
@@ -188,8 +190,6 @@ public class RunningActivity extends AppCompatActivity implements LocationSource
     @Override
     public void onLocationChanged(AMapLocation amapLocation) {
         String TAG = "RunningActivity_LocationChanged";
-        MessageEvent messageEvent = new MessageEvent();//跑步时间
-        Log.d(TAG,"");
         if (amapLocation != null) {
             if (amapLocation.getErrorCode() == 0) {
                 float nowSpeed = amapLocation.getSpeed();
@@ -230,13 +230,13 @@ public class RunningActivity extends AppCompatActivity implements LocationSource
                 }else if(isFirstLoc){//如果是第一次，那么改isFirstLoc为false，则之后都不是第一次了
                     //设置缩放级别
                     Log.d(TAG,"FirstLoc");
-                    aMap.moveCamera(CameraUpdateFactory.zoomTo(18));
-                    aMap.moveCamera(CameraUpdateFactory.changeTilt(0));
+                    aMap.moveCamera(CameraUpdateFactory.zoomTo(18));//设置地图缩放级别。
+                    aMap.moveCamera(CameraUpdateFactory.changeTilt(0));//设置地图倾斜度。
                     isFirstLoc = false;
                     Log.d(TAG,"FirstLoc0");
                 }
                 //将地图移动到定位点
-                aMap.moveCamera(CameraUpdateFactory.changeLatLng(nowLatLng));
+                aMap.moveCamera(CameraUpdateFactory.changeLatLng(nowLatLng));//设置地图的中心点。
                 //点击定位按钮 能够将地图的中心移动到定位点
                 mListener.onLocationChanged(amapLocation);
                 Log.d(TAG,"FirstLoc00");

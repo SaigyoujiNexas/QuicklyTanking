@@ -1,11 +1,10 @@
 package com.example.modulescore.main.Pre;
 
+import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
@@ -15,12 +14,15 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.modulescore.main.DataBase.MyDataBase;
-import com.example.modulescore.main.DataBase.RunningRecord;
+import com.example.modulespublic.common.base.MyDataBase;
+import com.example.modulespublic.common.base.RunningRecord;
 import com.example.modulescore.main.R;
+import com.example.modulescore.main.Trace.TraceActivity;
 import com.example.modulescore.main.Util.TimeManager;
 
-public class PreDataFragment extends Fragment {
+import java.text.SimpleDateFormat;
+
+public class PreDataFragment extends Fragment implements View.OnClickListener{
     public PreDataFragment() {
     }
     LinearLayout linearLayout;
@@ -35,17 +37,16 @@ public class PreDataFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final String TAG = "PreDataFragmentonCreateViewTAG";
+
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_pre_data, container, false);
+        View view = inflater.inflate(R.layout.pre_data_item0, container, false);
         linearLayout = view.findViewById(R.id.linearlayout_pre_data);
-        Handler handler = new Handler(Looper.getMainLooper()){
-            @Override
-            public void handleMessage(@NonNull Message msg) {
-                super.handleMessage(msg);
-                RefreshDataItem();
-            }
-        };
+        QueryAllRunningRecords();
+        return view;
+    }
+
+    private void QueryAllRunningRecords(){
+        final String TAG = "QueryAllRunningRecordsTAG";
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -56,9 +57,7 @@ public class PreDataFragment extends Fragment {
                 preHandler.sendMessage(message);
             }
         }).start();
-        return view;
     }
-
     public void RefreshDataItem(){
         final String TAG = "RefreshDataItem";
         Log.d(TAG, String.valueOf(runningRecords.length));
@@ -72,12 +71,33 @@ public class PreDataFragment extends Fragment {
         TextView distancetext = view.findViewById(R.id.distancetext_runrecord);
         TextView durationtext = view.findViewById(R.id.duration_text_runrecorditem);
         TextView calorietext = view.findViewById(R.id.calorietext_runrecoritem);
-        //startTimetext.setText(TimeManager.formatseconds(record.getStartTime()));
-        distancetext.setText(record.getDistance());
+        TextView speedtext = view.findViewById(R.id.speedtext_runrecoritem);
+        TextView recordDateText = view.findViewById(R.id.runrecord_Date);
+        SimpleDateFormat yearFormat = new SimpleDateFormat ("yyyy年");
+        SimpleDateFormat dateFormat = new SimpleDateFormat ("MM月dd日");
+        SimpleDateFormat minuteFormat = new SimpleDateFormat ("hh:mm");
+        recordDateText.setText(dateFormat.format(record.getStartTime()));
+        startTimetext.setText(minuteFormat.format(record.getStartTime()));
+        distancetext.setText(record.getDistance()+","+record.getId());
         durationtext.setText(TimeManager.formatseconds(record.getRunningtime()));
         calorietext.setText(record.getCalorie());
+        speedtext.setText(record.getSpeed());
         linearLayout.addView(view);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), TraceActivity.class);
+                intent.setType(String.valueOf(record.getId()));
+                startActivity(intent);
+            }
+        });
         Log.d("LinearAddView","FINISH");
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+
+        }
+    }
 }

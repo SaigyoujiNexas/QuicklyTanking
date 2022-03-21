@@ -104,7 +104,6 @@ public class TargetDistanceActivity extends AppCompatActivity implements View.On
                 tab.setText(tabs[position]);
             }
         }).attach();
-
         btn_back.setOnClickListener(this);
         startDistanceRunView.setOnClickListener(this);
     }

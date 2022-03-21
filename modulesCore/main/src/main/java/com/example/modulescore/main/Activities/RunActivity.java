@@ -1,12 +1,10 @@
 package com.example.modulescore.main.Activities;
 
-import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -20,12 +18,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.amap.api.maps.model.LatLng;
-import com.example.modulescore.main.DataBase.MyDataBase;
-import com.example.modulescore.main.DataBase.RunningRecord;
+import com.example.modulespublic.common.base.MyDataBase;
+import com.example.modulespublic.common.base.RunningRecord;
 import com.example.modulescore.main.EventBus.MessageEvent;
 import com.example.modulescore.main.UI.View.ProgressButton;
 import com.example.modulescore.main.R;
@@ -34,10 +30,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.robinhood.ticker.TickerUtils;
 import com.robinhood.ticker.TickerView;
 
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.Date;
 import java.util.List;
 
 public class RunActivity extends AppCompatActivity implements View.OnClickListener {
@@ -55,6 +53,8 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
     RunningRecord record = new RunningRecord();
     TextView calorieText;
     List<LatLng> mPathPointsLine;
+    Date startTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,24 +88,23 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
             public void onFinish() {
                 final String TAG = "FINISH_RUNNING";
                 Log.d(TAG,"start finish");
+                //record.setId(Long.valueOf(001));
+                record.setUserId("1");
                 record.setCalorie((String) calorieText.getText());
                 record.setDistance( distanceview.getText());
                 Log.d(TAG,passedSeconds.toString());
                 record.setRunningtime(passedSeconds);
-                Log.d(TAG,"0");
                 record.setSpeed((String) speedText.getText());
-                Log.d(TAG,"1");
                 record.setPathPointsLine(mPathPointsLine);
-                Log.d(TAG,"2");
+                record.setStartTime(startTime);
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         MyDataBase.getsInstance(getApplicationContext()).runningDao().insertRunningRecord(record);
                         Log.d(TAG,record.toString());
-                        Log.d(TAG,MyDataBase.getsInstance(getApplicationContext()).runningDao().loadAllRunningRecordss().toString());
+                        Log.d(TAG+"length", String.valueOf(MyDataBase.getsInstance(getApplicationContext()).runningDao().loadAllRunningRecordss().length));
                     }
                 }).start();
-                Log.d(TAG,"finish finish");
                 finish();
             }
 
@@ -230,6 +229,9 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
         }
         if(event.getmPathPointsLine()!=null){
             mPathPointsLine = event.getmPathPointsLine();
+        }
+        if(event.getStartTime()!=null){
+            startTime = event.getStartTime();
         }
     };
     @Override
