@@ -51,6 +51,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @AndroidEntryPoint
 public class RunActivity extends AppCompatActivity implements View.OnClickListener {
 
+    @Inject
+    GetRequest_Interface getRequestInterface;
+
     FloatingActionButton startRunButton;
     FloatingActionButton stopRunButton;
     ProgressButton finishRunButton;
@@ -115,7 +118,7 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
                         MyDataBase.getsInstance(getApplicationContext()).runningDao().insertRunningRecord(record);
                         Log.d(TAG,record.toString());
                         Log.d(TAG+"length", String.valueOf(MyDataBase.getsInstance(getApplicationContext()).runningDao().loadAllRunningRecordss().length));
-                        String baseUrl = "http://116.62.180.44:8080/";
+                        String baseUrl = "http://116.62.180.44:8080/upLoadRoad/";
                         Retrofit retrofit = new Retrofit.Builder()
                                 .baseUrl(baseUrl)
                                 .addConverterFactory(GsonConverterFactory.create())

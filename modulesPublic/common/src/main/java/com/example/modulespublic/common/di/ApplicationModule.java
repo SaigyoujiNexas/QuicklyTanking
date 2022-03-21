@@ -1,6 +1,7 @@
 package com.example.modulespublic.common.di;
 
 import com.example.modulespublic.common.net.ApiService;
+import com.example.modulespublic.common.net.GetRequest_Interface;
 
 import javax.inject.Singleton;
 
@@ -19,5 +20,10 @@ public class ApplicationModule {
     @Singleton
     public ApiService provideApiService(Retrofit retrofit){
         return retrofit.create(ApiService.class);
+    }
+    @Provides
+    @Singleton
+    public GetRequest_Interface provideRequestInterfaces(Retrofit retrofit){
+        return retrofit.create(GetRequest_Interface.class);
     }
 }

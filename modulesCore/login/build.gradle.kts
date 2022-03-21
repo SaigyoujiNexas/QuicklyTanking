@@ -48,7 +48,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = rootProject.extra["compose_version"] as String
+        kotlinCompilerExtensionVersion = compose_version
     }
     packagingOptions {
         resources {
@@ -70,16 +70,10 @@ kapt{
 }
 dependencies {
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.0")
-    implementation("androidx.compose.ui:ui:${rootProject.extra["compose_version"]}")
-    implementation("androidx.compose.material:material:${rootProject.extra["compose_version"]}")
-    implementation("androidx.compose.ui:ui-tooling-preview:${rootProject.extra["compose_version"]}")
-    implementation("androidx.activity:activity-compose:1.4.0")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:${rootProject.extra["compose_version"]}")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-    implementation("com.google.android.material:material:1.5.0")
-    implementation(libCoilCompose)
-    libraryC.forEach { (_, v) -> implementation(v)}
 
+    libCompose.forEach { implementation(it) }
+    libraryC.forEach { (_, v) -> implementation(v)}
     libKtx.forEach { implementation(it) }
     implementation(project(":modulesPublic:common"))
     libs.forEach { implementation(it) }

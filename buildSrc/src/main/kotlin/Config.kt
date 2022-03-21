@@ -1,4 +1,5 @@
 import org.gradle.api.JavaVersion
+import org.gradle.kotlin.dsl.extra
 
 const val isDebug = true
 val androidC = mapOf(
@@ -13,25 +14,8 @@ val androidC = mapOf(
 const val nav_version = "2.4.1"
 const val truth_version = "1.0"
 const val  room_version = "2.4.2"
-val libraryC = mapOf(
-    "appcompat" to  "androidx.appcompat:appcompat:1.4.0",
-    "material" to  "com.google.android.material:material:1.4.0",
-    "constraintlayout" to "androidx.constraintlayout:constraintlayout:2.1.2",
-    "nav-fragment" to "androidx.navigation:navigation-fragment:$nav_version",
-    "nav-ui" to "androidx.navigation:navigation-ui:$nav_version",
-    "nav-dnmc-fragment" to "androidx.navigation:navigation-dynamic-features-fragment:$nav_version",
-    "nav_compose" to "androidx.navigation:navigation-compose:$nav_version",
-    )
+const val compose_version = "1.1.0"
 
-val libKtx = listOf(
-    "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-alpha02",
-    "androidx.lifecycle:lifecycle-runtime-ktx:2.3.1",
-    "androidx.core:core-ktx:1.7.0",
-
-)
-val librariesDebug = listOf(
-    "com.google.truth:truth:$truth_version"
-)
 const val libUCropper = "com.github.yalantis:ucrop:2.2.6"
 const val libAMap3DMap = "com.amap.api:3dmap:latest.integration"
 const val libAMapLocation = "com.amap.api:location:latest.integration"
@@ -64,6 +48,50 @@ const val libEventbus = "org.greenrobot:eventbus:3.1.1"
 const val libRoom =  "androidx.room:room-runtime:$room_version"
 const val libRoomCompiler = "androidx.room:room-compiler:$room_version"
 
+const val libMD3 = "com.google.android.material:material:1.5.0"
+
+const val nav_compose = "androidx.navigation:navigation-compose:$nav_version"
+const val libComposeConstraintlayout = "androidx.constraintlayout:constraintlayout-compose:1.0.0"
+const val libComposeUI = "androidx.compose.ui:ui:$compose_version"
+const val libComposeMaterial = "androidx.compose.material:material:$compose_version"
+const val libComposePreview = "androidx.compose.ui:ui-tooling-preview:$compose_version"
+const val libComposeActivity = "androidx.activity:activity-compose:1.4.0"
+const val libComposeViewModel = "androidx.lifecycle:lifecycle-viewmodel-compose:$compose_version"
+const val libHiltNavCompose = "androidx.hilt:hilt-navigation-compose:1.0.0"
+
+val libraryC = mapOf(
+    "appcompat" to  "androidx.appcompat:appcompat:1.4.0",
+    "material" to  "com.google.android.material:material:1.4.0",
+    "constraintlayout" to "androidx.constraintlayout:constraintlayout:2.1.2",
+    "nav-fragment" to "androidx.navigation:navigation-fragment:$nav_version",
+    "nav-ui" to "androidx.navigation:navigation-ui:$nav_version",
+    "nav-dnmc-fragment" to "androidx.navigation:navigation-dynamic-features-fragment:$nav_version",
+    "md3" to libMD3
+)
+
+val libKtx = listOf(
+    "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-alpha02",
+    "androidx.lifecycle:lifecycle-runtime-ktx:2.3.1",
+    "androidx.core:core-ktx:1.7.0",
+
+    )
+val librariesDebug = listOf(
+    "com.google.truth:truth:$truth_version"
+)
+
+val libCompose = listOf(
+    nav_compose,
+    libCoilCompose,
+    libComposeConstraintlayout,
+    libComposeUI,
+    libComposeMaterial,
+    libComposePreview,
+    libComposeActivity,
+    libComposeViewModel,
+    libHiltNavCompose
+
+
+)
 val apts = listOf(
     libARouterCompiler,
     libHiltCompiler,

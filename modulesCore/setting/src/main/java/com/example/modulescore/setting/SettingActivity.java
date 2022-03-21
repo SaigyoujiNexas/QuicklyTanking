@@ -5,15 +5,11 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ListView;
 
-public class SettingActivity extends AppCompatActivity implements View.OnClickListener {
+public class SettingActivity extends AppCompatActivity{
     ConstraintLayout settingItem1;
-    ConstraintLayout settingItem2;
-    ConstraintLayout settingItem3;
-    ConstraintLayout settingItem4;
-    ConstraintLayout settingItem5;
-    ConstraintLayout settingItem6;
-    ConstraintLayout settingItem7;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,8 +19,4 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
-    @Override
-    public void onClick(View view) {
-
-    }
 }

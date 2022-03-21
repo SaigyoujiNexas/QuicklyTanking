@@ -14,6 +14,7 @@ public interface ApiService {
     static final String SET_USER_INFO = "set/user_info";
     @GET("/INDEX.TXT")
     public Observable<BaseResponse<String>> test();
+
     @Multipart
     @POST(SET_USER_INFO)
     public Observable<BaseResponse<String>> setUserInfo

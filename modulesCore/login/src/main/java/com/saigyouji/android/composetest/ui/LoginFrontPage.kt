@@ -126,7 +126,6 @@ object LoginFrontPage {
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center
                     )
-                    Text(text = UUID.randomUUID().toString())
                     OutlinedTextField(
                         value = loginViewModel.tel,
                         onValueChange = { loginViewModel.tel = it },
