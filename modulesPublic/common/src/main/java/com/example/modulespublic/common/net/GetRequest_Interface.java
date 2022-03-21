@@ -16,10 +16,10 @@ import retrofit2.http.Query;
 public interface GetRequest_Interface {
     //无参
     @GET("upLoadRoad/")
-    Call<RunningRecord> getJsonData(@Query("record")RunningRecord record);
-    @Provides
-    @Singleton
-    public static GetRequest_Interface provideGetRequest_Interface(Retrofit retrofit){
-        return retrofit.create(GetRequest_Interface.class);
-    }
+    Call<BaseResponse<RunningRecord>> getJsonData(@Query("record")RunningRecord record);
+//    @Provides
+//    @Singleton
+//    public static GetRequest_Interface provideGetRequest_Interface(Retrofit retrofit){
+//        return retrofit.create(GetRequest_Interface.class);
+//    }
 }

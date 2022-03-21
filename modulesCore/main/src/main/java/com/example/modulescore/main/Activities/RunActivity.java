@@ -20,12 +20,16 @@ import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.amap.api.maps.model.LatLng;
+import com.example.modulesbase.libbase.net.RequestModel;
+import com.example.modulesbase.libbase.net.response.NetCallback;
+import com.example.modulesbase.libbase.net.response.NetResponse;
 import com.example.modulespublic.common.base.MyDataBase;
 import com.example.modulespublic.common.base.RunningRecord;
 import com.example.modulescore.main.EventBus.MessageEvent;
 import com.example.modulescore.main.UI.View.ProgressButton;
 import com.example.modulescore.main.R;
 import com.example.modulescore.main.Util.TimeManager;
+import com.example.modulespublic.common.net.BaseResponse;
 import com.example.modulespublic.common.net.GetRequest_Interface;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.robinhood.ticker.TickerUtils;
@@ -42,6 +46,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
+import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -118,29 +123,43 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
                         MyDataBase.getsInstance(getApplicationContext()).runningDao().insertRunningRecord(record);
                         Log.d(TAG,record.toString());
                         Log.d(TAG+"length", String.valueOf(MyDataBase.getsInstance(getApplicationContext()).runningDao().loadAllRunningRecordss().length));
-                        String baseUrl = "http://116.62.180.44:8080/upLoadRoad/";
-                        Retrofit retrofit = new Retrofit.Builder()
-                                .baseUrl(baseUrl)
-                                .addConverterFactory(GsonConverterFactory.create())
-                                .build();
-                        GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
-                        Call<RunningRecord> call = request.getJsonData(record);	//获得call对象
-                        call.enqueue(new Callback<RunningRecord>() {
-                            @Override
-                            public void onResponse(Call<RunningRecord> call, Response<RunningRecord> response) {
-                                //assert response.body() != null;
-                                Log.d(TAG,"RunActivityRetrofit: onResponse "+response.body());
-                            }
+//                        String baseUrl = "http://116.62.180.44:8080/upLoadRoad/";
+//                        Retrofit retrofit = new Retrofit.Builder()
+//                                .baseUrl(baseUrl)
+//                                .addConverterFactory(GsonConverterFactory.create())
+//                                .build();
+//                        GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
+//                        Call<RunningRecord> call = getRequestInterface.getJsonData(record);	//获得call对象
+//                        call.enqueue(new Callback<BaseResponse<RunningRecord>>() {
+//                            @Override
+//                            public void onResponse(Call<BaseResponse<RunningRecord>> call, Response<BaseResponse<RunningRecord>> response) {
+//                                //assert response.body() != null;
+//                                Log.d(TAG,"RunActivityRetrofit: onResponse "+response.body());
+//                            }
+//
+//                            @Override
+//                            public void onFailure(Call<BaseResponse<RunningRecord>> call, Throwable t) {
+//                                Log.d(TAG,"RunActivityRetrofit: onFailure "+t.toString()+t);
+//                                Toast.makeText(RunActivity.this, "连接错误", Toast.LENGTH_LONG).show();
+//                            }
+//                        });
 
-                            @Override
-                            public void onFailure(Call<RunningRecord> call, Throwable t) {
-                                Log.d(TAG,"RunActivityRetrofit: onFailure "+t.toString()+t);
-                                Toast.makeText(RunActivity.this, "连接错误", Toast.LENGTH_LONG).show();
-                            }
-                        });
                     }
                 }).start();
                 finish();
+                Observable<BaseResponse<RunningRecord>> observable = getRequestInterface.getJsonData(record);
+                RequestModel.Companion.request(getRequestInterface.getJsonData(record),RunActivity.this, new NetCallback<RunningRecord>() {
+
+                    @Override
+                    public void onSuccess(RunningRecord data) {
+
+                    }
+
+                    @Override
+                    public void onFailure(Throwable throwable) {
+
+                    }
+                });
             }
 
             @Override

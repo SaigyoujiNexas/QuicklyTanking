@@ -18,6 +18,11 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
+    public static GetRequest_Interface provideGetRequest_Interface(Retrofit retrofit){
+        return retrofit.create(GetRequest_Interface.class);
+    }
+    @Provides
+    @Singleton
     public ApiService provideApiService(Retrofit retrofit){
         return retrofit.create(ApiService.class);
     }
