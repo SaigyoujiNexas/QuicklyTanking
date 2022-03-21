@@ -152,12 +152,12 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
 
                     @Override
                     public void onSuccess(RunningRecord data) {
-
+                        Log.d("1111111111",data.toString());
                     }
 
                     @Override
                     public void onFailure(Throwable throwable) {
-
+                        Log.d("11111111112",throwable.getMessage());
                     }
                 });
             }

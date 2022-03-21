@@ -5,6 +5,7 @@ import com.example.modulespublic.common.base.RunningRecord;
 import javax.inject.Singleton;
 
 import dagger.Provides;
+import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.http.Field;
@@ -16,7 +17,7 @@ import retrofit2.http.Query;
 public interface GetRequest_Interface {
     //无参
     @GET("upLoadRoad/")
-    Call<BaseResponse<RunningRecord>> getJsonData(@Query("record")RunningRecord record);
+    Observable<BaseResponse<RunningRecord>> getJsonData(@Query("record")RunningRecord record);
 //    @Provides
 //    @Singleton
 //    public static GetRequest_Interface provideGetRequest_Interface(Retrofit retrofit){
