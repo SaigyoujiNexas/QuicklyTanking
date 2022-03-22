@@ -119,26 +119,19 @@ public class PreRunActivity extends AppCompatActivity implements View.OnClickLis
     private void myRequestPermissions(){
         //ACCESS_FINE_LOCATION通过WiFi或移动基站的方式获取用户错略的经纬度信息，定位精度大概误差在30~1500米
         //ACCESS_FINE_LOCATION，通过GPS芯片接收卫星的定位信息，定位精度达10米以内
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            //申请WRITE_EXTERNAL_STORAGE权限
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    WRITE_COARSE_LOCATION_REQUEST_CODE);
-        }
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+        || ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+        || ContextCompat.checkSelfPermission(this, Manifest.permission.WAKE_LOCK)
+                != PackageManager.PERMISSION_GRANTED
+        || ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             //申请WRITE_EXTERNAL_STORAGE权限
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                    WRITE_COARSE_LOCATION_REQUEST_CODE);
-        }
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.WAKE_LOCK)
-                != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WAKE_LOCK},
-                    WRITE_COARSE_LOCATION_REQUEST_CODE);
-        }
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.WAKE_LOCK,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     WRITE_COARSE_LOCATION_REQUEST_CODE);
         }
     }

@@ -8,6 +8,7 @@ import dagger.Provides;
 import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.Retrofit;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -16,8 +17,8 @@ import retrofit2.http.Query;
 
 public interface GetRequest_Interface {
     //无参
-    @GET("upLoadRoad/")
-    Observable<BaseResponse<RunningRecord>> getJsonData(@Query("record")RunningRecord record);
+    @POST("upLoadRoad")
+    Call<BaseResponse<RunningRecord>> getJsonData(@Body RunningRecord record);
 //    @Provides
 //    @Singleton
 //    public static GetRequest_Interface provideGetRequest_Interface(Retrofit retrofit){

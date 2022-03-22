@@ -11,6 +11,8 @@ import com.example.modulescore.main.R;
 import com.example.modulescore.main.Util.TimeManager;
 import com.example.modulespublic.common.base.RunningRecord;
 
+import java.util.Date;
+
 public class TraceViewHolder1 extends RecyclerView.ViewHolder {
 
     TextView distancetext;
@@ -32,7 +34,7 @@ public class TraceViewHolder1 extends RecyclerView.ViewHolder {
 
     public void onBind(RunningRecord selectedRecord) {
         calorietext.setText(selectedRecord.getCalorie()+"卡");
-        starttimetext.setText(TimeManager.formatDates(selectedRecord.getStartTime()));
+        starttimetext.setText(TimeManager.formatDates(new Date(selectedRecord.getStartTime())));
         duartiontext.setText(TimeManager.formatseconds(selectedRecord.getRunningtime()));
         speedtext.setText(selectedRecord.getSpeed());
         distancetext.setText(selectedRecord.getDistance());

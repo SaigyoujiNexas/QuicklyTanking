@@ -15,6 +15,15 @@ public class MessageEvent {
     private String calorie;
     private  List<LatLng> mPathPointsLine;
     private Date startTime;
+    private boolean isRunning;
+
+    public boolean isRunning() {
+        return isRunning;
+    }
+
+    public void setRunning(boolean running) {
+        isRunning = running;
+    }
 
     public Date getStartTime() {
         return startTime;

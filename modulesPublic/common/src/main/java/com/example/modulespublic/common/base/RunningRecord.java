@@ -1,15 +1,10 @@
 package com.example.modulespublic.common.base;
 
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
-import androidx.room.TypeConverter;
-import androidx.room.TypeConverters;
 
 import com.amap.api.maps.model.LatLng;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,50 +19,20 @@ public class RunningRecord {
     //运动轨迹
     //表示这是数据库表中的一个列。其中的name表示此对象在表中对应的类名，
     // 如果不添加此注解，Room默认会以此变量名作为其在表中的列名。
-    private List<LatLng> PathPointsLine;
+    private List<LatLng> pathPointsLine;
     //运动距离
-    private String Distance;
+    private String distance;
     //运动时长
-    private Long Runningtime;
+    private Long runningtime;
     //运动开始时间
-    private Date StartTime;
+    private Long startTime;
     //消耗卡路里
-    private String Calorie;
+    private String calorie;
     //平均时速(公里/小时)
-    private String Speed;
+    private String speed;
     //平均配速(分钟/公里)
-    private Double Distribution;
-    private String UserId;
-
-    public String getUserId() {
-        return UserId;
-    }
-
-    public void setUserId(String userId) {
-        UserId = userId;
-    }
-
-    @Override
-    public String toString() {
-        return "RunningRecord{"+
-                "id=" + id +
-                ", PathPointsLine=" + PathPointsLine +
-                ", Distance='" + Distance + '\'' +
-                ", Runningtime=" + Runningtime +
-                ", StartTime=" + StartTime +
-                ", Calorie='" + Calorie + '\'' +
-                ", Speed='" + Speed + '\'' +
-                ", Distribution=" + Distribution +
-                '}';
-    }
-
-    public Date getStartTime() {
-        return StartTime;
-    }
-
-    public void setStartTime(Date startTime) {
-        StartTime = startTime;
-    }
+    private Double distribution;
+    private String username;
 
     public Long getId() {
         return id;
@@ -78,50 +43,66 @@ public class RunningRecord {
     }
 
     public List<LatLng> getPathPointsLine() {
-        return PathPointsLine;
+        return pathPointsLine;
     }
 
     public void setPathPointsLine(List<LatLng> pathPointsLine) {
-        PathPointsLine = pathPointsLine;
+        this.pathPointsLine = pathPointsLine;
     }
 
     public String getDistance() {
-        return Distance;
+        return distance;
     }
 
     public void setDistance(String distance) {
-        Distance = distance;
+        this.distance = distance;
     }
 
     public Long getRunningtime() {
-        return Runningtime;
+        return runningtime;
     }
 
     public void setRunningtime(Long runningtime) {
-        Runningtime = runningtime;
+        this.runningtime = runningtime;
+    }
+
+    public Long getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(long startTime) {
+        this.startTime = startTime;
     }
 
     public String getCalorie() {
-        return Calorie;
+        return calorie;
     }
 
     public void setCalorie(String calorie) {
-        Calorie = calorie;
+        this.calorie = calorie;
     }
 
     public String getSpeed() {
-        return Speed;
+        return speed;
     }
 
     public void setSpeed(String speed) {
-        Speed = speed;
+        this.speed = speed;
     }
 
     public Double getDistribution() {
-        return Distribution;
+        return distribution;
     }
 
     public void setDistribution(Double distribution) {
-        Distribution = distribution;
+        this.distribution = distribution;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

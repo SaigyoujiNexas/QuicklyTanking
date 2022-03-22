@@ -1,7 +1,9 @@
 package com.example.modulescore.main.Activities;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -75,7 +77,7 @@ public class RunningActivity extends AppCompatActivity implements LocationSource
     //LatLng:地理坐标基本数据结构
     //绘制路线
     List<LatLng> path = new ArrayList<LatLng>();
-    Date startTime;
+
     Long passedSeconds;
     int weight = 60;
     RunningRecord record = new RunningRecord();
@@ -100,20 +102,20 @@ public class RunningActivity extends AppCompatActivity implements LocationSource
             }
         });
         tv_mapSpeed = findViewById(R.id.speedText);
-        //初始化开始时间
-        startTime = new Date();
         tv_mapDistance = findViewById(R.id.distanceTicker);
         tv_mapDistance.setCharacterLists(TickerUtils.provideNumberList());
         tv_mapDistance.setAnimationDuration(500);
         initMapUI();
         initLoc();
-        messageEvent.setStartTime(startTime);
         Intent startRunIntent = new Intent(this,RunActivity.class);
         startActivity(startRunIntent);
         if(getIntent().getType()!= null && getIntent().getType().equals(TargetDistanceActivity.isTarget)){
             Log.d(TAG+"hasTarget","");
             checkTarget();
         }
+        FinishRunReceiver finishRunReceiver = new FinishRunReceiver();
+        IntentFilter intentFilter = new IntentFilter("finishRun");
+        registerReceiver(finishRunReceiver, intentFilter);
     }
 
     private void checkTarget(){
@@ -263,6 +265,13 @@ public class RunningActivity extends AppCompatActivity implements LocationSource
         if(event.getSpeed()!=null && tv_mapSpeed!=null) {
             tv_mapSpeed.setText(event.getSpeed());
         }
+        if(event.isRunning()){
+            mapView.onResume();
+            mLocationClient.startLocation();
+        }else if(!event.isRunning()){
+            mapView.onPause();
+            mLocationClient.stopLocation();
+        }
     };
 
     @Override
@@ -332,5 +341,11 @@ public class RunningActivity extends AppCompatActivity implements LocationSource
             startActivity(new Intent(this,RunActivity.class));
         }
         return true;
+    }
+    public class FinishRunReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent){
+            RunningActivity.this.finish();
+        }
     }
 }

@@ -4,7 +4,10 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -53,10 +56,10 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-@AndroidEntryPoint
+
 public class RunActivity extends AppCompatActivity implements View.OnClickListener {
 
-    @Inject
+
     public GetRequest_Interface getRequestInterface;
 
     FloatingActionButton startRunButton;
@@ -73,8 +76,10 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
     RunningRecord record = new RunningRecord();
     TextView calorieText;
     List<LatLng> mPathPointsLine;
-    Date startTime;
+    //初始化开始时间
+    Date startTime = new Date();
 
+    MessageEvent event = new MessageEvent();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,63 +108,75 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
         finishRunButton.setOnClickListener(this);
         toMapCard.setOnClickListener(this);
         startAnimation();
+        event.setRunning(true);
+        EventBus.getDefault().post(event);
         finishRunButton.setListener(new ProgressButton.ProgressButtonFinishCallback() {
             @Override
             public void onFinish() {
                 final String TAG = "FINISH_RUNNING";
                 Log.d(TAG,"start finish");
-                //record.setId(Long.valueOf(001));
-                record.setUserId("1");
+                record.setId(Long.valueOf(001));
+                record.setUsername("1");
                 record.setCalorie((String) calorieText.getText());
                 record.setDistance( distanceview.getText());
                 Log.d(TAG,passedSeconds.toString());
                 record.setRunningtime(passedSeconds);
                 record.setSpeed((String) speedText.getText());
                 record.setPathPointsLine(mPathPointsLine);
-                record.setStartTime(startTime);
+                //record.setStartTime(startTime);
+                record.setStartTime(startTime.getTime());
+
+                FinishRunReceiver finishRunReceiver = new FinishRunReceiver();
+                IntentFilter intentFilter = new IntentFilter("finishRun");
+                registerReceiver(finishRunReceiver, intentFilter);
+                Intent intent = new Intent();
+                intent.setAction("finishRun");
+                sendBroadcast(intent);
+
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         MyDataBase.getsInstance(getApplicationContext()).runningDao().insertRunningRecord(record);
                         Log.d(TAG,record.toString());
                         Log.d(TAG+"length", String.valueOf(MyDataBase.getsInstance(getApplicationContext()).runningDao().loadAllRunningRecordss().length));
-//                        String baseUrl = "http://116.62.180.44:8080/upLoadRoad/";
-//                        Retrofit retrofit = new Retrofit.Builder()
-//                                .baseUrl(baseUrl)
-//                                .addConverterFactory(GsonConverterFactory.create())
-//                                .build();
-//                        GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
-//                        Call<RunningRecord> call = getRequestInterface.getJsonData(record);	//获得call对象
-//                        call.enqueue(new Callback<BaseResponse<RunningRecord>>() {
-//                            @Override
-//                            public void onResponse(Call<BaseResponse<RunningRecord>> call, Response<BaseResponse<RunningRecord>> response) {
-//                                //assert response.body() != null;
-//                                Log.d(TAG,"RunActivityRetrofit: onResponse "+response.body());
-//                            }
-//
-//                            @Override
-//                            public void onFailure(Call<BaseResponse<RunningRecord>> call, Throwable t) {
-//                                Log.d(TAG,"RunActivityRetrofit: onFailure "+t.toString()+t);
-//                                Toast.makeText(RunActivity.this, "连接错误", Toast.LENGTH_LONG).show();
-//                            }
-//                        });
+                        String baseUrl = "http://116.62.180.44:8080/";
+                        Retrofit retrofit = new Retrofit.Builder()
+                                .baseUrl(baseUrl)
+                                .addConverterFactory(GsonConverterFactory.create())
+                                .build();
+                        GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
+                        Call<BaseResponse<RunningRecord>> call = request.getJsonData(record);//获得call对象
+                        call.enqueue(new Callback<BaseResponse<RunningRecord>>() {
+                            @Override
+                            public void onResponse(Call<BaseResponse<RunningRecord>> call, Response<BaseResponse<RunningRecord>> response) {
+                                //assert response.body() != null;
+                                Log.d(TAG,"RunActivityRetrofit_onResponse "+response.body());
+                            }
+
+                            @Override
+                            public void onFailure(Call<BaseResponse<RunningRecord>> call, Throwable t) {
+                                Log.d(TAG,"RunActivityRetrofit_onFailure "+t.toString()+t);
+                                Toast.makeText(RunActivity.this, "连接错误", Toast.LENGTH_LONG).show();
+                            }
+                        });
 
                     }
                 }).start();
                 finish();
-                Observable<BaseResponse<RunningRecord>> observable = getRequestInterface.getJsonData(record);
-                RequestModel.Companion.request(getRequestInterface.getJsonData(record),RunActivity.this, new NetCallback<RunningRecord>() {
 
-                    @Override
-                    public void onSuccess(RunningRecord data) {
-                        Log.d("1111111111",data.toString());
-                    }
-
-                    @Override
-                    public void onFailure(Throwable throwable) {
-                        Log.d("11111111112",throwable.getMessage());
-                    }
-                });
+//                Observable<BaseResponse<RunningRecord>> observable = getRequestInterface.getJsonData(record);
+//                RequestModel.Companion.request(getRequestInterface.getJsonData(record),RunActivity.this, new NetCallback<RunningRecord>() {
+//
+//                    @Override
+//                    public void onSuccess(RunningRecord data) {
+//                        Log.d("RunActivityRetrofit:1",data.toString());
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Throwable throwable) {
+//                        Log.d("RunActivityRetrofit:2",throwable.getMessage());
+//                    }
+//                });
             }
 
             @Override
@@ -177,11 +194,15 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
             case R.id.stopRunButton: {
                 changeButtonState();
                 mHandler.removeCallbacks(timeRunnable);//取消处理
+                event.setRunning(false);
+                EventBus.getDefault().post(event);
                 break;
             }
             case R.id.startRunButton:{
                 changeButtonState();
                 mHandler.post(timeRunnable);//开始计时
+                event.setRunning(true);
+                EventBus.getDefault().post(event);
                 break;
             }
             case R.id.toMapCard:
@@ -284,9 +305,6 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
         if(event.getmPathPointsLine()!=null){
             mPathPointsLine = event.getmPathPointsLine();
         }
-        if(event.getStartTime()!=null){
-            startTime = event.getStartTime();
-        }
     };
     @Override
     protected void onDestroy() {
@@ -311,7 +329,6 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
     private class TimeRunnable implements Runnable {
         @Override
         public void run() {
-            MessageEvent event = new MessageEvent();
             event.setFormattedPassedTime(passedSeconds);
             passedSeconds++;
             EventBus.getDefault().post(event);
@@ -319,4 +336,10 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
         }
     }
     private TimeRunnable timeRunnable = null;
+    public class FinishRunReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent){
+            RunActivity.this.finish();
+        }
+    }
 }
