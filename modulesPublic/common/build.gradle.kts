@@ -52,9 +52,9 @@ dependencies {
     libs.forEach { implementation(it) }
     apts.forEach { annotationProcessor(it) }
     tests.forEach { androidTestImplementation(it) }
+
     implementation("jp.wasabeef:glide-transformations:4.3.0")
     implementation("com.hjq:toast:8.0")
-
     testImplementation("junit:junit:4.+")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")

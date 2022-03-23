@@ -30,6 +30,7 @@ import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.PolylineOptions;
+import com.example.modulescore.main.Run.LocationService;
 import com.example.modulespublic.common.base.RunningRecord;
 import com.example.modulescore.main.EventBus.MessageEvent;
 import com.example.modulescore.main.R;
@@ -187,6 +188,22 @@ public class RunningActivity extends AppCompatActivity implements LocationSource
         mLocationClient.startLocation();
     }
 
+
+    public void updateCamera(List<LatLng> path){
+        //绘制路径
+        aMap.addPolyline(
+                new PolylineOptions()
+                        .addAll(path)
+                        .width(20)
+                        .color(ContextCompat.getColor(this, R.color.green)));
+        //将地图移动到定位点
+        aMap.moveCamera(CameraUpdateFactory.changeLatLng(nowLatLng));//设置地图的中心点。
+        if(isFirstLoc){
+            Log.d(TAG,"FirstLoc");
+            aMap.moveCamera(CameraUpdateFactory.zoomTo(18));//设置地图缩放级别。
+            aMap.moveCamera(CameraUpdateFactory.changeTilt(0));//设置地图倾斜度。
+        }
+    }
     //当定位源获取的位置信息发生变化时回调此接口方法。
     //AMapLocation定位信息类。定位完成后的位置信息。
     @Override
@@ -208,11 +225,11 @@ public class RunningActivity extends AppCompatActivity implements LocationSource
                 //路径添加当前位置
                 path.add(nowLatLng);
                 //绘制路径
-                aMap.addPolyline(
-                        new PolylineOptions()
-                                .addAll(path)
-                                .width(20)
-                                .color(ContextCompat.getColor(this, R.color.green)));
+//                aMap.addPolyline(
+//                        new PolylineOptions()
+//                                .addAll(path)
+//                                .width(20)
+//                                .color(ContextCompat.getColor(this, R.color.green)));
                 //如果不是第一次定位，就计算距离
                 if (!isFirstLoc) {
                     float tempDistance = AMapUtils.calculateLineDistance(nowLatLng, lastLatLng);
@@ -232,13 +249,13 @@ public class RunningActivity extends AppCompatActivity implements LocationSource
                 }else if(isFirstLoc){//如果是第一次，那么改isFirstLoc为false，则之后都不是第一次了
                     //设置缩放级别
                     Log.d(TAG,"FirstLoc");
-                    aMap.moveCamera(CameraUpdateFactory.zoomTo(18));//设置地图缩放级别。
-                    aMap.moveCamera(CameraUpdateFactory.changeTilt(0));//设置地图倾斜度。
+//                    aMap.moveCamera(CameraUpdateFactory.zoomTo(18));//设置地图缩放级别。
+//                    aMap.moveCamera(CameraUpdateFactory.changeTilt(0));//设置地图倾斜度。
                     isFirstLoc = false;
                     Log.d(TAG,"FirstLoc0");
                 }
                 //将地图移动到定位点
-                aMap.moveCamera(CameraUpdateFactory.changeLatLng(nowLatLng));//设置地图的中心点。
+//                aMap.moveCamera(CameraUpdateFactory.changeLatLng(nowLatLng));//设置地图的中心点。
                 //点击定位按钮 能够将地图的中心移动到定位点
                 mListener.onLocationChanged(amapLocation);
                 Log.d(TAG,"FirstLoc00");
@@ -272,6 +289,9 @@ public class RunningActivity extends AppCompatActivity implements LocationSource
             mapView.onPause();
             mLocationClient.stopLocation();
         }
+        if(event.getmPathPointsLine()!=null){
+            updateCamera(event.getmPathPointsLine());
+        }
     };
 
     @Override
@@ -282,6 +302,26 @@ public class RunningActivity extends AppCompatActivity implements LocationSource
             case R.id.btn_back:
 
         }
+    }
+    private void startLocationService(){
+        //在activity中启动自定义本地服务LocationService
+        getApplicationContext().startService(new Intent(this, LocationService.class));
+
+        //在LocationService中启动定位
+        try {
+            mLocationClient = new AMapLocationClient(this.getApplicationContext());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        mLocationOption = new AMapLocationClientOption();
+        // 使用连续定位
+        mLocationOption.setOnceLocation(false);
+        // 每2秒定位一次
+        mLocationOption.setInterval(2000);
+        mLocationClient.setLocationOption(mLocationOption);
+        mLocationClient.setLocationListener(this);
+        mLocationClient.startLocation();
+
     }
     // 激活定位
     @Override

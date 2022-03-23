@@ -69,8 +69,6 @@ kapt{
     }
 }
 dependencies {
-    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.0")
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
     libCompose.forEach { implementation(it) }
     libraryC.forEach { (_, v) -> implementation(v)}
