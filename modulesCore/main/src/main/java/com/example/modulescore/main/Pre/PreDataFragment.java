@@ -13,14 +13,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.modulescore.main.Activities.RunActivity;
 import com.example.modulespublic.common.base.MyDataBase;
 import com.example.modulespublic.common.base.RunningRecord;
 import com.example.modulescore.main.R;
 import com.example.modulescore.main.Trace.TraceActivity;
 import com.example.modulescore.main.Util.TimeManager;
+import com.example.modulespublic.common.net.BaseResponse;
+import com.example.modulespublic.common.net.GetRequest_Interface;
 
 import java.text.SimpleDateFormat;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PreDataFragment extends Fragment implements View.OnClickListener{
     public PreDataFragment() {
@@ -32,6 +42,7 @@ public class PreDataFragment extends Fragment implements View.OnClickListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         preHandler = new PreHandler(Looper.getMainLooper(),this);
+        requestAllRunningRecords();
     }
 
     @Override
@@ -99,5 +110,29 @@ public class PreDataFragment extends Fragment implements View.OnClickListener{
         switch (view.getId()){
 
         }
+    }
+    private void requestAllRunningRecords(){
+        final String TAG = "requestRunningRecordsTAG";
+        String baseUrl = "http://116.62.180.44:8080/";
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
+        Call<BaseResponse<RunningRecord>> call = request.getAllRunningRecords();//获得call对象
+        call.enqueue(new Callback<BaseResponse<RunningRecord>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<RunningRecord>> call, Response<BaseResponse<RunningRecord>> response) {
+                //assert response.body() != null;
+                Log.d(TAG,"body:"+response.body()+",errorBody:"+response.errorBody()+",message:"+response.message()+",tostring:"+response.toString());
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse<RunningRecord>> call, Throwable t) {
+                Log.d(TAG,"Retrofit_onFailure "+t.toString()+t);
+                Toast.makeText(getActivity(), "连接错误", Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 }

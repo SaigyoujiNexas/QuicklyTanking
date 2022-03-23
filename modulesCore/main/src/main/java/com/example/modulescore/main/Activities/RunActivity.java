@@ -145,18 +145,19 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
                                 .addConverterFactory(GsonConverterFactory.create())
                                 .build();
                         GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
-                        Call<BaseResponse<RunningRecord>> call = request.getJsonData(record);//获得call对象
+                        Call<BaseResponse<RunningRecord>> call = request.postRuuningRecord(record);//获得call对象
                         call.enqueue(new Callback<BaseResponse<RunningRecord>>() {
                             @Override
                             public void onResponse(Call<BaseResponse<RunningRecord>> call, Response<BaseResponse<RunningRecord>> response) {
                                 //assert response.body() != null;
-                                Log.d(TAG,"RunActivityRetrofit_onResponse "+response.body());
+                                Log.d(TAG,"body:"+response.body()+",errorBody:"+response.errorBody()+",message:"+response.message()+",tostring:"+response.toString());
+
                             }
 
                             @Override
                             public void onFailure(Call<BaseResponse<RunningRecord>> call, Throwable t) {
-                                Log.d(TAG,"RunActivityRetrofit_onFailure "+t.toString()+t);
-                                Toast.makeText(RunActivity.this, "连接错误", Toast.LENGTH_LONG).show();
+                                Log.d(TAG,"Retrofit_onFailure "+t.toString()+t);
+                                Toast.makeText(RunActivity.this, "保存数据库时出现错误..", Toast.LENGTH_LONG).show();
                             }
                         });
 
@@ -164,9 +165,8 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
                 }).start();
                 finish();
 
-//                Observable<BaseResponse<RunningRecord>> observable = getRequestInterface.getJsonData(record);
-//                RequestModel.Companion.request(getRequestInterface.getJsonData(record),RunActivity.this, new NetCallback<RunningRecord>() {
-//
+                //Observable<BaseResponse<RunningRecord>> observable = getRequestInterface.postRuuningRecord(record);
+//                RequestModel.Companion.request(getRequestInterface.postRuuningRecord(record),RunActivity.this, new NetCallback<RunningRecord>() {
 //                    @Override
 //                    public void onSuccess(RunningRecord data) {
 //                        Log.d("RunActivityRetrofit:1",data.toString());
@@ -174,7 +174,7 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
 //
 //                    @Override
 //                    public void onFailure(Throwable throwable) {
-//                        Log.d("RunActivityRetrofit:2",throwable.getMessage());
+//
 //                    }
 //                });
             }

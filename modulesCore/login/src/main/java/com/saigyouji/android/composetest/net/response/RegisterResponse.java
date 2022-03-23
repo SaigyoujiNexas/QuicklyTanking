@@ -1,6 +1,9 @@
 package com.saigyouji.android.composetest.net.response;
 
 import com.example.modulesbase.libbase.net.response.NetResponse;
+import com.example.modulespublic.common.base.RunningRecord;
+
+import java.util.List;
 
 public class RegisterResponse<T> implements NetResponse<T> {
     int code;
@@ -16,6 +19,11 @@ public class RegisterResponse<T> implements NetResponse<T> {
     @Override
     public String getCode() {
         return String.valueOf(code);
+    }
+
+    @Override
+    public List<RunningRecord> getList() {
+        return null;
     }
 
 

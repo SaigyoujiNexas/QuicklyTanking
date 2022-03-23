@@ -18,7 +18,11 @@ import retrofit2.http.Query;
 public interface GetRequest_Interface {
     //无参
     @POST("upLoadRoad")
-    Call<BaseResponse<RunningRecord>> getJsonData(@Body RunningRecord record);
+    Call<BaseResponse<RunningRecord>> postRuuningRecord(@Body RunningRecord record);
+
+    //无参
+    @POST("getRoad")
+    Call<BaseResponse<RunningRecord>> getAllRunningRecords();
 //    @Provides
 //    @Singleton
 //    public static GetRequest_Interface provideGetRequest_Interface(Retrofit retrofit){

@@ -45,7 +45,9 @@ android {
 
     dependencies {
 
-        libraryC.forEach{(_, v) -> implementation(v)}
+        implementation(project(mapOf("path" to ":modulesCore:main")))
+        implementation(project(mapOf("path" to ":modulesPublic:common")))
+        libraryC.forEach{ (_, v) -> implementation(v)}
         libs.forEach { s -> implementation(s) }
         tests.forEach { t -> androidTestImplementation(t) }
         apts.forEach { s -> annotationProcessor(s) }
