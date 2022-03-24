@@ -59,7 +59,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RunActivity extends AppCompatActivity implements View.OnClickListener {
 
-
     public GetRequest_Interface getRequestInterface;
 
     FloatingActionButton startRunButton;
@@ -78,7 +77,7 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
     List<LatLng> mPathPointsLine;
     //初始化开始时间
     Date startTime = new Date();
-
+    Long passedSeconds;
     MessageEvent event = new MessageEvent();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +118,6 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
                 record.setUsername("1");
                 record.setCalorie((String) calorieText.getText());
                 record.setDistance( distanceview.getText());
-                Log.d(TAG,passedSeconds.toString());
                 record.setRunningtime(passedSeconds);
                 record.setSpeed((String) speedText.getText());
                 record.setPathPointsLine(mPathPointsLine);
@@ -184,24 +182,23 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
 
             }
         });
-        timeRunnable = new TimeRunnable();
-        mHandler.post(timeRunnable);
+
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.stopRunButton: {
+            case R.id.startRunButton:{
                 changeButtonState();
-                mHandler.removeCallbacks(timeRunnable);//取消处理
-                event.setRunning(false);
+                //mHandler.post(timeRunnable);//开始计时
+                event.setRunning(true);
                 EventBus.getDefault().post(event);
                 break;
             }
-            case R.id.startRunButton:{
+            case R.id.stopRunButton: {
                 changeButtonState();
-                mHandler.post(timeRunnable);//开始计时
-                event.setRunning(true);
+                //mHandler.removeCallbacks(timeRunnable);//取消处理
+                event.setRunning(false);
                 EventBus.getDefault().post(event);
                 break;
             }
@@ -305,6 +302,10 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
         if(event.getmPathPointsLine()!=null){
             mPathPointsLine = event.getmPathPointsLine();
         }
+        if (event.getFormattedPassedTime()!=null && passedTimeView !=null) {
+            passedSeconds = event.getFormattedPassedTime();
+            passedTimeView .setText(TimeManager.formatseconds(event.getFormattedPassedTime()));
+        }
     };
     @Override
     protected void onDestroy() {
@@ -324,18 +325,7 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
         }
         return true;
     }
-    Long passedSeconds = Long.valueOf(0);
-    private Handler mHandler = new Handler(Looper.getMainLooper());
-    private class TimeRunnable implements Runnable {
-        @Override
-        public void run() {
-            event.setFormattedPassedTime(passedSeconds);
-            passedSeconds++;
-            EventBus.getDefault().post(event);
-            mHandler.postDelayed(this, 1000);
-        }
-    }
-    private TimeRunnable timeRunnable = null;
+
     public class FinishRunReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent){
