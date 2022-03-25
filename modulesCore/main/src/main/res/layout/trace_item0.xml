@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <com.amap.api.maps.TextureMapView
+    <com.example.modulescore.main.UI.View.DataMap
         android:id="@+id/mapView_tracefragment0"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

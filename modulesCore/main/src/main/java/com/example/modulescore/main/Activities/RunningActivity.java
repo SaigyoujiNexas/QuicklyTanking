@@ -14,30 +14,25 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.AMapUtils;
 import com.amap.api.maps.CameraUpdateFactory;
-import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
-import com.amap.api.maps.MapsInitializer;
 import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.LatLng;
-import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.PolylineOptions;
 import com.example.modulescore.main.Run.LocationService;
 import com.example.modulespublic.common.base.RunningRecord;
 import com.example.modulescore.main.EventBus.MessageEvent;
 import com.example.modulescore.main.R;
-import com.example.modulescore.main.Util.TimeManager;
+import com.example.modulespublic.common.utils.TimeManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.robinhood.ticker.TickerUtils;
 import com.robinhood.ticker.TickerView;
@@ -47,8 +42,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
@@ -108,7 +101,6 @@ public class RunningActivity extends AppCompatActivity implements  View.OnClickL
         tv_mapDistance.setCharacterLists(TickerUtils.provideNumberList());
         tv_mapDistance.setAnimationDuration(500);
 
-        initLoc();
         Intent startRunIntent = new Intent(this,RunActivity.class);
         startActivity(startRunIntent);
         if(getIntent().getType()!= null && getIntent().getType().equals(TargetDistanceActivity.isTarget)){
@@ -120,8 +112,6 @@ public class RunningActivity extends AppCompatActivity implements  View.OnClickL
         IntentFilter intentFilter = new IntentFilter("finishRun");
         registerReceiver(finishRunReceiver, intentFilter);
         initService();
-
-
     }
 
     private void checkTarget(){
@@ -142,7 +132,7 @@ public class RunningActivity extends AppCompatActivity implements  View.OnClickL
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             locationBinder = (LocationService.LocationBinder) iBinder;
-            Log.d("11111111",locationBinder.getService().toString());
+            Log.d("onServiceConnected_running",locationBinder.getService().toString());
             initMapUI();
         }
 
@@ -181,41 +171,6 @@ public class RunningActivity extends AppCompatActivity implements  View.OnClickL
         aMap.moveCamera(CameraUpdateFactory.zoomTo(18));//设置地图缩放级别。
         aMap.moveCamera(CameraUpdateFactory.changeTilt(0));//设置地图倾斜度。
     }
-    //定位
-    private void initLoc() {
-//        //初始化 SDK context 全局变量，指定 sdcard 路径，设置鉴权所需的KEY。
-//        //注：如果在创建地图之前使用BitmapDescriptorFactory的功能，则必须通过MapsInitializer.initialize(Context)来设置一个可用的context。
-//        MapsInitializer mapsInitializer = new MapsInitializer();
-//        //更新隐私合规状态,需要在初始化地图之前完成
-//        mapsInitializer.updatePrivacyShow(this, true, true);
-//        //更新同意隐私状态,需要在初始化地图之前完成
-//        mapsInitializer.updatePrivacyAgree(this,true);
-//        //定位发起端
-//        try {
-//            mLocationClient = new AMapLocationClient(getApplicationContext());
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        //设置定位回调监听
-//        mLocationClient.setLocationListener(this);
-//        //初始化定位参数
-//        mLocationOption = new AMapLocationClientOption();
-//        //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
-//        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-//        //设置是否返回地址信息（默认返回地址信息）
-//        mLocationOption.setNeedAddress(true);
-//        //设置是否只定位一次,默认为false
-//        mLocationOption.setOnceLocation(false);
-//        //设置是否允许模拟位置,默认为false，不允许模拟位置
-//        mLocationOption.setMockEnable(false);
-//        //设置定位间隔,单位毫秒,默认为2000ms
-//        mLocationOption.setInterval(2000);
-//        //给定位客户端对象设置定位参数
-//        mLocationClient.setLocationOption(mLocationOption);
-//        //启动定位
-//        mLocationClient.startLocation();
-    }
-
 
     public void updateCamera(List<LatLng> path){
         final String TAG = "updateCamera";
@@ -229,70 +184,6 @@ public class RunningActivity extends AppCompatActivity implements  View.OnClickL
         //aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(path.get(path.size()-1), 20));
         aMap.moveCamera(CameraUpdateFactory.changeLatLng(path.get(path.size()-1)));
     }
-    //当定位源获取的位置信息发生变化时回调此接口方法。
-    //AMapLocation定位信息类。定位完成后的位置信息。
-//    @Override
-//    public void onLocationChanged(AMapLocation amapLocation) {
-//        String TAG = "RunningActivity_LocationChanged";
-//        if (amapLocation != null) {
-//            if (amapLocation.getErrorCode() == 0) {
-//                float nowSpeed = amapLocation.getSpeed();
-//                if (!isFirstLoc) {//如果不是第一次定位，则把上次定位信息传给lastLatLng，并且计算距离
-//                    Log.d(TAG,"Speed"+avgSpeed);
-//                        lastLatLng = nowLatLng;
-//                }
-//                double latitude = amapLocation.getLatitude();//获取纬度
-//                double longitude = amapLocation.getLongitude();//获取经度
-//                Log.d(TAG,latitude+","+longitude);
-//                //新位置
-//                nowLatLng = new LatLng(latitude, longitude);
-//
-//                //路径添加当前位置
-//                path.add(nowLatLng);
-//                //绘制路径
-////                aMap.addPolyline(
-////                        new PolylineOptions()
-////                                .addAll(path)
-////                                .width(20)
-////                                .color(ContextCompat.getColor(this, R.color.green)));
-//                //如果不是第一次定位，就计算距离
-//                if (!isFirstLoc) {
-//                    float tempDistance = AMapUtils.calculateLineDistance(nowLatLng, lastLatLng);
-//                    //计算总距离
-//                    distanceThisTime += tempDistance;
-//                    messageEvent.setDistance(decimalFormat.format(distanceThisTime / 1000.0));
-//                    //发送速度
-//                    nowSpeed = distanceThisTime/passedSeconds;
-//                    if (nowSpeed == 0) {
-//                        messageEvent.setSpeed("--");
-//                    } else {
-//                        messageEvent.setSpeed(decimalFormat.format(nowSpeed));
-//                    }
-//                    messageEvent.setCalorie(decimalFormat.format(weight*distanceThisTime/1000*1.036));
-//                    messageEvent.setmPathPointsLine(path);
-//                    EventBus.getDefault().post(messageEvent);
-//                }else if(isFirstLoc){//如果是第一次，那么改isFirstLoc为false，则之后都不是第一次了
-//                    //设置缩放级别
-//                    Log.d(TAG,"FirstLoc");
-////                    aMap.moveCamera(CameraUpdateFactory.zoomTo(18));//设置地图缩放级别。
-////                    aMap.moveCamera(CameraUpdateFactory.changeTilt(0));//设置地图倾斜度。
-//                    isFirstLoc = false;
-//                    Log.d(TAG,"FirstLoc0");
-//                }
-//                //将地图移动到定位点
-////                aMap.moveCamera(CameraUpdateFactory.changeLatLng(nowLatLng));//设置地图的中心点。
-//                //点击定位按钮 能够将地图的中心移动到定位点
-//                mListener.onLocationChanged(amapLocation);
-//                Log.d(TAG,"FirstLoc00");
-//            }else{
-//                Log.d(TAG,"ERROR:"+amapLocation.getErrorCode());
-//            }
-//        } else {
-//            Toast.makeText(getApplicationContext(), "ERROR!", Toast.LENGTH_LONG).show();
-//        }
-//    }
-
-
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)//监听粘性事件
     public void onEvent(MessageEvent event) {
@@ -338,14 +229,12 @@ public class RunningActivity extends AppCompatActivity implements  View.OnClickL
 
     }
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy");
         //在activity执行onDestroy时执行mapView.onDestroy()，销毁地图
-//        mapView.onDestroy();
-//        mLocationClient.onDestroy();
+        mapView.onDestroy();
         unbindService(serviceConnection);
         EventBus.getDefault().unregister(this);
     }

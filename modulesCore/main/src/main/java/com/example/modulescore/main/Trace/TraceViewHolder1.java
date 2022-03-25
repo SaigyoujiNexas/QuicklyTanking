@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.modulescore.main.R;
-import com.example.modulescore.main.Util.TimeManager;
+import com.example.modulespublic.common.utils.TimeManager;
 import com.example.modulespublic.common.base.RunningRecord;
 
 import java.util.Date;

@@ -15,20 +15,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.modulescore.main.Activities.RunActivity;
 import com.example.modulespublic.common.base.MyDataBase;
 import com.example.modulespublic.common.base.RunningRecord;
 import com.example.modulescore.main.R;
 import com.example.modulescore.main.Trace.TraceActivity;
-import com.example.modulescore.main.Util.TimeManager;
+import com.example.modulespublic.common.utils.TimeManager;
 import com.example.modulespublic.common.base.record;
-import com.example.modulespublic.common.net.BaseResponse;
 import com.example.modulespublic.common.net.GetRequest_Interface;
 import com.example.modulespublic.common.net.Request;
 import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -144,64 +141,64 @@ public class PreDataFragment extends Fragment implements View.OnClickListener{
             }
         });
         //1、创建Gson对象
-        Gson gson = new Gson();
-        //2、调用toJson(Object)将对象转为字符串
-        String json = gson.toJson("{\n" +
-                " \"code\": 500,\n" +
-                " \"message\": \"查找成功\",\n" +
-                " \"data\": [\n" +
-                "  {\n" +
-                "   \"id\": 1,\n" +
-                "   \"pathPointsLine\": [\n" +
-                "    {\n" +
-                "     \"latitude\": 34.14932,\n" +
-                "     \"longitude\": 108.9019\n" +
-                "    },\n" +
-                "    {\n" +
-                "     \"latitude\": 34.14932,\n" +
-                "     \"longitude\": 108.9019\n" +
-                "    },\n" +
-                "    {\n" +
-                "     \"latitude\": 34.14932,\n" +
-                "     \"longitude\": 108.9019\n" +
-                "    },\n" +
-                "    {\n" +
-                "     \"latitude\": 34.14932,\n" +
-                "     \"longitude\": 108.9019\n" +
-                "    },\n" +
-                "    {\n" +
-                "     \"latitude\": 34.149483,\n" +
-                "     \"longitude\": 108.90191\n" +
-                "    },\n" +
-                "    {\n" +
-                "     \"latitude\": 34.149483,\n" +
-                "     \"longitude\": 108.90191\n" +
-                "    },\n" +
-                "    {\n" +
-                "     \"latitude\": 34.149483,\n" +
-                "     \"longitude\": 108.90191\n" +
-                "    },\n" +
-                "    {\n" +
-                "     \"latitude\": 34.149483,\n" +
-                "     \"longitude\": 108.90191\n" +
-                "    },\n" +
-                "    {\n" +
-                "     \"latitude\": 34.149483,\n" +
-                "     \"longitude\": 108.90191\n" +
-                "    }\n" +
-                "   ],\n" +
-                "   \"distance\": \"0.02\",\n" +
-                "   \"runningtime\": 16,\n" +
-                "   \"startTime\": \"2022-03-21T16:00:00.000+00:00\",\n" +
-                "   \"calorie\": \"1.14\",\n" +
-                "   \"speed\": \"1.22\",\n" +
-                "   \"distribution\": null,\n" +
-                "   \"username\": \"1\"\n" +
-                "  }\n" +
-                " ]\n" +
-                "}");
-
-        //3、将json字符串封装为java对象[json字符串 的属性名要和javabean的属性一样]
-        record record = gson.fromJson(json, record.class);
+//        Gson gson = new Gson();
+//        //2、调用toJson(Object)将对象转为字符串
+//        String json = gson.toJson("{\n" +
+//                " \"code\": 500,\n" +
+//                " \"message\": \"查找成功\",\n" +
+//                " \"data\": [\n" +
+//                "  {\n" +
+//                "   \"id\": 1,\n" +
+//                "   \"pathPointsLine\": [\n" +
+//                "    {\n" +
+//                "     \"latitude\": 34.14932,\n" +
+//                "     \"longitude\": 108.9019\n" +
+//                "    },\n" +
+//                "    {\n" +
+//                "     \"latitude\": 34.14932,\n" +
+//                "     \"longitude\": 108.9019\n" +
+//                "    },\n" +
+//                "    {\n" +
+//                "     \"latitude\": 34.14932,\n" +
+//                "     \"longitude\": 108.9019\n" +
+//                "    },\n" +
+//                "    {\n" +
+//                "     \"latitude\": 34.14932,\n" +
+//                "     \"longitude\": 108.9019\n" +
+//                "    },\n" +
+//                "    {\n" +
+//                "     \"latitude\": 34.149483,\n" +
+//                "     \"longitude\": 108.90191\n" +
+//                "    },\n" +
+//                "    {\n" +
+//                "     \"latitude\": 34.149483,\n" +
+//                "     \"longitude\": 108.90191\n" +
+//                "    },\n" +
+//                "    {\n" +
+//                "     \"latitude\": 34.149483,\n" +
+//                "     \"longitude\": 108.90191\n" +
+//                "    },\n" +
+//                "    {\n" +
+//                "     \"latitude\": 34.149483,\n" +
+//                "     \"longitude\": 108.90191\n" +
+//                "    },\n" +
+//                "    {\n" +
+//                "     \"latitude\": 34.149483,\n" +
+//                "     \"longitude\": 108.90191\n" +
+//                "    }\n" +
+//                "   ],\n" +
+//                "   \"distance\": \"0.02\",\n" +
+//                "   \"runningtime\": 16,\n" +
+//                "   \"startTime\": \"2022-03-21T16:00:00.000+00:00\",\n" +
+//                "   \"calorie\": \"1.14\",\n" +
+//                "   \"speed\": \"1.22\",\n" +
+//                "   \"distribution\": null,\n" +
+//                "   \"username\": \"1\"\n" +
+//                "  }\n" +
+//                " ]\n" +
+//                "}");
+//
+//        //3、将json字符串封装为java对象[json字符串 的属性名要和javabean的属性一样]
+//        record record = gson.fromJson(json, record.class);
     }
 }

@@ -5,12 +5,13 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -23,15 +24,13 @@ import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.amap.api.maps.model.LatLng;
-import com.example.modulesbase.libbase.net.RequestModel;
-import com.example.modulesbase.libbase.net.response.NetCallback;
-import com.example.modulesbase.libbase.net.response.NetResponse;
+import com.example.modulescore.main.Run.LocationService;
 import com.example.modulespublic.common.base.MyDataBase;
 import com.example.modulespublic.common.base.RunningRecord;
 import com.example.modulescore.main.EventBus.MessageEvent;
 import com.example.modulescore.main.UI.View.ProgressButton;
 import com.example.modulescore.main.R;
-import com.example.modulescore.main.Util.TimeManager;
+import com.example.modulespublic.common.utils.TimeManager;
 import com.example.modulespublic.common.net.BaseResponse;
 import com.example.modulespublic.common.net.GetRequest_Interface;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -46,10 +45,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.Date;
 import java.util.List;
 
-import javax.inject.Inject;
-
-import dagger.hilt.android.AndroidEntryPoint;
-import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -79,6 +74,7 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
     Date startTime = new Date();
     Long passedSeconds;
     MessageEvent event = new MessageEvent();
+    LocationService.LocationBinder locationBinder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,6 +105,7 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
         startAnimation();
         event.setRunning(true);
         EventBus.getDefault().post(event);
+        initService();
         finishRunButton.setListener(new ProgressButton.ProgressButtonFinishCallback() {
             @Override
             public void onFinish() {
@@ -190,14 +187,14 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
         switch (view.getId()){
             case R.id.startRunButton:{
                 changeButtonState();
-                //mHandler.post(timeRunnable);//开始计时
+                locationBinder.startLocation();
                 event.setRunning(true);
                 EventBus.getDefault().post(event);
                 break;
             }
             case R.id.stopRunButton: {
                 changeButtonState();
-                //mHandler.removeCallbacks(timeRunnable);//取消处理
+                locationBinder.stopLocation();
                 event.setRunning(false);
                 EventBus.getDefault().post(event);
                 break;
@@ -325,7 +322,27 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
         }
         return true;
     }
+    private void initService(){
+        Intent bindIntent = new Intent(this, LocationService.class);
+        //然后调用bindService()方法将MainActivity和MyService进行绑定。
+//bindService()方法接收3个参数，
+//第一个参数是Intent对象，第二个是创建出的ServiceConnection实例，
+//第三个是标志位，传入BIND_AUTO_CREATE表示Activity和Service绑定后自动创建服务。
+//会使得MyService中的onCreate()方法得到执行，但onStartCommand()方法不会得到执行。
+        bindService(bindIntent,serviceConnection,BIND_AUTO_CREATE);
+    }
+    ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            locationBinder = (LocationService.LocationBinder) iBinder;
+            Log.d("onServiceConnected_Run",locationBinder.getService().toString());
+        }
 
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+
+        }
+    };
     public class FinishRunReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent){

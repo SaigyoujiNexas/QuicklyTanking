@@ -1,4 +1,4 @@
-package com.example.modulescore.main.Util;
+package com.example.modulespublic.common.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

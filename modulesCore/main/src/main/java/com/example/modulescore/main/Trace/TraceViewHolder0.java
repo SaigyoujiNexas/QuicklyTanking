@@ -21,6 +21,7 @@ import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.Polyline;
 import com.amap.api.maps.model.PolylineOptions;
+import com.example.modulescore.main.UI.View.DataMap;
 import com.example.modulespublic.common.base.RunningRecord;
 import com.example.modulescore.main.R;
 
@@ -31,7 +32,7 @@ public class TraceViewHolder0 extends RecyclerView.ViewHolder {
     private Polyline polyline;
     private AMap aMap;
     private List<LatLng> latLngList;
-    TextureMapView mapView;
+    DataMap mapView;
     private AMapLocationClient locationClient;
     private AMapLocationClientOption LocationOption;
     private RunningRecord selectedRecord;
