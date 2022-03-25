@@ -31,32 +31,6 @@ public class DataMap extends TextureMapView {
         super(context, aMapOptions);
     }
 
-    @Override
-    public boolean canScrollHorizontally(int direction) {
-        final String TAG = "canScrollHorizontally_Map";
-        if (Math.abs(direction) < 50) {
-            Log.d(TAG, "direction<50");
-            return false;
-        } else {
-            Log.d(TAG, "direction>=50");
-            return true;
-        }
-        //return super.canScrollHorizontally(direction);
-    }
-
-    @Override
-    public boolean canScrollVertically(int direction) {
-        final String TAG = "canScrollHorizontally_Map";
-        if (Math.abs(direction) < 50) {
-            Log.d(TAG, "direction<50");
-            return false;
-        } else {
-            Log.d(TAG, "direction>=50");
-            return true;
-        }
-        //return super.canScrollVertically(direction);
-    }
-
     int mLastX = 0;
     int mLastY = 0;
     @Override
