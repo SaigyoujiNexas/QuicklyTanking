@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidTest/QuicklyTanking/modulesCore/main/src/main/res/layout/activity_pre_run.xml" value="0.16422805247225025" />
+        <entry key="..\:/AndroidTest/QuicklyTanking/modulesCore/main/src/main/res/layout/activity_run.xml" value="0.3390625" />
+        <entry key="..\:/AndroidTest/QuicklyTanking/modulesCore/main/src/main/res/layout/fragment_map.xml" value="0.19157608695652173" />
         <entry key="..\:/Android_series/QuicklyTanking/app/src/main/res/drawable/ta.xml" value="0.1" />
         <entry key="..\:/Android_series/QuicklyTanking/app/src/main/res/layout/activity_start.xml" value="0.13072916666666667" />
         <entry key="..\:/Android_series/QuicklyTanking/modulesCore/login/src/main/res/layout/activity_login.xml" value="0.13072916666666667" />

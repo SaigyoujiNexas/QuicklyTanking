@@ -22,9 +22,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.amap.api.maps.model.LatLng;
 import com.example.modulescore.main.Run.LocationService;
+import com.example.modulescore.main.Run.MapFragment;
 import com.example.modulespublic.common.base.MyDataBase;
 import com.example.modulespublic.common.base.RunningRecord;
 import com.example.modulescore.main.EventBus.MessageEvent;
@@ -55,12 +57,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RunActivity extends AppCompatActivity implements View.OnClickListener {
 
     public GetRequest_Interface getRequestInterface;
-
+    static MapFragment mapFragment = new MapFragment();
     FloatingActionButton startRunButton;
     FloatingActionButton stopRunButton;
     ProgressButton finishRunButton;
     CardView toMapCard;
     ConstraintLayout constraintLayout_run;
+    ConstraintLayout top_constraintLayout_run;
     boolean isRun = true;
     TextView animationText;
     ImageView animationBackGround;
@@ -80,6 +83,7 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_run);
         EventBus.getDefault().register(this);
+        top_constraintLayout_run = findViewById(R.id.top_ConstraintLayout_Run);
         startRunButton = findViewById(R.id.startRunButton);
         stopRunButton = findViewById(R.id.stopRunButton);
         finishRunButton = findViewById(R.id.finishRunButton);
@@ -110,7 +114,7 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
             @Override
             public void onFinish() {
                 final String TAG = "FINISH_RUNNING";
-                Log.d(TAG,"start finish");
+                //Log.d(TAG,"start finish");
                 record.setId(Long.valueOf(001));
                 record.setUsername("1");
                 record.setCalorie((String) calorieText.getText());
@@ -133,7 +137,7 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
                     public void run() {
                         MyDataBase.getsInstance(getApplicationContext()).runningDao().insertRunningRecord(record);
                         Log.d(TAG,record.toString());
-                        Log.d(TAG+"length", String.valueOf(MyDataBase.getsInstance(getApplicationContext()).runningDao().loadAllRunningRecordss().length));
+
                         String baseUrl = "http://116.62.180.44:8080/";
                         Retrofit retrofit = new Retrofit.Builder()
                                 .baseUrl(baseUrl)
@@ -141,6 +145,7 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
                                 .build();
                         GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
                         Call<BaseResponse<RunningRecord>> call = request.postRuuningRecord(record);//获得call对象
+                        Log.d(TAG,"start upload");
                         call.enqueue(new Callback<BaseResponse<RunningRecord>>() {
                             @Override
                             public void onResponse(Call<BaseResponse<RunningRecord>> call, Response<BaseResponse<RunningRecord>> response) {
@@ -152,14 +157,14 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
                             @Override
                             public void onFailure(Call<BaseResponse<RunningRecord>> call, Throwable t) {
                                 Log.d(TAG,"Retrofit_onFailure "+t.toString()+t);
-                                Toast.makeText(RunActivity.this, "保存数据库时出现错误..", Toast.LENGTH_LONG).show();
+                                Toast.makeText(RunActivity.this, "保存数据库时出现错误..,保存到本地", Toast.LENGTH_LONG).show();
+
+                                //Log.d(TAG+"length", String.valueOf(MyDataBase.getsInstance(getApplicationContext()).runningDao().loadAllRunningRecordss().length));
                             }
                         });
 
                     }
                 }).start();
-                finish();
-
                 //Observable<BaseResponse<RunningRecord>> observable = getRequestInterface.postRuuningRecord(record);
 //                RequestModel.Companion.request(getRequestInterface.postRuuningRecord(record),RunActivity.this, new NetCallback<RunningRecord>() {
 //                    @Override
@@ -172,6 +177,7 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
 //
 //                    }
 //                });
+                unbindService(serviceConnection);
             }
 
             @Override
@@ -179,7 +185,8 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
 
             }
         });
-
+        showMapFragment();
+        hideMapFragment();
     }
 
     @Override
@@ -201,8 +208,9 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
             }
             case R.id.toMapCard:
                 Log.d("","toMap");
-                Intent intent = new Intent(this, RunningActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(this, RunningActivity.class);
+//                startActivity(intent);
+                showMapFragment();
                 break;
         }
     }
@@ -220,6 +228,7 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
             finishRunButton.hide();
         }
     }
+
     private void startAnimation(){
         constraintLayout_run.postDelayed(new Runnable() {
             @Override
@@ -316,8 +325,12 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if ((System.currentTimeMillis() - time > 1000)) {
-                Toast.makeText(this, "结束跑步请点击完成按钮", Toast.LENGTH_SHORT).show();
-                time = System.currentTimeMillis();
+                if (mapFragment.isVisible()) {
+                    hideMapFragment();
+                } else {
+                    Toast.makeText(this, "结束跑步请点击完成按钮", Toast.LENGTH_SHORT).show();
+                    time = System.currentTimeMillis();
+                }
             }
         }
         return true;
@@ -348,5 +361,32 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
         public void onReceive(Context context, Intent intent){
             RunActivity.this.finish();
         }
+    }
+    public void showMapFragment(){
+//        getSupportFragmentManager()
+//                .beginTransaction()
+//                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+//                .add(R.id.constraintLayout_Run,mapFragment)
+//                .addToBackStack("")
+//                .commit();
+        constraintLayout_run.setVisibility(View.INVISIBLE);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        if (!mapFragment.isAdded()) { // 先判断是否被add过
+            transaction
+                    //.setCustomAnimations(R.anim.slide_right_in,R.anim.slide_right_out)
+                    .add(R.id.top_ConstraintLayout_Run, mapFragment).commit(); // 隐藏当前的fragment，add下一个到Activity中
+        }
+        getSupportFragmentManager().beginTransaction()
+                .show(mapFragment)
+                //.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .addToBackStack("")
+                .commit();
+    }
+    public void hideMapFragment(){
+        constraintLayout_run.setVisibility(View.VISIBLE);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .hide(mapFragment)
+                .commit();
     }
 }

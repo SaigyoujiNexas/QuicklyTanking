@@ -1,235 +1,309 @@
 package com.example.modulescore.main.Run;
 
+import static android.content.Context.BIND_AUTO_CREATE;
+
 import android.annotation.SuppressLint;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.TextView;
+
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.maps.AMap;
+import com.amap.api.maps.CameraUpdateFactory;
+import com.amap.api.maps.MapView;
+import com.amap.api.maps.UiSettings;
+import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.MyLocationStyle;
+import com.amap.api.maps.model.PolylineOptions;
+import com.example.modulescore.main.Activities.RunActivity;
+import com.example.modulescore.main.Activities.TargetDistanceActivity;
+import com.example.modulescore.main.EventBus.MessageEvent;
+import com.example.modulescore.main.R;
+import com.example.modulespublic.common.base.RunningRecord;
+import com.example.modulespublic.common.utils.TimeManager;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.robinhood.ticker.TickerUtils;
+import com.robinhood.ticker.TickerView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.text.DecimalFormat;
+import java.util.List;
 
 
 /**
- * An example full-screen activity that shows and hides the system UI (i.e.
- * status bar and navigation/system bar) with user interaction.
+用来显示和连接Service。
  */
-public class MapFragment extends Fragment {
+public class MapFragment extends Fragment implements View.OnClickListener{
 //    /**
-//     * Whether or not the system UI should be auto-hidden after
-//     * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
-//     */
-//    private static final boolean AUTO_HIDE = true;
-//
-//    /**
-//     * If {@link #AUTO_HIDE} is set, the number of milliseconds to wait after
-//     * user interaction before hiding the system UI.
-//     */
-//    private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
-//
-//    /**
-//     * Some older devices needs a small delay between UI widget updates
-//     * and a change of the status and navigation bar.
-//     */
-//    private static final int UI_ANIMATION_DELAY = 300;
-//    private final Handler mHideHandler = new Handler();
-//    private final Runnable mHidePart2Runnable = new Runnable() {
-//        @SuppressLint("InlinedApi")
-//        @Override
-//        public void run() {
-//            // Delayed removal of status and navigation bar
-//
-//            // Note that some of these constants are new as of API 16 (Jelly Bean)
-//            // and API 19 (KitKat). It is safe to use them, as they are inlined
-//            // at compile-time and do nothing on earlier devices.
-//            int flags = View.SYSTEM_UI_FLAG_LOW_PROFILE
-//                    | View.SYSTEM_UI_FLAG_FULLSCREEN
-//                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-//                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-//                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-//                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
-//
-//            Activity activity = getActivity();
-//            if (activity != null
-//                    && activity.getWindow() != null) {
-//                activity.getWindow().getDecorView().setSystemUiVisibility(flags);
+
+    final String TAG = "MapFragment";
+    MapView mapView;
+    private AMap aMap;
+    //数据显示
+    TextView tv_mapSpeed;
+
+    TextView tv_passedTime;
+    FloatingActionButton backButton;
+
+    TickerView tv_mapDistance;
+
+    //LatLng:地理坐标基本数据结构
+    LocationService.LocationBinder locationBinder;
+    Long passedSeconds;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+        startLocationService();
+        initService();
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_map,container,false);
+        //在activity执行onCreate时执行mapView.onCreate(savedInstanceState)，创建地图
+
+        mapView = view.findViewById(R.id.map);
+        mapView.onCreate(savedInstanceState);
+        mapView.bringToFront();
+        tv_passedTime = view.findViewById(R.id.passedTime_running);
+        backButton = view.findViewById(R.id.btn_back);
+        backButton.setOnClickListener(this);
+        tv_mapSpeed = view.findViewById(R.id.speedText);
+        tv_mapDistance = view.findViewById(R.id.distanceTicker);
+        tv_mapDistance.setCharacterLists(TickerUtils.provideNumberList());
+        tv_mapDistance.setAnimationDuration(500);
+
+//        if(getActivity().getIntent().getType()!= null && getActivity().getIntent().getType().equals(TargetDistanceActivity.)){
+//            Log.d(TAG+"hasTarget","");
+//            checkTarget();
+//        }
+
+        return view;
+    }
+
+
+
+//    private void checkTarget(){
+//        final String TAG = "checkTargetTAG";
+//        SharedPreferences sharedPreferences = getSharedPreferences("target", Context.MODE_PRIVATE);
+//        Log.d(TAG,sharedPreferences.getString("targetString","000000"));
+//    }
+    private void initService(){
+        Log.d("initService","");
+        Intent bindIntent = new Intent(getActivity(),LocationService.class);
+        //然后调用bindService()方法将MainActivity和MyService进行绑定。
+        //bindService()方法接收3个参数，
+         //第一个参数是Intent对象，第二个是创建出的ServiceConnection实例，
+        //第三个是标志位，传入BIND_AUTO_CREATE表示Activity和Service绑定后自动创建服务。
+        //会使得MyService中的onCreate()方法得到执行，但onStartCommand()方法不会得到执行。
+        getActivity().getApplicationContext().bindService(bindIntent,serviceConnection,BIND_AUTO_CREATE);
+        Log.d("initService","");
+    }
+
+    ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            locationBinder = (LocationService.LocationBinder) iBinder;
+            Log.d("onServiceConnected_running",locationBinder.getService().toString());
+            initMapUI();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+
+        }
+    };
+
+    private void initMapUI(){
+        //初始化地图控制器对象
+        aMap = mapView.getMap();
+        //设置地图模式普通地图
+        aMap.setMapType(AMap.MAP_TYPE_NORMAL);
+        //设置定位源（locationSource）。
+        aMap.setLocationSource(locationBinder.getService());
+        //设置是否打开定位图层（myLocationOverlay）。
+        aMap.setMyLocationEnabled(true);
+
+        //设置显示定位按钮 并且可以点击
+        UiSettings settings = aMap.getUiSettings();
+        //设置定位按钮是否可见。
+        settings.setMyLocationButtonEnabled(true);
+
+        //定位小蓝点（当前位置）的绘制样式类。
+        MyLocationStyle myLocationStyle = new MyLocationStyle();
+        //设置圆形的填充颜色
+        myLocationStyle.radiusFillColor(Color.argb(0, 0, 0, 0));
+        // 设置圆形的边框颜色
+        myLocationStyle.strokeColor(Color.TRANSPARENT);
+        //设置是否显示定位小蓝点，true 显示，false不显示。
+        myLocationStyle.showMyLocation(true);
+        //设置我的位置展示模式,定位、且将视角移动到地图中心点，定位点依照设备方向旋转，并且会跟随设备移动。
+        myLocationStyle.myLocationType(myLocationStyle.LOCATION_TYPE_LOCATION_ROTATE);
+        //设置定位图层,我的位置图层（myLocationOverlay）的样式。
+        aMap.setMyLocationStyle(myLocationStyle);
+        aMap.moveCamera(CameraUpdateFactory.zoomTo(18));//设置地图缩放级别。
+        aMap.moveCamera(CameraUpdateFactory.changeTilt(0));//设置地图倾斜度。
+    }
+
+    public void updateCamera(List<LatLng> path){
+        final String TAG = "updateCamera";
+        //绘制路径
+        aMap.addPolyline(
+                new PolylineOptions()
+                        .addAll(path)
+                        .width(20)
+                        .color(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.green)));
+        //将地图移动到定位点
+        //aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(path.get(path.size()-1), 20));
+        aMap.moveCamera(CameraUpdateFactory.changeLatLng(path.get(path.size()-1)));
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)//监听粘性事件
+    public void onEvent(MessageEvent event) {
+        final String TAG = "onEvent_running";
+        //Log.d("onEvent_RunningActivity",event.getFormattedPassedTime()+event.getDistance());
+        //将持续秒数转化为mm:ss并显示到控件
+        if (event.getFormattedPassedTime()!=null && tv_passedTime!=null) {
+            passedSeconds = event.getFormattedPassedTime();
+            tv_passedTime.setText(TimeManager.formatseconds(event.getFormattedPassedTime()));
+        }
+        if (event.getDistance()!=null && tv_mapDistance!=null) {
+            tv_mapDistance.setText(event.getDistance());
+        }
+        //显示速度
+        if(event.getSpeed()!=null && tv_mapSpeed!=null) {
+            tv_mapSpeed.setText(event.getSpeed());
+        }
+//        if(event.isRunning()){
+//            mapView.onResume();
+//        }else if(!event.isRunning()){
+//            mapView.onPause();
+//        }
+        if(event.getmPathPointsLine()!=null){
+            Log.d(TAG,"getmPathPointsLine"+event.getmPathPointsLine().size());
+            updateCamera(event.getmPathPointsLine());
+        }
+    };
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            default:
+                break;
+            case R.id.btn_back:
+                RunActivity runActivity = (RunActivity) getActivity();
+                runActivity.hideMapFragment();
+        }
+    }
+
+    private void startLocationService(){
+        //在activity中启动自定义本地服务LocationService
+        getActivity().getApplicationContext().startService(new Intent(getActivity().getApplicationContext(), LocationService.class));
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy");
+        //在activity执行onDestroy时执行mapView.onDestroy()，销毁地图
+        mapView.onDestroy();
+        getActivity().unbindService(serviceConnection);
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume");
+        //在activity执行onResume时执行mapView.onResume ()，重新绘制加载地图
+        mapView.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause");
+        //在activity执行onPause时执行mapView.onPause ()，暂停地图的绘制
+        //mapView.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop");
+        //结束时停止更新位置
+        //mLocationClient.stopLocation();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //在activity执行onSaveInstanceState时执行mMapView.onSaveInstanceState (outState)，保存地图当前的状态
+        mapView.onSaveInstanceState(outState);
+    }
+
+    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
+//        if (transit == FragmentTransaction.TRANSIT_FRAGMENT_OPEN) {//表示是一个进入动作，比如add.show等
+//            if (enter) {//普通的进入的动作
+//                return AnimationUtils.loadAnimation(getContext(), R.anim.anim_bottom_in);
+//            } else {//比如一个已经Fragmen被另一个replace，是一个进入动作，被replace的那个就是false
+//                return AnimationUtils.loadAnimation(getContext(), R.anim.anim_out);
 //            }
-//            ActionBar actionBar = getSupportActionBar();
-//            if (actionBar != null) {
-//                actionBar.hide();
-//            }
-//
+//        } else
+        Log.d("onCreateAnimation",enter+",0,"+transit);
+        if(enter == true){
+            Log.d("onCreateAnimation","1");
+            return AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.slide_right_in);
+        }else if(enter == false){
+            Log.d("onCreateAnimation","2");
+            return AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.slide_right_out);
+        }
+//        if (transit == FragmentTransaction.TRANSIT_FRAGMENT_OPEN) { //表示是一个进入动作，比如add.show等
+//            //Log.d("onCreateAnimation","1");
+//            return AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.slide_right_in);
 //        }
-//    };
-//    /**
-//     * Touch listener to use for in-layout UI controls to delay hiding the
-//     * system UI. This is to prevent the jarring behavior of controls going away
-//     * while interacting with activity UI.
-//     */
-//    private final View.OnTouchListener mDelayHideTouchListener = new View.OnTouchListener() {
-//        @Override
-//        public boolean onTouch(View view, MotionEvent motionEvent) {
-//            if (AUTO_HIDE) {
-//                delayedHide(AUTO_HIDE_DELAY_MILLIS);
-//            }
-//            return false;
+//        if (transit == FragmentTransaction.TRANSIT_FRAGMENT_CLOSE) {//表示一个退出动作，比如出栈，hide，detach等
+//            Log.d("onCreateAnimation","2");
+//            return AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.slide_right_out);
 //        }
-//    };
-//    private View mContentView;
-//    private View mControlsView;
-//    private final Runnable mShowPart2Runnable = new Runnable() {
-//        @Override
-//        public void run() {
-//            // Delayed display of UI elements
-//            ActionBar actionBar = getSupportActionBar();
-//            if (actionBar != null) {
-//                actionBar.show();
-//            }
-//            mControlsView.setVisibility(View.VISIBLE);
-//        }
-//    };
-//    private boolean mVisible;
-//    private final Runnable mHideRunnable = new Runnable() {
-//        @Override
-//        public void run() {
-//            hide();
-//        }
-//    };
-//    private FragmentMapBinding binding;
-//
-//    @Nullable
-//    @Override
-//    public View onCreateView(@NonNull LayoutInflater inflater,
-//                             @Nullable ViewGroup container,
-//                             @Nullable Bundle savedInstanceState) {
-//
-//        binding = FragmentMapBinding.inflate(inflater, container, false);
-//        return binding.getRoot();
-//
-//    }
-//
-//    @Override
-//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//        mVisible = true;
-//
-//        mControlsView = binding.fullscreenContentControls;
-//        mContentView = binding.fullscreenContent;
-//
-//        // Set up the user interaction to manually show or hide the system UI.
-//        mContentView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                toggle();
-//            }
-//        });
-//
-//        // Upon interacting with UI controls, delay any scheduled hide()
-//        // operations to prevent the jarring behavior of controls going away
-//        // while interacting with the UI.
-//        binding.dummyButton.setOnTouchListener(mDelayHideTouchListener);
-//    }
-//
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        if (getActivity() != null && getActivity().getWindow() != null) {
-//            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-//        }
-//
-//        // Trigger the initial hide() shortly after the activity has been
-//        // created, to briefly hint to the user that UI controls
-//        // are available.
-//        delayedHide(100);
-//    }
-//
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//        if (getActivity() != null && getActivity().getWindow() != null) {
-//            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-//
-//            // Clear the systemUiVisibility flag
-//            getActivity().getWindow().getDecorView().setSystemUiVisibility(0);
-//        }
-//        show();
-//    }
-//
-//    @Override
-//    public void onDestroy() {
-//        super.onDestroy();
-//        mContentView = null;
-//        mControlsView = null;
-//    }
-//
-//    private void toggle() {
-//        if (mVisible) {
-//            hide();
-//        } else {
-//            show();
-//        }
-//    }
-//
-//    private void hide() {
-//        // Hide UI first
-//        ActionBar actionBar = getSupportActionBar();
-//        if (actionBar != null) {
-//            actionBar.hide();
-//        }
-//        mControlsView.setVisibility(View.GONE);
-//        mVisible = false;
-//
-//        // Schedule a runnable to remove the status and navigation bar after a delay
-//        mHideHandler.removeCallbacks(mShowPart2Runnable);
-//        mHideHandler.postDelayed(mHidePart2Runnable, UI_ANIMATION_DELAY);
-//    }
-//
-//    @SuppressLint("InlinedApi")
-//    private void show() {
-//        // Show the system bar
-//        mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-//                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
-//        mVisible = true;
-//
-//        // Schedule a runnable to display UI elements after a delay
-//        mHideHandler.removeCallbacks(mHidePart2Runnable);
-//        mHideHandler.postDelayed(mShowPart2Runnable, UI_ANIMATION_DELAY);
-//        ActionBar actionBar = getSupportActionBar();
-//        if (actionBar != null) {
-//            actionBar.show();
-//        }
-//    }
-//
-//    /**
-//     * Schedules a call to hide() in delay milliseconds, canceling any
-//     * previously scheduled calls.
-//     */
-//    private void delayedHide(int delayMillis) {
-//        mHideHandler.removeCallbacks(mHideRunnable);
-//        mHideHandler.postDelayed(mHideRunnable, delayMillis);
-//    }
-//
-//    @Nullable
-//    private ActionBar getSupportActionBar() {
-//        ActionBar actionBar = null;
-//        if (getActivity() instanceof AppCompatActivity) {
-//            AppCompatActivity activity = (AppCompatActivity) getActivity();
-//            actionBar = activity.getSupportActionBar();
-//        }
-//        return actionBar;
-//    }
-//
-//    @Override
-//    public void onDestroyView() {
-//        super.onDestroyView();
-//        binding = null;
-//    }
+        return null;
+
+    }
+
+
 }

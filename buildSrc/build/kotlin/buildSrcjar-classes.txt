@@ -1,1 +1,1 @@
-E:\learn\AndroidTest\QuicklyTanking\buildSrc\build\classes\kotlin\main\ConfigKt.class
+E:\AndroidTest\QuicklyTanking\buildSrc\build\classes\kotlin\main\ConfigKt.class

@@ -44,7 +44,7 @@ public class PreDataFragment extends Fragment implements View.OnClickListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         preHandler = new PreHandler(Looper.getMainLooper(),this);
-        requestAllRunningRecords();
+        //requestAllRunningRecords();
     }
 
     @Override

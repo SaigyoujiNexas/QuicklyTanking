@@ -19,6 +19,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface GetRequest_Interface {
+
     @POST("upLoadRoad")
     Call<BaseResponse<RunningRecord>> postRuuningRecord(@Body RunningRecord record);
 

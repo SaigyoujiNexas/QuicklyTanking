@@ -10,7 +10,7 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/preRunBottomNavigation"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         app:menu="@menu/bottommenu"
         app:layout_constraintBottom_toBottomOf="parent"/>
     <androidx.viewpager2.widget.ViewPager2

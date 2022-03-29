@@ -73,7 +73,7 @@ public class TraceViewHolder0 extends RecyclerView.ViewHolder {
         // 设置圆形的边框颜色
         myLocationStyle.strokeColor(Color.TRANSPARENT);
         //设置是否显示定位小蓝点，true 显示，false不显示。
-        myLocationStyle.showMyLocation(true);
+        myLocationStyle.showMyLocation(false);
         //设置我的位置展示模式,定位、且将视角移动到地图中心点，定位点依照设备方向旋转，并且会跟随设备移动。
         myLocationStyle.myLocationType(myLocationStyle.LOCATION_TYPE_LOCATION_ROTATE);
         //设置定位图层,我的位置图层（myLocationOverlay）的样式。

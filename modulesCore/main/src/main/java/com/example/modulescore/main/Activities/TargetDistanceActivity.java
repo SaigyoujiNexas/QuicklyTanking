@@ -117,7 +117,7 @@ public class TargetDistanceActivity extends AppCompatActivity implements View.On
                 startActivity(new Intent(this,PreRunActivity.class));
                 break;
             case R.id.start_distanceRun_Card:
-                Intent startRunIntent = new Intent(this,RunningActivity.class);
+                Intent startRunIntent = new Intent(this,RunActivity.class);
                 startRunIntent.setType(isTarget);
                 startRunIntent.setFlags(viewPager2.getCurrentItem());
                 this.finish();
