@@ -1,5 +1,8 @@
 package com.example.modulespublic.common.base;
 
+import android.os.AsyncTask;
+
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -11,10 +14,7 @@ import java.util.List;
 @Entity(tableName = "RunningRecord")
 public class RunningRecord {
 
-    //主键
-    //表示主键，也就是表中的主键，每个表都要至少有一个主键，
-    // 当这个主键是一个字符串时，还要加上@NonNull注解，不然会出现编译错误。
-    @PrimaryKey
+
     private Long id;
     //运动轨迹
     //表示这是数据库表中的一个列。其中的name表示此对象在表中对应的类名，
@@ -32,6 +32,10 @@ public class RunningRecord {
     private String speed;
     //平均配速(分钟/公里)
     private Double distribution;
+    //主键
+    //表示主键，也就是表中的主键，每个表都要至少有一个主键，
+    // 当这个主键是一个字符串时，还要加上@NonNull注解，不然会出现编译错误。
+    @PrimaryKey@NonNull
     private String username;
 
     public Long getId() {
@@ -70,7 +74,7 @@ public class RunningRecord {
         return startTime;
     }
 
-    public void setStartTime(long startTime) {
+    public void setStartTime(Long startTime) {
         this.startTime = startTime;
     }
 

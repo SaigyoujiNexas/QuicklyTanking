@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.modulescore.main.R;
-import com.example.modulescore.main.Util.ScreenUtil;
+import com.example.modulespublic.common.utils.ScreenUtil;
 
 public class ScrollPickerView extends RecyclerView {
 //

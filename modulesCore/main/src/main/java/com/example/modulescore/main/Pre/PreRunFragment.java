@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
-import com.example.modulescore.main.Activities.RunningActivity;
+import com.example.modulescore.main.Activities.RunActivity;
 import com.example.modulescore.main.Activities.TargetDistanceActivity;
 import com.example.modulescore.main.R;
 
@@ -34,8 +34,9 @@ public class PreRunFragment extends Fragment implements View.OnClickListener{
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.card_startRun_preRun:
-                Intent startRunningIntent = new Intent(getActivity(), RunningActivity.class);
+                Intent startRunningIntent = new Intent(getActivity(), RunActivity.class);
                 startActivity(startRunningIntent);
+
                 break;
             case R.id.card_targetDistance_preRun:
                 Intent targetDistanceIntent = new Intent(getActivity(), TargetDistanceActivity.class);

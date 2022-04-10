@@ -5,12 +5,13 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -21,17 +22,17 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.amap.api.maps.model.LatLng;
-import com.example.modulesbase.libbase.net.RequestModel;
-import com.example.modulesbase.libbase.net.response.NetCallback;
-import com.example.modulesbase.libbase.net.response.NetResponse;
+import com.example.modulescore.main.Run.LocationService;
+import com.example.modulescore.main.Run.MapFragment;
 import com.example.modulespublic.common.base.MyDataBase;
 import com.example.modulespublic.common.base.RunningRecord;
 import com.example.modulescore.main.EventBus.MessageEvent;
 import com.example.modulescore.main.UI.View.ProgressButton;
 import com.example.modulescore.main.R;
-import com.example.modulescore.main.Util.TimeManager;
+import com.example.modulespublic.common.utils.TimeManager;
 import com.example.modulespublic.common.net.BaseResponse;
 import com.example.modulespublic.common.net.GetRequest_Interface;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -46,27 +47,23 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.Date;
 import java.util.List;
 
-import javax.inject.Inject;
-
-import dagger.hilt.android.AndroidEntryPoint;
-import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-@AndroidEntryPoint
+
 public class RunActivity extends AppCompatActivity implements View.OnClickListener {
 
-    @Inject
-    public GetRequest_Interface request;
-
+    public GetRequest_Interface getRequestInterface;
+    static MapFragment mapFragment = new MapFragment();
     FloatingActionButton startRunButton;
     FloatingActionButton stopRunButton;
     ProgressButton finishRunButton;
     CardView toMapCard;
     ConstraintLayout constraintLayout_run;
+    ConstraintLayout top_constraintLayout_run;
     boolean isRun = true;
     TextView animationText;
     ImageView animationBackGround;
@@ -78,13 +75,15 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
     List<LatLng> mPathPointsLine;
     //初始化开始时间
     Date startTime = new Date();
-
+    Long passedSeconds;
     MessageEvent event = new MessageEvent();
+    LocationService.LocationBinder locationBinder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_run);
         EventBus.getDefault().register(this);
+        top_constraintLayout_run = findViewById(R.id.top_ConstraintLayout_Run);
         startRunButton = findViewById(R.id.startRunButton);
         stopRunButton = findViewById(R.id.stopRunButton);
         finishRunButton = findViewById(R.id.finishRunButton);
@@ -110,16 +109,16 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
         startAnimation();
         event.setRunning(true);
         EventBus.getDefault().post(event);
+        initService();
         finishRunButton.setListener(new ProgressButton.ProgressButtonFinishCallback() {
             @Override
             public void onFinish() {
                 final String TAG = "FINISH_RUNNING";
-                Log.d(TAG,"start finish");
+                //Log.d(TAG,"start finish");
                 record.setId(Long.valueOf(001));
                 record.setUsername("1");
                 record.setCalorie((String) calorieText.getText());
                 record.setDistance( distanceview.getText());
-                Log.d(TAG,passedSeconds.toString());
                 record.setRunningtime(passedSeconds);
                 record.setSpeed((String) speedText.getText());
                 record.setPathPointsLine(mPathPointsLine);
@@ -138,31 +137,47 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
                     public void run() {
                         MyDataBase.getsInstance(getApplicationContext()).runningDao().insertRunningRecord(record);
                         Log.d(TAG,record.toString());
-                        Log.d(TAG+"length", String.valueOf(MyDataBase.getsInstance(getApplicationContext()).runningDao().loadAllRunningRecordss().length));
-//                        String baseUrl = "http://116.62.180.44:8080/";
-//                        Retrofit retrofit = new Retrofit.Builder()
-//                                .baseUrl(baseUrl)
-//                                .addConverterFactory(GsonConverterFactory.create())
-//                                .build();
-//                        GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
+
+                        String baseUrl = "http://116.62.180.44:8080/";
+                        Retrofit retrofit = new Retrofit.Builder()
+                                .baseUrl(baseUrl)
+                                .addConverterFactory(GsonConverterFactory.create())
+                                .build();
+                        GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
                         Call<BaseResponse<RunningRecord>> call = request.postRuuningRecord(record);//获得call对象
+                        Log.d(TAG,"start upload");
                         call.enqueue(new Callback<BaseResponse<RunningRecord>>() {
                             @Override
                             public void onResponse(Call<BaseResponse<RunningRecord>> call, Response<BaseResponse<RunningRecord>> response) {
                                 //assert response.body() != null;
                                 Log.d(TAG,"body:"+response.body()+",errorBody:"+response.errorBody()+",message:"+response.message()+",tostring:"+response.toString());
+
                             }
 
                             @Override
                             public void onFailure(Call<BaseResponse<RunningRecord>> call, Throwable t) {
                                 Log.d(TAG,"Retrofit_onFailure "+t.toString()+t);
-                                Toast.makeText(RunActivity.this, "保存数据库时出现错误..", Toast.LENGTH_LONG).show();
+                                Toast.makeText(RunActivity.this, "保存数据库时出现错误..,保存到本地", Toast.LENGTH_LONG).show();
+
+                                //Log.d(TAG+"length", String.valueOf(MyDataBase.getsInstance(getApplicationContext()).runningDao().loadAllRunningRecordss().length));
                             }
                         });
 
                     }
                 }).start();
-                finish();
+                //Observable<BaseResponse<RunningRecord>> observable = getRequestInterface.postRuuningRecord(record);
+//                RequestModel.Companion.request(getRequestInterface.postRuuningRecord(record),RunActivity.this, new NetCallback<RunningRecord>() {
+//                    @Override
+//                    public void onSuccess(RunningRecord data) {
+//                        Log.d("RunActivityRetrofit:1",data.toString());
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Throwable throwable) {
+//
+//                    }
+//                });
+                unbindService(serviceConnection);
             }
 
             @Override
@@ -170,31 +185,32 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
 
             }
         });
-        timeRunnable = new TimeRunnable();
-        mHandler.post(timeRunnable);
+        showMapFragment();
+        hideMapFragment();
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.stopRunButton: {
+            case R.id.startRunButton:{
                 changeButtonState();
-                mHandler.removeCallbacks(timeRunnable);//取消处理
-                event.setRunning(false);
+                locationBinder.startLocation();
+                event.setRunning(true);
                 EventBus.getDefault().post(event);
                 break;
             }
-            case R.id.startRunButton:{
+            case R.id.stopRunButton: {
                 changeButtonState();
-                mHandler.post(timeRunnable);//开始计时
-                event.setRunning(true);
+                locationBinder.stopLocation();
+                event.setRunning(false);
                 EventBus.getDefault().post(event);
                 break;
             }
             case R.id.toMapCard:
                 Log.d("","toMap");
-                Intent intent = new Intent(this, RunningActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(this, RunningActivity.class);
+//                startActivity(intent);
+                showMapFragment();
                 break;
         }
     }
@@ -212,6 +228,7 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
             finishRunButton.hide();
         }
     }
+
     private void startAnimation(){
         constraintLayout_run.postDelayed(new Runnable() {
             @Override
@@ -291,6 +308,10 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
         if(event.getmPathPointsLine()!=null){
             mPathPointsLine = event.getmPathPointsLine();
         }
+        if (event.getFormattedPassedTime()!=null && passedTimeView !=null) {
+            passedSeconds = event.getFormattedPassedTime();
+            passedTimeView .setText(TimeManager.formatseconds(event.getFormattedPassedTime()));
+        }
     };
     @Override
     protected void onDestroy() {
@@ -304,28 +325,68 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if ((System.currentTimeMillis() - time > 1000)) {
-                Toast.makeText(this, "结束跑步请点击完成按钮", Toast.LENGTH_SHORT).show();
-                time = System.currentTimeMillis();
+                if (mapFragment.isVisible()) {
+                    hideMapFragment();
+                } else {
+                    Toast.makeText(this, "结束跑步请点击完成按钮", Toast.LENGTH_SHORT).show();
+                    time = System.currentTimeMillis();
+                }
             }
         }
         return true;
     }
-    Long passedSeconds = Long.valueOf(0);
-    private Handler mHandler = new Handler(Looper.getMainLooper());
-    private class TimeRunnable implements Runnable {
-        @Override
-        public void run() {
-            event.setFormattedPassedTime(passedSeconds);
-            passedSeconds++;
-            EventBus.getDefault().post(event);
-            mHandler.postDelayed(this, 1000);
-        }
+    private void initService(){
+        Intent bindIntent = new Intent(this, LocationService.class);
+        //然后调用bindService()方法将MainActivity和MyService进行绑定。
+//bindService()方法接收3个参数，
+//第一个参数是Intent对象，第二个是创建出的ServiceConnection实例，
+//第三个是标志位，传入BIND_AUTO_CREATE表示Activity和Service绑定后自动创建服务。
+//会使得MyService中的onCreate()方法得到执行，但onStartCommand()方法不会得到执行。
+        bindService(bindIntent,serviceConnection,BIND_AUTO_CREATE);
     }
-    private TimeRunnable timeRunnable = null;
+    ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            locationBinder = (LocationService.LocationBinder) iBinder;
+            Log.d("onServiceConnected_Run",locationBinder.getService().toString());
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+
+        }
+    };
     public class FinishRunReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent){
             RunActivity.this.finish();
         }
+    }
+    public void showMapFragment(){
+//        getSupportFragmentManager()
+//                .beginTransaction()
+//                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+//                .add(R.id.constraintLayout_Run,mapFragment)
+//                .addToBackStack("")
+//                .commit();
+        constraintLayout_run.setVisibility(View.INVISIBLE);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        if (!mapFragment.isAdded()) { // 先判断是否被add过
+            transaction
+                    //.setCustomAnimations(R.anim.slide_right_in,R.anim.slide_right_out)
+                    .add(R.id.top_ConstraintLayout_Run, mapFragment).commit(); // 隐藏当前的fragment，add下一个到Activity中
+        }
+        getSupportFragmentManager().beginTransaction()
+                .show(mapFragment)
+                //.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .addToBackStack("")
+                .commit();
+    }
+    public void hideMapFragment(){
+        constraintLayout_run.setVisibility(View.VISIBLE);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .hide(mapFragment)
+                .commit();
     }
 }

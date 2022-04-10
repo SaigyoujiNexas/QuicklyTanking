@@ -50,6 +50,9 @@ android{
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
     }
+    buildFeatures {
+        viewBinding = true
+    }
     sourceSets["main"].manifest.srcFile {
         if (isDebug)
             "src/main/debug/AndroidManifest.xml"
