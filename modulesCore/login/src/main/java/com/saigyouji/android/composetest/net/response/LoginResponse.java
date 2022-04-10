@@ -31,10 +31,6 @@ public class LoginResponse implements NetResponse<String> {
         return String.valueOf(code);
     }
 
-    @Override
-    public List<RunningRecord> getList() {
-        return null;
-    }
 
     @Override
     public boolean isSuccess() {

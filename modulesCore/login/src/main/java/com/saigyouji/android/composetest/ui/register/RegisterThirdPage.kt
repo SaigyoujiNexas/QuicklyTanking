@@ -56,9 +56,12 @@ fun RegisterThirdPage(registerViewModel: RegisterViewModel = viewModel(),
         floatingActionButton = {
             FloatingActionButton(onClick = {
                 if(registerViewModel.name.checkInput("用户昵称不能为空")) {
-                    registerViewModel.register {
-                        navController.navigate("register_forth")
+                    registerViewModel.judgeUserName {
+                        registerViewModel.register {
+                            navController.navigate("register_forth")
+                        }
                     }
+
 
                 }
             }) {

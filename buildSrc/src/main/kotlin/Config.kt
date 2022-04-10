@@ -1,5 +1,4 @@
 import org.gradle.api.JavaVersion
-import org.gradle.kotlin.dsl.extra
 
 const val isDebug = true
 val androidC = mapOf(

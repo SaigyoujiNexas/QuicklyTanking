@@ -23,7 +23,7 @@ class ForgetViewModel
     var code by mutableStateOf("")
     fun forgetPassword(onSuccess: () -> Unit) = viewModelScope.launch {
         val res: BaseResponse<String?> = try {
-            forgetService.findPassword(LoginService.Companion.ForgetRequest(tel, code, passwd))
+            forgetService.findPassword(ForgetService.Companion.ForgetRequest(tel, code, passwd))
 
         }catch (e: Exception){
             BaseResponse(e.localizedMessage, 200, e.localizedMessage)

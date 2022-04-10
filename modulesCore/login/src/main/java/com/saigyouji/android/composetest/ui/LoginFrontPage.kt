@@ -14,6 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -121,6 +122,9 @@ object LoginFrontPage {
                         .padding(top = 125.dp)
                         .fillMaxWidth()
                 ) {
+                    Button(onClick = { loginViewModel.test{ToastUtil.showToast(it)}}) {
+                        Text(text = "test")
+                    }
                     Text(
                         text = "欢迎使用， 请输入您的手机号",
                         modifier = Modifier.fillMaxWidth(),
@@ -220,7 +224,8 @@ object LoginFrontPage {
                                     .wrapContentSize()
                             )
                             Text(text = "忘记密码", color = Color.Gray,
-                                modifier = Modifier.background(Color.Transparent)
+                                modifier = Modifier
+                                    .background(Color.Transparent)
                                     .clickable {
 
                                     }

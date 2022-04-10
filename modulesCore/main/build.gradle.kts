@@ -47,8 +47,8 @@ android{
         }
     }
     compileOptions {
-        sourceCompatibility(javaVersion)
-        targetCompatibility(javaVersion)
+        sourceCompatibility = javaVersion
+        targetCompatibility = javaVersion
     }
     sourceSets["main"].manifest.srcFile {
         if (isDebug)

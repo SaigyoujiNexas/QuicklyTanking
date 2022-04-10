@@ -21,10 +21,6 @@ public class RegisterResponse<T> implements NetResponse<T> {
         return String.valueOf(code);
     }
 
-    @Override
-    public List<RunningRecord> getList() {
-        return null;
-    }
 
 
     @Override

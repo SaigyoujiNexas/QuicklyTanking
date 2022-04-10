@@ -59,6 +59,22 @@ constructor(
             }
         }
     }
+    fun judgeUserName(onSuccess: () -> Unit) = viewModelScope.launch {
+        var res: BaseResponse<String?>?
+        try {
+            res = registerService.judgeUserName(RegisterService.Companion.JudgeUserNameRequest(name))
+        }catch(e: Exception)
+        {
+            res = BaseResponse( e.localizedMessage, 200, e.localizedMessage)
+        }
+        res?.let{
+            when(it.isSuccess)
+            {
+                true -> onSuccess.invoke()
+                else -> ToastUtil.showToast(it.msg)
+            }
+        }
+    }
 
     fun setUserInfo(lifecycleOwner: LifecycleOwner, onSuccess: (String?) -> Unit) {
 

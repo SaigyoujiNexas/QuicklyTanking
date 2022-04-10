@@ -11,8 +11,16 @@ interface RegisterService {
     @POST(REGISTER)
     suspend fun register(@Body request: RegisterRequest): BaseResponse<String?>
 
+    @POST(JUDGE_USER_NAME)
+    suspend fun judgeUserName(@Body request: JudgeUserNameRequest): BaseResponse<String?>
+
     companion object {
         private const val REGISTER = "register"
+        private const val JUDGE_USER_NAME = "judgeUserName"
+
+        data class JudgeUserNameRequest(
+            val username: String
+        )
         data class RegisterRequest(
             val username:String,
             val phone: String,
@@ -20,4 +28,5 @@ interface RegisterService {
             val password: String
         )
     }
+
 }

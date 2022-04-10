@@ -109,6 +109,19 @@ class LoginViewModel
             }
         }
     }
+    fun test(onSuccess: (String) -> Unit = {}) = viewModelScope.launch {
+        var baseResponse: String?
+        try {
+            baseResponse = loginService.test()
+        }catch (e: Exception)
+        {
+            baseResponse = e.localizedMessage;
+        }
+        ToastUtil.showToast(baseResponse!!)
+
+
+
+    }
 
 
 }

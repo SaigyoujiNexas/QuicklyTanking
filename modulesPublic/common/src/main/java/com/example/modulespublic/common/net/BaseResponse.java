@@ -9,7 +9,6 @@ public class BaseResponse<T> implements NetResponse<T> {
     T data;
     int code;
     String message;
-    List<RunningRecord> list;
     public BaseResponse(T data, int code, String msg) {
         this.data = data;
         this.code = code;
@@ -35,15 +34,6 @@ public class BaseResponse<T> implements NetResponse<T> {
     public void setMessage(String message) {
         this.message = message;
     }
-
-    public List<RunningRecord> getList() {
-        return list;
-    }
-
-    public void setList(List<RunningRecord> list) {
-        this.list = list;
-    }
-
     @Override
     public T getData() {
         return data;

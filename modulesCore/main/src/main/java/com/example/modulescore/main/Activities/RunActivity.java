@@ -56,11 +56,11 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-
+@AndroidEntryPoint
 public class RunActivity extends AppCompatActivity implements View.OnClickListener {
 
-
-    public GetRequest_Interface getRequestInterface;
+    @Inject
+    public GetRequest_Interface request;
 
     FloatingActionButton startRunButton;
     FloatingActionButton stopRunButton;
@@ -139,19 +139,18 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
                         MyDataBase.getsInstance(getApplicationContext()).runningDao().insertRunningRecord(record);
                         Log.d(TAG,record.toString());
                         Log.d(TAG+"length", String.valueOf(MyDataBase.getsInstance(getApplicationContext()).runningDao().loadAllRunningRecordss().length));
-                        String baseUrl = "http://116.62.180.44:8080/";
-                        Retrofit retrofit = new Retrofit.Builder()
-                                .baseUrl(baseUrl)
-                                .addConverterFactory(GsonConverterFactory.create())
-                                .build();
-                        GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
+//                        String baseUrl = "http://116.62.180.44:8080/";
+//                        Retrofit retrofit = new Retrofit.Builder()
+//                                .baseUrl(baseUrl)
+//                                .addConverterFactory(GsonConverterFactory.create())
+//                                .build();
+//                        GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
                         Call<BaseResponse<RunningRecord>> call = request.postRuuningRecord(record);//获得call对象
                         call.enqueue(new Callback<BaseResponse<RunningRecord>>() {
                             @Override
                             public void onResponse(Call<BaseResponse<RunningRecord>> call, Response<BaseResponse<RunningRecord>> response) {
                                 //assert response.body() != null;
                                 Log.d(TAG,"body:"+response.body()+",errorBody:"+response.errorBody()+",message:"+response.message()+",tostring:"+response.toString());
-
                             }
 
                             @Override
@@ -164,19 +163,6 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
                     }
                 }).start();
                 finish();
-
-                //Observable<BaseResponse<RunningRecord>> observable = getRequestInterface.postRuuningRecord(record);
-//                RequestModel.Companion.request(getRequestInterface.postRuuningRecord(record),RunActivity.this, new NetCallback<RunningRecord>() {
-//                    @Override
-//                    public void onSuccess(RunningRecord data) {
-//                        Log.d("RunActivityRetrofit:1",data.toString());
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Throwable throwable) {
-//
-//                    }
-//                });
             }
 
             @Override

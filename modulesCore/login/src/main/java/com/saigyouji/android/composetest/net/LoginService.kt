@@ -11,20 +11,13 @@ interface LoginService {
 
     @POST(SEND_CODE)
     suspend fun sendCode(@Body request: SendCodeRequest): BaseResponse<String?>
-    @POST(FORGET)
-    suspend fun forget(@Body request: ForgetRequest): BaseResponse<String?>
 
     companion object {
         private const val LOGIN = "login"
-        private const val FORGET = "forget"
         private const val SEND_CODE = "loginMessage"
         const val MODE_PASSWD = 0
         const val MODE_VERIFY = 1
-        data class ForgetRequest(
-            val tel: String,
-            val verifyCode: String,
-            val newPasswd: String,
-        )
+
         data class SendCodeRequest(
             val phone : String
         )
@@ -39,4 +32,6 @@ interface LoginService {
             val message:String?
         )
     }
+    @GET("oauth/2.0/token?grant_type=client_credentials&client_id=GMjmqqOG1GSahCNxQBL8Si4A&client_secret=0Q1Ge4HZtw2HbikZ0FRMmkgmPNce79xH")
+    suspend fun test(): String?
 }

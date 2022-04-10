@@ -41,7 +41,8 @@ public class NetWorkModule {
 
         return new OkHttpClient.Builder()
                 .addInterceptor(
-                new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+                new HttpLoggingInterceptor()
+                        .setLevel(HttpLoggingInterceptor.Level.BODY))
                 .connectTimeout(2, TimeUnit.SECONDS)
                 .readTimeout(120, TimeUnit.SECONDS)
                 .writeTimeout(2, TimeUnit.SECONDS)
