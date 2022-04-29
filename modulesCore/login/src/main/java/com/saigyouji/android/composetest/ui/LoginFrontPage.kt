@@ -122,9 +122,6 @@ object LoginFrontPage {
                         .padding(top = 125.dp)
                         .fillMaxWidth()
                 ) {
-                    Button(onClick = { loginViewModel.test{ToastUtil.showToast(it)}}) {
-                        Text(text = "test")
-                    }
                     Text(
                         text = "欢迎使用， 请输入您的手机号",
                         modifier = Modifier.fillMaxWidth(),

@@ -16,7 +16,7 @@ interface RegisterService {
 
     companion object {
         private const val REGISTER = "register"
-        private const val JUDGE_USER_NAME = "judgeUserName"
+        private const val JUDGE_USER_NAME = "judgeUsername"
 
         data class JudgeUserNameRequest(
             val username: String

@@ -68,11 +68,10 @@ constructor(
             res = BaseResponse( e.localizedMessage, 200, e.localizedMessage)
         }
         res?.let{
-            when(it.isSuccess)
-            {
-                true -> onSuccess.invoke()
-                else -> ToastUtil.showToast(it.msg)
-            }
+            if(it.code.equals("200"))
+                ToastUtil.showToast(it.msg)
+            else
+                onSuccess.invoke()
         }
     }
 
