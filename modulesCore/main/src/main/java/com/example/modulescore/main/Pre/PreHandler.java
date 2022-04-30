@@ -7,7 +7,7 @@ import android.os.Message;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.util.logging.LogRecord;
+import com.example.modulescore.main.Pre.Data.PreDataFragment;
 
 public class PreHandler extends Handler {
     PreDataFragment preDataFragment;

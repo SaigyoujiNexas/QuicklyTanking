@@ -19,6 +19,8 @@ public interface RunningDao {
     public void deleteRunningRecordss(RunningRecord... records);
     @Query("SELECT * FROM RunningRecord")
     public RunningRecord[] loadAllRunningRecordss();
-    @Query("SELECT * FROM RunningRecord where id = :id")
-    public RunningRecord queryRunningRecordById(Long id);
+//    @Query("SELECT * FROM RunningRecord where id = :id")
+//    public RunningRecord queryRunningRecordById(Long id);
+    @Query("SELECT * FROM RunningRecord where username = :username")
+    public RunningRecord queryRunningRecordByUsername(String username);
 }

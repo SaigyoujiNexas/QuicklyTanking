@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
-import com.example.modulescore.main.Activities.RunActivity;
+import com.example.modulescore.main.Run.RunActivity;
 import com.example.modulescore.main.Activities.TargetDistanceActivity;
 import com.example.modulescore.main.R;
 

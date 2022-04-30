@@ -1,4 +1,4 @@
-package com.example.modulescore.main.Pre;
+package com.example.modulescore.main.Pre.Data;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,18 +15,27 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.modulescore.main.Pre.PreHandler;
 import com.example.modulespublic.common.base.MyDataBase;
+import com.example.modulespublic.common.base.Rr;
 import com.example.modulespublic.common.base.RunningRecord;
 import com.example.modulescore.main.R;
 import com.example.modulescore.main.Trace.TraceActivity;
+import com.example.modulespublic.common.net.BaseResponse;
 import com.example.modulespublic.common.utils.TimeManager;
 import com.example.modulespublic.common.base.record;
 import com.example.modulespublic.common.net.GetRequest_Interface;
 import com.example.modulespublic.common.net.Request;
 import com.google.gson.Gson;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,6 +49,8 @@ public class PreDataFragment extends Fragment implements View.OnClickListener{
     RunningRecord[] runningRecords;
     PreHandler preHandler;
     String message;
+
+    String baseUrl = "http://116.62.180.44:8081/";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +66,7 @@ public class PreDataFragment extends Fragment implements View.OnClickListener{
         View view = inflater.inflate(R.layout.pre_data_item0, container, false);
         linearLayout = view.findViewById(R.id.linearlayout_pre_data);
         QueryAllRunningRecords();
+        requestAllRunningRecords();
         return view;
     }
 
@@ -71,6 +83,7 @@ public class PreDataFragment extends Fragment implements View.OnClickListener{
             }
         }).start();
     }
+
     public void RefreshDataItem(){
         final String TAG = "RefreshDataItem";
         Log.d(TAG, String.valueOf(runningRecords.length));
@@ -91,7 +104,7 @@ public class PreDataFragment extends Fragment implements View.OnClickListener{
         SimpleDateFormat minuteFormat = new SimpleDateFormat ("hh:mm");
         recordDateText.setText(dateFormat.format(record.getStartTime()));
         startTimetext.setText(minuteFormat.format(record.getStartTime()));
-        distancetext.setText(record.getDistance()+","+record.getId());
+        distancetext.setText(record.getDistance()+","+record.getDistance());
         durationtext.setText(TimeManager.formatseconds(record.getRunningtime()));
         calorietext.setText(record.getCalorie());
         speedtext.setText(record.getSpeed());
@@ -100,7 +113,7 @@ public class PreDataFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), TraceActivity.class);
-                intent.setType(String.valueOf(record.getId()));
+                intent.setType(String.valueOf(record.getUsername()));
                 startActivity(intent);
             }
         });
@@ -113,92 +126,69 @@ public class PreDataFragment extends Fragment implements View.OnClickListener{
 
         }
     }
+    List<RunningRecord> records =  new ArrayList<RunningRecord>();
+    RunningRecord record = new RunningRecord();
     private void requestAllRunningRecords(){
         final String TAG = "requestRunningRecordsTAG";
-        String baseUrl = "http://116.62.180.44:8080/";
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
-        Request request1 = new Request();
-        request1.setUsername("1");
-        Call<Object> call = request.getAllRunningRecords(request1);//获得call对象
-        call.enqueue(new Callback<Object>() {
+        Call<List<RunningRecord>> call = request.getAllRunningRecords();//获得call对象
+        call.enqueue(new Callback<List<RunningRecord>>() {
             @Override
-            public void onResponse(Call<Object> call, Response<Object> response) {
+            public void onResponse(Call<List<RunningRecord>> call, Response<List<RunningRecord>> response) {
                 //assert response.body() != null;
 //                String jsonStr = new String(response.body());//把原始数据转为字符串
 //                Log.e("retrofit获取到的数据", jsonStr);
                 message = response.message();
+                records = (List<RunningRecord>) response.body();
+                //record = (RunningRecord) response.body();
                 Log.d(TAG,"body:"+response.body()+",errorBody:"+response.errorBody()+",message:"+response.message()+",tostring:"+response.toString());
+                Log.d(TAG,records.toString()+","+records.get(0).toString());
             }
 
             @Override
-            public void onFailure(Call<Object> call, Throwable t) {
+            public void onFailure(Call<List<RunningRecord>> call, Throwable t) {
                 Log.d(TAG,"Retrofit_onFailure "+t.toString()+t);
                 Toast.makeText(getActivity(), "连接错误", Toast.LENGTH_LONG).show();
             }
         });
-        //1、创建Gson对象
-//        Gson gson = new Gson();
-//        //2、调用toJson(Object)将对象转为字符串
-//        String json = gson.toJson("{\n" +
-//                " \"code\": 500,\n" +
-//                " \"message\": \"查找成功\",\n" +
-//                " \"data\": [\n" +
-//                "  {\n" +
-//                "   \"id\": 1,\n" +
-//                "   \"pathPointsLine\": [\n" +
-//                "    {\n" +
-//                "     \"latitude\": 34.14932,\n" +
-//                "     \"longitude\": 108.9019\n" +
-//                "    },\n" +
-//                "    {\n" +
-//                "     \"latitude\": 34.14932,\n" +
-//                "     \"longitude\": 108.9019\n" +
-//                "    },\n" +
-//                "    {\n" +
-//                "     \"latitude\": 34.14932,\n" +
-//                "     \"longitude\": 108.9019\n" +
-//                "    },\n" +
-//                "    {\n" +
-//                "     \"latitude\": 34.14932,\n" +
-//                "     \"longitude\": 108.9019\n" +
-//                "    },\n" +
-//                "    {\n" +
-//                "     \"latitude\": 34.149483,\n" +
-//                "     \"longitude\": 108.90191\n" +
-//                "    },\n" +
-//                "    {\n" +
-//                "     \"latitude\": 34.149483,\n" +
-//                "     \"longitude\": 108.90191\n" +
-//                "    },\n" +
-//                "    {\n" +
-//                "     \"latitude\": 34.149483,\n" +
-//                "     \"longitude\": 108.90191\n" +
-//                "    },\n" +
-//                "    {\n" +
-//                "     \"latitude\": 34.149483,\n" +
-//                "     \"longitude\": 108.90191\n" +
-//                "    },\n" +
-//                "    {\n" +
-//                "     \"latitude\": 34.149483,\n" +
-//                "     \"longitude\": 108.90191\n" +
-//                "    }\n" +
-//                "   ],\n" +
-//                "   \"distance\": \"0.02\",\n" +
-//                "   \"runningtime\": 16,\n" +
-//                "   \"startTime\": \"2022-03-21T16:00:00.000+00:00\",\n" +
-//                "   \"calorie\": \"1.14\",\n" +
-//                "   \"speed\": \"1.22\",\n" +
-//                "   \"distribution\": null,\n" +
-//                "   \"username\": \"1\"\n" +
-//                "  }\n" +
-//                " ]\n" +
-//                "}");
+    }
+
+    //上传服务器
+    public void uploadFanganFile(File file) {
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        MultipartBody.Part body;
+//        if("0".equals(tag)) {
+//            body = MultipartBody.Part.createFormData("headSculpture", file.getName(), requestFile);
+//        }else {
+//            body = MultipartBody.Part.createFormData("background", file.getName(), requestFile);
+//        }
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
+//        Call<IClass0> call;
+////        if("0".equals(tag)) {
+////            call = nameRequest.upload2(RetrofitBase.mobileToken, RetrofitBase.uid, body);
+////        }else {
+////            call = nameRequest.upload1(RetrofitBase.mobileToken, RetrofitBase.uid, body);
+////        }
+//        call.enqueue(new Callback<IClass0>() {
+//            @Override
+//            public void onResponse(Call<IClass0> call, Response<IClass0> response) {
+//                Message message = new Message();
+//                message.obj = response.body().getCode();
+//                handler.sendMessage(message);
+//            }
 //
-//        //3、将json字符串封装为java对象[json字符串 的属性名要和javabean的属性一样]
-//        record record = gson.fromJson(json, record.class);
+//            @Override
+//            public void onFailure(Call<IClass0> call, Throwable t) {
+//                Log.d("Personal_TAG", "请求失败" + t.toString());
+//            }
+//        });
     }
 }

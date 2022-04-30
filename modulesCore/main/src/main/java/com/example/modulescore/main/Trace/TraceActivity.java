@@ -27,11 +27,13 @@ public class TraceActivity extends AppCompatActivity {
         this.savedInstanceState = savedInstanceState;
         setContentView(R.layout.activity_trace);
         Long recordId = Long.parseLong(getIntent().getType());
+        String username = getIntent().getType();
         TraceHandler traceHandler = new TraceHandler(this,Looper.getMainLooper());
         new Thread(new Runnable() {
             @Override
             public void run() {
-                selectedRecord = MyDataBase.getsInstance(getApplicationContext()).runningDao().queryRunningRecordById(recordId);
+                //selectedRecord = MyDataBase.getsInstance(getApplicationContext()).runningDao().queryRunningRecordById(recordId);
+                selectedRecord = MyDataBase.getsInstance(getApplicationContext()).runningDao().queryRunningRecordByUsername("lizongbin");
                 Message message = new Message();
                 message.what = traceHandler.finishQuery;
                 traceHandler.sendMessage(message);

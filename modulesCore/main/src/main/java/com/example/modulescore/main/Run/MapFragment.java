@@ -2,41 +2,25 @@ package com.example.modulescore.main.Run;
 
 import static android.content.Context.BIND_AUTO_CREATE;
 
-import android.annotation.SuppressLint;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
-import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
-import com.amap.api.location.AMapLocationClient;
-import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
@@ -44,11 +28,8 @@ import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.PolylineOptions;
-import com.example.modulescore.main.Activities.RunActivity;
-import com.example.modulescore.main.Activities.TargetDistanceActivity;
 import com.example.modulescore.main.EventBus.MessageEvent;
 import com.example.modulescore.main.R;
-import com.example.modulespublic.common.base.RunningRecord;
 import com.example.modulespublic.common.utils.TimeManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.robinhood.ticker.TickerUtils;
@@ -58,7 +39,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 
@@ -131,7 +111,7 @@ public class MapFragment extends Fragment implements View.OnClickListener{
          //第一个参数是Intent对象，第二个是创建出的ServiceConnection实例，
         //第三个是标志位，传入BIND_AUTO_CREATE表示Activity和Service绑定后自动创建服务。
         //会使得MyService中的onCreate()方法得到执行，但onStartCommand()方法不会得到执行。
-        getActivity().getApplicationContext().bindService(bindIntent,serviceConnection,BIND_AUTO_CREATE);
+        getActivity().bindService(bindIntent,serviceConnection,BIND_AUTO_CREATE);
         Log.d("initService","");
     }
 

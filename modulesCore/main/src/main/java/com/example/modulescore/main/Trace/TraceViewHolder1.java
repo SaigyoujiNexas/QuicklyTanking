@@ -37,6 +37,6 @@ public class TraceViewHolder1 extends RecyclerView.ViewHolder {
         starttimetext.setText(TimeManager.formatDates(new Date(selectedRecord.getStartTime())));
         duartiontext.setText(TimeManager.formatseconds(selectedRecord.getRunningtime()));
         speedtext.setText(selectedRecord.getSpeed());
-        distancetext.setText(selectedRecord.getDistance());
+        distancetext.setText(String.valueOf(selectedRecord.getDistance()));
     }
 }

@@ -7,7 +7,7 @@
         android:enabled="true"
         android:icon="@drawable/runimg"
         app:showAsAction="ifRoom"
-        android:title="跑步"
+        android:title="运动"
         tools:ignore="HardcodedText" />
     <item
         android:id="@+id/dataPage"
@@ -15,5 +15,12 @@
         android:icon="@drawable/dataimg"
         app:showAsAction="ifRoom"
         android:title="数据"
+        tools:ignore="HardcodedText" />
+    <item
+        android:id="@+id/minePage"
+        android:enabled="true"
+        android:icon="@drawable/mine"
+        app:showAsAction="ifRoom"
+        android:title="我的"
         tools:ignore="HardcodedText" />
 </menu>

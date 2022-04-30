@@ -30,7 +30,7 @@
             android:name=".Activities.TargetDistanceActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.PreRunActivity"
+            android:name=".Pre.PreRunActivity"
             android:exported="true"
             android:launchMode="singleTask">
             <intent-filter>
@@ -40,7 +40,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activities.RunActivity"
+            android:name=".Run.RunActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
             android:launchMode="singleTask" />

@@ -9,15 +9,14 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.modulescore.main.Pre.PreRunActivity;
 import com.example.modulescore.main.R;
+import com.example.modulescore.main.Run.RunActivity;
 import com.example.modulescore.main.Target.TargetAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-
-import org.greenrobot.eventbus.EventBus;
 
 public class TargetDistanceActivity extends AppCompatActivity implements View.OnClickListener{
     ViewPager2 viewPager2;
@@ -114,10 +113,10 @@ public class TargetDistanceActivity extends AppCompatActivity implements View.On
             case R.id.btn_back_targetActivity:
                 Log.d("btn_back_targetActivity","");
                 this.finish();
-                startActivity(new Intent(this,PreRunActivity.class));
+                startActivity(new Intent(this, PreRunActivity.class));
                 break;
             case R.id.start_distanceRun_Card:
-                Intent startRunIntent = new Intent(this,RunActivity.class);
+                Intent startRunIntent = new Intent(this, RunActivity.class);
                 startRunIntent.setType(isTarget);
                 startRunIntent.setFlags(viewPager2.getCurrentItem());
                 this.finish();

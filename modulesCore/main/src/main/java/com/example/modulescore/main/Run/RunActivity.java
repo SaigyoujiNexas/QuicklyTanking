@@ -1,4 +1,4 @@
-package com.example.modulescore.main.Activities;
+package com.example.modulescore.main.Run;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -25,8 +25,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.amap.api.maps.model.LatLng;
-import com.example.modulescore.main.Run.LocationService;
-import com.example.modulescore.main.Run.MapFragment;
 import com.example.modulespublic.common.base.MyDataBase;
 import com.example.modulespublic.common.base.RunningRecord;
 import com.example.modulescore.main.EventBus.MessageEvent;
@@ -113,25 +111,24 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
         finishRunButton.setListener(new ProgressButton.ProgressButtonFinishCallback() {
             @Override
             public void onFinish() {
-                final String TAG = "FINISH_RUNNING";
-                //Log.d(TAG,"start finish");
-                record.setId(Long.valueOf(001));
-                record.setUsername("1");
+                final String TAG = "FINISH_RUNNINGTAG";
+                Log.d(TAG,"start finish");
+                record.setUsername("lizongbin");
                 record.setCalorie((String) calorieText.getText());
-                record.setDistance( distanceview.getText());
+                record.setDistance( Double.valueOf(distanceview.getText()));
                 record.setRunningtime(passedSeconds);
                 record.setSpeed((String) speedText.getText());
                 record.setPathPointsLine(mPathPointsLine);
                 //record.setStartTime(startTime);
-                record.setStartTime(startTime.getTime());
-
+                record.setStartTime(String.valueOf(startTime.getTime()));
+                Log.d(TAG,"0");
                 FinishRunReceiver finishRunReceiver = new FinishRunReceiver();
                 IntentFilter intentFilter = new IntentFilter("finishRun");
                 registerReceiver(finishRunReceiver, intentFilter);
                 Intent intent = new Intent();
                 intent.setAction("finishRun");
                 sendBroadcast(intent);
-
+                Log.d(TAG,"1");
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -151,18 +148,16 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
                             public void onResponse(Call<BaseResponse<RunningRecord>> call, Response<BaseResponse<RunningRecord>> response) {
                                 //assert response.body() != null;
                                 Log.d(TAG,"body:"+response.body()+",errorBody:"+response.errorBody()+",message:"+response.message()+",tostring:"+response.toString());
-
                             }
 
                             @Override
                             public void onFailure(Call<BaseResponse<RunningRecord>> call, Throwable t) {
                                 Log.d(TAG,"Retrofit_onFailure "+t.toString()+t);
                                 Toast.makeText(RunActivity.this, "保存数据库时出现错误..,保存到本地", Toast.LENGTH_LONG).show();
-
                                 //Log.d(TAG+"length", String.valueOf(MyDataBase.getsInstance(getApplicationContext()).runningDao().loadAllRunningRecordss().length));
                             }
                         });
-
+                        Log.d(TAG,"2");
                     }
                 }).start();
                 //Observable<BaseResponse<RunningRecord>> observable = getRequestInterface.postRuuningRecord(record);
@@ -177,8 +172,11 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
 //
 //                    }
 //                });
+                Log.d(TAG,"1");
                 unbindService(serviceConnection);
+                Log.d(TAG,"2");
             }
+
 
             @Override
             public void onCancel() {

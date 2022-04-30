@@ -14,18 +14,17 @@ import java.util.List;
 @Entity(tableName = "RunningRecord")
 public class RunningRecord {
 
-
-    private Long id;
+    //private Long id;
     //运动轨迹
     //表示这是数据库表中的一个列。其中的name表示此对象在表中对应的类名，
     // 如果不添加此注解，Room默认会以此变量名作为其在表中的列名。
     private List<LatLng> pathPointsLine;
     //运动距离
-    private String distance;
+    private double distance;
     //运动时长
     private Long runningtime;
     //运动开始时间
-    private Long startTime;
+    private String startTime;
     //消耗卡路里
     private String calorie;
     //平均时速(公里/小时)
@@ -37,14 +36,14 @@ public class RunningRecord {
     // 当这个主键是一个字符串时，还要加上@NonNull注解，不然会出现编译错误。
     @PrimaryKey@NonNull
     private String username;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+//
+//    public Long getId() {
+//        return id;
+//    }
+//
+//    public void setId(Long id) {
+//        this.id = id;
+//    }
 
     public List<LatLng> getPathPointsLine() {
         return pathPointsLine;
@@ -54,11 +53,11 @@ public class RunningRecord {
         this.pathPointsLine = pathPointsLine;
     }
 
-    public String getDistance() {
+    public Double getDistance() {
         return distance;
     }
 
-    public void setDistance(String distance) {
+    public void setDistance(Double distance) {
         this.distance = distance;
     }
 
@@ -70,11 +69,11 @@ public class RunningRecord {
         this.runningtime = runningtime;
     }
 
-    public Long getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Long startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 

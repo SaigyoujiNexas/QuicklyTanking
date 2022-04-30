@@ -25,7 +25,6 @@ import com.amap.api.maps.AMapUtils;
 import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapsInitializer;
 import com.amap.api.maps.model.LatLng;
-import com.example.modulescore.main.Activities.RunActivity;
 import com.example.modulescore.main.EventBus.MessageEvent;
 import com.example.modulescore.main.R;
 import com.example.modulespublic.common.utils.AppUtil;

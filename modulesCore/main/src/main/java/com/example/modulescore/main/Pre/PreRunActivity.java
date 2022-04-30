@@ -1,4 +1,4 @@
-package com.example.modulescore.main.Activities;
+package com.example.modulescore.main.Pre;
 
 import android.Manifest;
 import android.content.BroadcastReceiver;
@@ -14,17 +14,13 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.modulescore.main.Pre.BottomAdapter;
-import com.example.modulescore.main.Pre.PreDataFragment;
-import com.example.modulescore.main.Pre.PreRunFragment;
+import com.example.modulescore.main.Pre.Data.PreDataFragment;
+import com.example.modulescore.main.Pre.Mine.MineFragment;
 import com.example.modulescore.main.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -53,8 +49,10 @@ public class PreRunActivity extends AppCompatActivity implements View.OnClickLis
         BottomAdapter bottomAdapter = new BottomAdapter(this);
         PreRunFragment preRunFragment = new PreRunFragment();
         PreDataFragment preDataFragment = new PreDataFragment();
+        MineFragment mineFragment = new MineFragment();
         fragmentList.add(preRunFragment);
         fragmentList.add(preDataFragment);
+        fragmentList.add(mineFragment);
         bottomAdapter.setFragmentList(fragmentList);
         viewPager2.setAdapter(bottomAdapter);
         viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
@@ -85,6 +83,9 @@ public class PreRunActivity extends AppCompatActivity implements View.OnClickLis
                     case R.id.dataPage:
                         Log.d(TAG,"dataPage");
                         viewPager2.setCurrentItem(1);
+                        break;
+                    case R.id.minePage:
+                        viewPager2.setCurrentItem(2);
                         break;
                 }
                 return true;
