@@ -21,6 +21,9 @@
             android:name=".Activities.TargetDistanceActivity"
             android:exported="false" />
         <activity
+            android:name=".Pre.Data.PreDataActivity"
+            android:exported="false" />
+        <activity
             android:name=".Pre.PreRunActivity"
             android:exported="true"
             android:launchMode="singleTask">

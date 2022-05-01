@@ -14,12 +14,13 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.modulescore.main.Pre.Data.PreDataFragment;
+import com.amap.api.maps.MapsInitializer;
 import com.example.modulescore.main.Pre.Mine.MineFragment;
 import com.example.modulescore.main.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -35,10 +36,19 @@ public class PreRunActivity extends AppCompatActivity implements View.OnClickLis
     BottomNavigationView bottomNavigationView;
     ViewPager2 viewPager2;
     private static final int WRITE_COARSE_LOCATION_REQUEST_CODE = 0;
+    CardView card_setting_back;
+    CardView card_music_prerun;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pre_run);
+        MapsInitializer mapsInitializer = new MapsInitializer();
+        //更新隐私合规状态,需要在初始化地图之前完成
+        mapsInitializer.updatePrivacyShow(this, true, true);
+        //更新同意隐私状态,需要在初始化地图之前完成
+        mapsInitializer.updatePrivacyAgree(this,true);
+        card_setting_back = findViewById(R.id.card_setting_back);
+        card_music_prerun = findViewById(R.id.card_music_prerun);
         final String TAG = "PreRunActivityTAG";
         img_setting = findViewById(R.id.image_setting_prerun);
         img_close = findViewById(R.id.image_close_prerun);
@@ -48,11 +58,12 @@ public class PreRunActivity extends AppCompatActivity implements View.OnClickLis
         bottomNavigationView = findViewById(R.id.preRunBottomNavigation);
         BottomAdapter bottomAdapter = new BottomAdapter(this);
         PreRunFragment preRunFragment = new PreRunFragment();
-        PreDataFragment preDataFragment = new PreDataFragment();
         MineFragment mineFragment = new MineFragment();
+        CommunityFragment communityFragment = new CommunityFragment();
         fragmentList.add(preRunFragment);
-        fragmentList.add(preDataFragment);
+        fragmentList.add(communityFragment);
         fragmentList.add(mineFragment);
+
         bottomAdapter.setFragmentList(fragmentList);
         viewPager2.setAdapter(bottomAdapter);
         viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
@@ -64,7 +75,17 @@ public class PreRunActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                bottomNavigationView.getMenu().getItem(position).isChecked();
+                MenuItem item = bottomNavigationView.getMenu().getItem(position);
+                item.setChecked(true);
+                if(position == 0){
+                    Log.d(TAG,"runPage");
+                    card_music_prerun.setVisibility(View.VISIBLE);
+                    card_setting_back.setVisibility(View.VISIBLE);
+                }else {
+                    Log.d(TAG,"NrunPage");
+                    card_music_prerun.setVisibility(View.GONE);
+                    card_setting_back.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -79,13 +100,20 @@ public class PreRunActivity extends AppCompatActivity implements View.OnClickLis
                     case R.id.runPage:
                         Log.d(TAG,"runPage");
                         viewPager2.setCurrentItem(0);
+                        card_music_prerun.setVisibility(View.VISIBLE);
+                        card_setting_back.setVisibility(View.VISIBLE);
                         break;
-                    case R.id.dataPage:
-                        Log.d(TAG,"dataPage");
+                    case R.id.communityPage:
+                        Log.d(TAG,"NrunPage");
                         viewPager2.setCurrentItem(1);
+                        card_music_prerun.setVisibility(View.GONE);
+                        card_setting_back.setVisibility(View.GONE);
                         break;
                     case R.id.minePage:
+                        Log.d(TAG,"NrunPage");
                         viewPager2.setCurrentItem(2);
+                        card_music_prerun.setVisibility(View.GONE);
+                        card_setting_back.setVisibility(View.GONE);
                         break;
                 }
                 return true;

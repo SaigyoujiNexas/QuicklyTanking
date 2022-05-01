@@ -1,4 +1,4 @@
-package com.example.modulescore.main.Pre;
+package com.example.modulescore.main.Pre.Data;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -7,18 +7,18 @@ import android.os.Message;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.modulescore.main.Pre.Data.PreDataFragment;
+import com.example.modulescore.main.Pre.Data.PreDataActivity;
 
 public class PreHandler extends Handler {
-    PreDataFragment preDataFragment;
-    public PreHandler(@NonNull Looper looper, PreDataFragment preDataFragment) {
+    PreDataActivity preDataActivity;
+    public PreHandler(@NonNull Looper looper, PreDataActivity preDataActivity) {
         super(looper);
-        this.preDataFragment = preDataFragment;
+        this.preDataActivity = preDataActivity;
     }
 
-    public PreHandler(@NonNull Looper looper, @Nullable Callback callback, PreDataFragment preDataFragment) {
+    public PreHandler(@NonNull Looper looper, @Nullable Callback callback, PreDataActivity preDataActivity) {
         super(looper, callback);
-        this.preDataFragment = preDataFragment;
+        this.preDataActivity = preDataActivity;
     }
 
     public static final int finishProgress = 1;
@@ -28,7 +28,7 @@ public class PreHandler extends Handler {
         super.handleMessage(msg);
         switch (msg.what){
             case finishProgress:
-                preDataFragment.RefreshDataItem();
+                preDataActivity.RefreshDataItem();
                 break;
         }
     }

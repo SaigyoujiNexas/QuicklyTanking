@@ -202,7 +202,7 @@ public class LocationService extends Service implements LocationSource,AMapLocat
                     //计算总距离
                     distanceThisTime = getDistance(path);
                     //messageEvent.setDistance(decimalFormat.format(distanceThisTime / 1000.0));
-                    messageEvent.setDistance(decimalFormat.format(getDistance(path)/1000.0));
+                    messageEvent.setDistance(decimalFormat.format(getDistance(path)/10000.0));
                     //distance = getDistance(path);
                     //发送速度
                     nowSpeed = distanceThisTime/passedSeconds;

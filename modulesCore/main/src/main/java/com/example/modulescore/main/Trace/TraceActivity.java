@@ -7,6 +7,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.os.Bundle;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 
 import com.example.modulespublic.common.base.MyDataBase;
 import com.example.modulespublic.common.base.RunningRecord;
@@ -19,21 +20,26 @@ public class TraceActivity extends AppCompatActivity {
     final String[] tabs = new String[]{"轨迹","信息"};
     ViewPager2 viewPager2;
     TabLayout tabLayout;
-    RunningRecord selectedRecord;
+    RunningRecord[] recordArray;
     Bundle savedInstanceState;
+    RunningRecord selectedRecord;
+    final String TAG=  "TraceActivitytag";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.savedInstanceState = savedInstanceState;
         setContentView(R.layout.activity_trace);
-        Long recordId = Long.parseLong(getIntent().getType());
+        //Long recordId = Long.parseLong(getIntent().getType());
         String username = getIntent().getType();
+        int index = Integer.parseInt(getIntent().getStringExtra("index"));
         TraceHandler traceHandler = new TraceHandler(this,Looper.getMainLooper());
         new Thread(new Runnable() {
             @Override
             public void run() {
                 //selectedRecord = MyDataBase.getsInstance(getApplicationContext()).runningDao().queryRunningRecordById(recordId);
-                selectedRecord = MyDataBase.getsInstance(getApplicationContext()).runningDao().queryRunningRecordByUsername("lizongbin");
+                recordArray = MyDataBase.getsInstance(TraceActivity.this).runningDao().loadAllRunningRecordss();
+                Log.d(TAG,"runningRecordsArraylengthAfter"+recordArray.length);
+                selectedRecord = recordArray[index];
                 Message message = new Message();
                 message.what = traceHandler.finishQuery;
                 traceHandler.sendMessage(message);

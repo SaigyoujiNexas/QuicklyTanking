@@ -45,9 +45,8 @@
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
             android:launchMode="singleTask" />
         <activity
-            android:name=".Activities.RunningActivity"
-            android:exported="true"
-            android:launchMode="singleInstance" />
+            android:name=".Pre.Data.PreDataActivity"
+            android:exported="false" />
 
         <meta-data
             android:name="com.amap.api.v2.apikey"

@@ -1,36 +1,31 @@
 package com.example.modulescore.main.Pre.Data;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.modulescore.main.Pre.PreHandler;
 import com.example.modulespublic.common.base.MyDataBase;
-import com.example.modulespublic.common.base.Rr;
 import com.example.modulespublic.common.base.RunningRecord;
 import com.example.modulescore.main.R;
 import com.example.modulescore.main.Trace.TraceActivity;
-import com.example.modulespublic.common.net.BaseResponse;
 import com.example.modulespublic.common.utils.TimeManager;
-import com.example.modulespublic.common.base.record;
 import com.example.modulespublic.common.net.GetRequest_Interface;
-import com.example.modulespublic.common.net.Request;
-import com.google.gson.Gson;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.MediaType;
@@ -42,57 +37,38 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class PreDataFragment extends Fragment implements View.OnClickListener{
-    public PreDataFragment() {
+public class PreDataActivity extends AppCompatActivity implements View.OnClickListener{
+    public PreDataActivity() {
     }
     LinearLayout linearLayout;
-    RunningRecord[] runningRecords;
     PreHandler preHandler;
     String message;
-
+    RunningRecord[] runningRecordsArray;
     String baseUrl = "http://116.62.180.44:8081/";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.pre_data_item0);
         preHandler = new PreHandler(Looper.getMainLooper(),this);
-        //requestAllRunningRecords();
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.pre_data_item0, container, false);
-        linearLayout = view.findViewById(R.id.linearlayout_pre_data);
-        QueryAllRunningRecords();
+        linearLayout = findViewById(R.id.linearlayout_pre_data);
         requestAllRunningRecords();
-        return view;
     }
 
-    private void QueryAllRunningRecords(){
-        final String TAG = "QueryAllRunningRecordsTAG";
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                runningRecords = MyDataBase.getsInstance(getActivity().getApplicationContext()).runningDao().loadAllRunningRecordss();
-                Log.d(TAG, String.valueOf(runningRecords.length));
-                Message message = new Message();
-                message.what = PreHandler.finishProgress;
-                preHandler.sendMessage(message);
-            }
-        }).start();
-    }
+
+    List<View> viewList = new ArrayList<>();
 
     public void RefreshDataItem(){
         final String TAG = "RefreshDataItem";
-        Log.d(TAG, String.valueOf(runningRecords.length));
-        for(RunningRecord record: runningRecords){
-            LinearAddView(record);
+        Log.d(TAG, String.valueOf(runningRecordsArray.length));
+        for(int i=0;i<runningRecordsArray.length;i++){
+            LinearAddView(runningRecordsArray[i], i);
         }
     }
-    private void LinearAddView(RunningRecord record){
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.runrecord_item,linearLayout,false);
+
+    private void LinearAddView(RunningRecord record,int i){
+        final String TAG = "LinearAddViewTAG";
+        View view = LayoutInflater.from(this).inflate(R.layout.runrecord_item,linearLayout,false);
+        viewList.add(view);
         TextView startTimetext = view.findViewById(R.id.startTimetext_runrecord);
         TextView distancetext = view.findViewById(R.id.distancetext_runrecord);
         TextView durationtext = view.findViewById(R.id.duration_text_runrecorditem);
@@ -102,22 +78,33 @@ public class PreDataFragment extends Fragment implements View.OnClickListener{
         SimpleDateFormat yearFormat = new SimpleDateFormat ("yyyy年");
         SimpleDateFormat dateFormat = new SimpleDateFormat ("MM月dd日");
         SimpleDateFormat minuteFormat = new SimpleDateFormat ("hh:mm");
-        recordDateText.setText(dateFormat.format(record.getStartTime()));
-        startTimetext.setText(minuteFormat.format(record.getStartTime()));
+        long milliSecond = Long.parseLong(record.getStartTime());
+        Date date = new Date();
+        date.setTime(milliSecond);
+        Log.d(TAG,""+record.getStartTime());
+        recordDateText.setText(dateFormat.format(milliSecond));
+        view.setTag(dateFormat.format(milliSecond));
+        startTimetext.setText(minuteFormat.format(milliSecond));
+        if(i>0 && dateFormat.format(milliSecond).equals(viewList.get(i-1).getTag())){
+            recordDateText.setVisibility(View.GONE);
+        }
         distancetext.setText(record.getDistance()+","+record.getDistance());
         durationtext.setText(TimeManager.formatseconds(record.getRunningtime()));
         calorietext.setText(record.getCalorie());
         speedtext.setText(record.getSpeed());
         linearLayout.addView(view);
+        int finalI = i;
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), TraceActivity.class);
+                Intent intent = new Intent(PreDataActivity.this, TraceActivity.class);
                 intent.setType(String.valueOf(record.getUsername()));
+                intent.putExtra("index", finalI +"");
                 startActivity(intent);
+                Log.d("LinearAddViewTAG",finalI+","+ runningRecordsArray.length+",FINISH");
             }
         });
-        Log.d("LinearAddView","FINISH");
+        i++;
     }
 
     @Override
@@ -126,8 +113,9 @@ public class PreDataFragment extends Fragment implements View.OnClickListener{
 
         }
     }
-    List<RunningRecord> records =  new ArrayList<RunningRecord>();
-    RunningRecord record = new RunningRecord();
+
+    List<RunningRecord> recordList =  new ArrayList<RunningRecord>();
+
     private void requestAllRunningRecords(){
         final String TAG = "requestRunningRecordsTAG";
         Retrofit retrofit = new Retrofit.Builder()
@@ -143,20 +131,44 @@ public class PreDataFragment extends Fragment implements View.OnClickListener{
 //                String jsonStr = new String(response.body());//把原始数据转为字符串
 //                Log.e("retrofit获取到的数据", jsonStr);
                 message = response.message();
-                records = (List<RunningRecord>) response.body();
+                recordList = (List<RunningRecord>) response.body();
+                for (int i = 0;i<recordList.size();i++){
+                    recordList.get(i).setId(i);
+                }
                 //record = (RunningRecord) response.body();
-                Log.d(TAG,"body:"+response.body()+",errorBody:"+response.errorBody()+",message:"+response.message()+",tostring:"+response.toString());
-                Log.d(TAG,records.toString()+","+records.get(0).toString());
+                Log.d(TAG,recordList.size()+","+recordList.toString()+","+recordList.get(0).toString());
+                runningRecordsArray = recordList.toArray(new RunningRecord[recordList.size()]);
+                //Log.d(TAG,"body:"+response.body()+",errorBody:"+response.errorBody()+",message:"+response.message()+",tostring:"+response.toString());
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        MyDataBase.getsInstance(PreDataActivity.this).runningDao().insertRunningRecord(runningRecordsArray);
+                        MyDataBase.getsInstance(PreDataActivity.this).runningDao().updateRunningRecordss(runningRecordsArray);
+                        Log.d(TAG,"runningRecordsArraylength:"+runningRecordsArray.length);
+                    }
+                }).start();
+                Log.d(TAG, String.valueOf(runningRecordsArray.length));
+                Message message = new Message();
+                message.what = PreHandler.finishProgress;
+                preHandler.sendMessage(message);
             }
 
             @Override
             public void onFailure(Call<List<RunningRecord>> call, Throwable t) {
                 Log.d(TAG,"Retrofit_onFailure "+t.toString()+t);
-                Toast.makeText(getActivity(), "连接错误", Toast.LENGTH_LONG).show();
+                Toast.makeText(PreDataActivity.this, "连接错误", Toast.LENGTH_LONG).show();
             }
         });
     }
-
+  //  private void QueryAllRunningRecords(){
+//        final String TAG = "QueryAllRunningRecordsTAG";
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//            }
+//        }).start();
+//    }
     //上传服务器
     public void uploadFanganFile(File file) {
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);

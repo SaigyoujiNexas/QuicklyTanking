@@ -5,16 +5,16 @@
     <item
         android:id="@+id/runPage"
         android:enabled="true"
-        android:icon="@drawable/runimg"
+        android:icon="@drawable/sport"
         app:showAsAction="ifRoom"
         android:title="运动"
         tools:ignore="HardcodedText" />
     <item
-        android:id="@+id/dataPage"
+        android:id="@+id/communityPage"
         android:enabled="true"
-        android:icon="@drawable/dataimg"
+        android:icon="@drawable/community"
         app:showAsAction="ifRoom"
-        android:title="数据"
+        android:title="社区"
         tools:ignore="HardcodedText" />
     <item
         android:id="@+id/minePage"

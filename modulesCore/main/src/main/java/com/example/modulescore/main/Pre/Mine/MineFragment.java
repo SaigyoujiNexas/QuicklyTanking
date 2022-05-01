@@ -3,7 +3,10 @@ package com.example.modulescore.main.Pre.Mine;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.modulescore.main.Pre.Data.PreDataActivity;
 import com.example.modulescore.main.R;
 import com.example.modulescore.main.Trace.TraceActivity;
 import com.example.modulespublic.common.base.RunningRecord;
@@ -25,6 +29,7 @@ import java.util.List;
 public class MineFragment extends Fragment {
     LinearLayout linearLayout;
     List<View> viewList = new ArrayList<>();
+    final String TAG = "MineFragmentTAG";
     String[] titles = {"跑步记录","数据统计","我的购物车","我的收藏","关于我们"};
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,23 +46,26 @@ public class MineFragment extends Fragment {
         for(int i = 0;i<5;i++){
             LinearAddView(i);
         }
+        viewList.get(0).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG,"onclick");
+                Intent intent = new Intent(getActivity(), PreDataActivity.class);
+                startActivity(intent);
+            }
+        });
         return view;
     }
 
     private void LinearAddView(int i){
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.mine_item,linearLayout,false);
-        viewList.add(view);
+        ConstraintLayout constraintLayout = view.findViewById(R.id.constraint_mine_item);
         ImageView img_item = view.findViewById(R.id.img_mine_item);
         TextView text_item = view.findViewById(R.id.text_mine_item);
         text_item.setText(titles[i]);
         linearLayout.addView(view);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
         Log.d("LinearAddView","FINISH");
+        viewList.add(view);
     }
 
 }

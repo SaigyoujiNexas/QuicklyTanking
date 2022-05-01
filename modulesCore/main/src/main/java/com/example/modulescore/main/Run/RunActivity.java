@@ -134,8 +134,7 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
                     public void run() {
                         MyDataBase.getsInstance(getApplicationContext()).runningDao().insertRunningRecord(record);
                         Log.d(TAG,record.toString());
-
-                        String baseUrl = "http://116.62.180.44:8080/";
+                        String baseUrl = "http://116.62.180.44:8081/";
                         Retrofit retrofit = new Retrofit.Builder()
                                 .baseUrl(baseUrl)
                                 .addConverterFactory(GsonConverterFactory.create())

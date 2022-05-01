@@ -2,6 +2,7 @@ package com.example.modulescore.main.Trace;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -31,7 +32,6 @@ public class TraceViewHolder0 extends RecyclerView.ViewHolder {
     private PolylineOptions polylineOptions;
     private Polyline polyline;
     private AMap aMap;
-    private List<LatLng> latLngList;
     DataMap mapView;
     private AMapLocationClient locationClient;
     private AMapLocationClientOption LocationOption;
@@ -81,6 +81,14 @@ public class TraceViewHolder0 extends RecyclerView.ViewHolder {
     }
     public void addTrace(LatLng startPoint, LatLng endPoint,
                           List<LatLng> pathList){
+        try {
+
+            //设置显示在规定屏幕范围内的地图经纬度范围。
+            //设置经纬度范围和mapView边缘的空隙，单位像素。这个值适用于区域的四个边。
+            aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(getBounds(),16));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         polylineOptions = new PolylineOptions()
                 .addAll(pathList)
                 .width(20)
@@ -92,28 +100,22 @@ public class TraceViewHolder0 extends RecyclerView.ViewHolder {
         aMap.addMarker(new MarkerOptions().position(
                 endPoint).icon(
                 BitmapDescriptorFactory.fromResource(R.drawable.endpoint)));
-        try {
-            aMap.moveCamera(CameraUpdateFactory.zoomTo(18));//设置地图缩放级别。
-            //设置显示在规定屏幕范围内的地图经纬度范围。
-            //设置经纬度范围和mapView边缘的空隙，单位像素。这个值适用于区域的四个边。
-            aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(getBounds(), 16));//设置显示在规定屏幕范围内的地图经纬度范围。
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
     }
 
     private LatLngBounds getBounds() {//经纬度划分的一个矩形区域。
+        final String TAG = "getBoundsTAG";
         LatLngBounds.Builder b = LatLngBounds.builder();
-        if (latLngList == null) {
-            return b.build();
-        }
+        List<LatLng> latLngList = selectedRecord.getPathPointsLine();
         for (int i = 0; i < latLngList.size(); i++) {
 //区域包含传入的坐标。区域将进行小范围延伸包含传入的坐标。 更准确来说，它会考虑向东或向西方向扩展（哪一种方法可能环绕地图），
 //并选择最小扩展的方法。 如果两种方向得到的矩形区域大小相同，则会选择向东方向扩展。
             b.include(latLngList.get(i));
+            Log.d(TAG,"");
         }
         return b.build();
     }
+
     public void onDestory(){
         mapView.onDestroy();
     }

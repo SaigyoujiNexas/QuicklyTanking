@@ -8,13 +8,18 @@ import androidx.room.PrimaryKey;
 
 import com.amap.api.maps.model.LatLng;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 @Entity(tableName = "RunningRecord")
-public class RunningRecord {
-
-    //private Long id;
+public class RunningRecord  {
+    @PrimaryKey
+    @NonNull
+    //主键
+    //表示主键，也就是表中的主键，每个表都要至少有一个主键，
+    // 当这个主键是一个字符串时，还要加上@NonNull注解，不然会出现编译错误。
+    private int id;
     //运动轨迹
     //表示这是数据库表中的一个列。其中的name表示此对象在表中对应的类名，
     // 如果不添加此注解，Room默认会以此变量名作为其在表中的列名。
@@ -31,10 +36,7 @@ public class RunningRecord {
     private String speed;
     //平均配速(分钟/公里)
     private Double distribution;
-    //主键
-    //表示主键，也就是表中的主键，每个表都要至少有一个主键，
-    // 当这个主键是一个字符串时，还要加上@NonNull注解，不然会出现编译错误。
-    @PrimaryKey@NonNull
+
     private String username;
 //
 //    public Long getId() {
@@ -45,6 +47,15 @@ public class RunningRecord {
 //        this.id = id;
 //    }
 
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public List<LatLng> getPathPointsLine() {
         return pathPointsLine;
     }
@@ -53,11 +64,11 @@ public class RunningRecord {
         this.pathPointsLine = pathPointsLine;
     }
 
-    public Double getDistance() {
+    public double getDistance() {
         return distance;
     }
 
-    public void setDistance(Double distance) {
+    public void setDistance(double distance) {
         this.distance = distance;
     }
 
