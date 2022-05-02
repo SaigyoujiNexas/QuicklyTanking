@@ -132,6 +132,10 @@ public class PreDataActivity extends AppCompatActivity implements View.OnClickLi
 //                Log.e("retrofit获取到的数据", jsonStr);
                 message = response.message();
                 recordList = (List<RunningRecord>) response.body();
+                if(recordList==null || recordList.size()==0){
+                    Toast.makeText(PreDataActivity.this, "数据为空", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 for (int i = 0;i<recordList.size();i++){
                     recordList.get(i).setId(i);
                 }
