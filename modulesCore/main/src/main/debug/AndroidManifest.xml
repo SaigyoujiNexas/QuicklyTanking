@@ -24,7 +24,7 @@
         android:hardwareAccelerated="true">
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.example.modulescore.main.fileProvider"
+            android:authorities="com.example.modulescore.main.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
