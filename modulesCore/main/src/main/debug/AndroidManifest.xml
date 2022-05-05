@@ -43,7 +43,7 @@
         <activity
             android:name=".Pre.PreRunActivity"
             android:exported="true"
-            android:launchMode="singleTask">
+            android:launchMode="standard">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

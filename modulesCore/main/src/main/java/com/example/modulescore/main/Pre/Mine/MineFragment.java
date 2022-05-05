@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -54,17 +55,17 @@ import java.util.Date;
 import java.util.List;
 
 public class MineFragment extends Fragment {
+    public static File outputImageFile;
     LinearLayout linearLayout;
     List<View> viewList = new ArrayList<>();
     final String TAG = "MineFragmentTAG";
-    ImageView userimg_fragmentmine;
-    private File outputImage;
+    public static ImageView userimg_fragmentmine;
     String[] titles = {"跑步记录","数据统计","我的购物车","我的收藏","关于我们"};
     int[] imgResource = {R.drawable.runningimg,R.drawable.statisticsimg,R.drawable.shoppingimg,R.drawable.collectionimg,R.drawable.aboutusimg};
-    private static final int REQUEST_CODE_ALBUM = 100;//打开相册
-    private static final int REQUEST_CODE_CAMERA = 101;//打开相机
-    private static final int REQUEST_CROP_CODE = 102;//裁剪后保存
-    private Uri picUri;
+    public  static final int REQUEST_CODE_ALBUM = 100;//打开相册
+    public static final int REQUEST_CODE_CAMERA = 101;//打开相机
+    public static final int REQUEST_CROP_CODE = 102;//裁剪后保存
+    public Uri picUri;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -157,66 +158,34 @@ public class MineFragment extends Fragment {
     private void openCamera(){
         SimpleDateFormat timeStampFormat = new SimpleDateFormat("HH_mm_ss");
         //创建File对象
-        outputImage = new File(getActivity().getExternalCacheDir(), "takePhoto" + System.currentTimeMillis() + ".jpg");
-        //outputImage = new File(Environment.getExternalStorageDirectory().getPath(), System.currentTimeMillis() + ".jpg");
+        //outputImageFile = new File(getActivity().getExternalCacheDir(), "takePhoto" + System.currentTimeMillis() + ".jpg");
+        outputImageFile = new File(Environment.getExternalStorageDirectory(), System.currentTimeMillis() + ".jpg");
 
         Intent intent= new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            picUri = FileProvider.getUriForFile(getActivity(), getActivity().getPackageName() + ".fileprovider", outputImage);
-        } else {
-            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            picUri = Uri.fromFile(outputImage);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//            picUri = FileProvider.getUriForFile(getActivity(), getActivity().getPackageName() + ".fileprovider", outputImageFile);
+//        } else {
+//            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//            picUri = Uri.fromFile(outputImageFile);
+//        }
+
+        //兼容android7.0 使用共享文件的形式
+        ContentValues contentValues = new ContentValues(1);
+        contentValues.put(MediaStore.Images.Media.DATA, outputImageFile.getAbsolutePath());
+        //检查是否有存储权限，以免崩溃
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            //申请WRITE_EXTERNAL_STORAGE权限
+            Toast.makeText(getActivity(),"请开启存储权限",Toast.LENGTH_SHORT).show();
         }
+        picUri = getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+        //intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, picUri);
+
         startActivityForResult(intent, REQUEST_CODE_CAMERA);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_CODE_ALBUM) {
-            Log.d(TAG,"0001");
-//            if (data != null) {
-//                ContentResolver cr = getActivity().getContentResolver();
-//                try {
-//                    Bitmap bitmap = BitmapFactory.decodeStream(cr.openInputStream(picUri));
-//                    /* 将Bitmap设定到ImageView */
-//                    userimg_fragmentmine.setImageBitmap(bitmap);
-//                } catch (FileNotFoundException e) {
-//                    Log.e("Exception", e.getMessage(), e);
-//                }
-//            }
-            Uri uri = data.getData();
-            cropImg(uri);
-        }else if(requestCode == REQUEST_CODE_CAMERA && resultCode== RESULT_OK){
-            Log.d(TAG,"0002");
-            Uri contentUri = FileProvider.getUriForFile(getActivity(), getActivity().getPackageName() + ".fileprovider", outputImage);
-            cropImg(contentUri);
-        } else if(requestCode ==REQUEST_CROP_CODE){
-            //try {
-//                Log.d(TAG,"1");
-//                getActivity().getContentResolver().openInputStream(picUri);
-//                Bitmap image = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(picUri));
-//                //saveImageToGallery(image);
-//                Log.d(TAG,"2");
-//
-                //图片剪裁返回
-                Bundle bundle = data.getExtras();
-                if (bundle != null) {
-                    Log.d("xxxxxx", "eee");
-                    //在这里获得了剪裁后的Bitmap对象，可以用于上传
-                    Bitmap image = bundle.getParcelable("data");
-                    userimg_fragmentmine.setImageBitmap(image);
-                    //File file = saveImageToGallery(map);
-                    //uploadFanganFile(file);
-                    //deleteSuccess(this, file.getName());
-                }
-//            } catch (FileNotFoundException e) {
-//                e.printStackTrace();
-//            }
-        }
-    }
 
     //保存图片
     public File saveImageToGallery(Bitmap bitmap) {
@@ -255,17 +224,83 @@ public class MineFragment extends Fragment {
     }
 
 
-    public void cropImg(Uri uri){
+    /**
+     * 从相册获取图片
+     */
+    private void getPicFromAlbm() {
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+        photoPickerIntent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(photoPickerIntent, REQUEST_CODE_ALBUM);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data == null) {
+            Log.d(TAG, "resultCode" + resultCode);
+            Toast.makeText(getActivity(), "intent为空", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (requestCode == MineFragment.REQUEST_CODE_ALBUM) {
+            Log.d(TAG, "0001");
+//            if (data != null) {
+//                ContentResolver cr = getContentResolver();
+//                try {
+//                    Bitmap bitmap = BitmapFactory.decodeStream(cr.openInputStream(picUri));
+//                    /* 将Bitmap设定到ImageView */
+//                    userimg_fragmentmine.setImageBitmap(bitmap);
+//                } catch (FileNotFoundException e) {
+//                    Log.e("Exception", e.getMessage(), e);
+//                }
+//            }
+            Uri uri = data.getData();
+            Log.d(TAG,"uri:"+uri);
+            cropImg(uri);
+        } else if (requestCode == MineFragment.REQUEST_CODE_CAMERA && resultCode == RESULT_OK) {
+            Log.d(TAG, "0002");
+            //Uri contentUri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", MineFragment.outputImageFile);
+            Uri contentUri = data.getData();
+            cropImg(contentUri);
+        } else if (requestCode == MineFragment.REQUEST_CROP_CODE && resultCode == RESULT_OK) {
+            //try {
+//                Log.d(TAG,"1");
+//                getActivity().getContentResolver().openInputStream(picUri);
+//                Bitmap image = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(picUri));
+//                //saveImageToGallery(image);
+//                Log.d(TAG,"2");
+            //图片剪裁返回
+//            Bundle bundle = data.getExtras();
+//            if (bundle != null) {
+//                //在这里获得了剪裁后的Bitmap对象，可以用于上传
+//                Bitmap image = bundle.getParcelable("data");
+//                MineFragment.userimg_fragmentmine.setImageBitmap(image);
+//                //File file = saveImageToGallery(map);
+//                //uploadFanganFile(file);
+//                //deleteSuccess(this, file.getName());
+//            }
+            if (data != null) {
+                Bitmap image =getPic(data);
+                MineFragment.userimg_fragmentmine.setImageBitmap(image);//展示
+            }
+//            } catch (FileNotFoundException e) {
+//                e.printStackTrace();
+//            }
+        }
+    }
+
+    public void cropImg(Uri uri) {
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setDataAndType(uri, "image/*");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        intent.putExtra("crop", "true");
+        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             //Android 7.0需要临时添加读取Url的权限， 添加此属性是为了解决：调用裁剪框时候提示：图片无法加载或者加载图片失败或者无法加载此图片
             intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        }
+        //}
         //实现对图片的裁剪，必须要设置图片的属性和大小
-        intent.putExtra("crop", "true");//发送裁剪信号，去掉也能进行裁剪
-        intent.putExtra("scale", true);// 设置缩放
-        intent.putExtra("scaleUpIfNeeded", true);// 去黑边
+//        intent.putExtra("crop", "true");//发送裁剪信号，去掉也能进行裁剪
+//        intent.putExtra("scale", true);// 设置缩放
+//        intent.putExtra("scaleUpIfNeeded", true);// 去黑边
         intent.putExtra("aspectX", 1);  //裁剪框比例1:1
         intent.putExtra("aspectY", 1);
 //        intent.putExtra("return-data", true);  //有返回值
@@ -274,53 +309,80 @@ public class MineFragment extends Fragment {
         //当用户用手拉伸裁剪框时候，裁剪框会按照上述比例缩放。
         intent.putExtra("outputX", 300);//属性控制裁剪完毕，保存的图片的大小格式。
         intent.putExtra("outputY", 300);//你按照1:1的比例来裁剪的，如果最后成像是800*400，那么按照2:1的样式保存，
-        intent.putExtra("outputFormat",Bitmap.CompressFormat.JPEG.toString());//输出裁剪文件的格式
-        intent.putExtra("return-data", true);//是否返回裁剪后图片的Bitmap
+        //intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());//输出裁剪文件的格式
+        //intent.putExtra("return-data", true);//是否返回裁剪后图片的Bitmap
+
 //        Log.d(TAG,"0");
 //        Uri cropImgUri;
 //        cropImgUri = Uri.parse("file://" + outputImage.getAbsolutePath());
 //        Log.d(TAG,"000");
         //将裁剪好的图输出到所建文件中
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);//设置输出路径
-        Log.d(TAG,"000000");
+        //intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);//设置输出路径
+        Log.d(TAG, "000000");
         //注意：此处应设置return-data为false，如果设置为true，是直接返回bitmap格式的数据，耗费内存。
 //        //设置为false，然后，设置裁剪完之后保存的路径，即：intent.putExtra(MediaStore.EXTRA_OUTPUT, uriPath);
         //intent.putExtra("return-data", false);
-        startActivityForResult(intent, REQUEST_CROP_CODE);// 启动裁剪程序
 
+        Log.d(TAG,"cropImgfinish:"+uri);
+
+        startActivityForResult(intent, REQUEST_CROP_CODE);// 启动裁剪程序
+    }
+
+    /**
+     * @author xixili
+     * created at 2016/2/27 14:32
+     * 获取剪切之后的图片
+     */
+    public static Bitmap getPic(Intent picdata) {
+        Bundle extras = picdata.getExtras();
+        if (extras != null) {
+            Bitmap bitmap = extras.getParcelable("data");//转换为Bitmap类型
+
+            if(bitmap!=null){
+                Log.d("123", "getpic");
+                return bitmap;
+            }
+        }
+        return null;
     }
     /**
-     * 从相册获取图片
+     * 小米
+     *
+     * @param intent
+     * @return
      */
-    private void getPicFromAlbm() {
-        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-        photoPickerIntent.setType("image/*");
-        startActivityForResult(photoPickerIntent, REQUEST_CODE_ALBUM);
+    public Uri getPictureUri(android.content.Intent intent) {
+        Uri uri = intent.getData();
+        String type = intent.getType();
+        if (uri.getScheme().equals("file") && (type.contains("image/"))) {
+            String path = uri.getEncodedPath();
+            if (path != null) {
+                path = Uri.decode(path);
+                ContentResolver cr = getActivity().getContentResolver();
+                StringBuffer buff = new StringBuffer();
+                buff.append("(").append(MediaStore.Images.ImageColumns.DATA).append("=")
+                        .append("'" + path + "'").append(")");
+                Cursor cur = cr.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                        new String[]{MediaStore.Images.ImageColumns._ID},
+                        buff.toString(), null, null);
+                int index = 0;
+                for (cur.moveToFirst(); !cur.isAfterLast(); cur.moveToNext()) {
+                    index = cur.getColumnIndex(MediaStore.Images.ImageColumns._ID);
+                    // set _id value
+                    index = cur.getInt(index);
+                }
+                if (index == 0) {
+                    // do nothing
+                } else {
+                    Uri uri_temp = Uri
+                            .parse("content://media/external/images/media/"
+                                    + index);
+                    if (uri_temp != null) {
+                        uri = uri_temp;
+                    }
+                }
+            }
+        }
+        return uri;
     }
-}//    public Uri getImageContentUri(File imageFile) {
-//        //Log.d(TAG,"0000000000");
-//        String filePath = imageFile.getAbsolutePath();
-//        Cursor cursor = getActivity().getContentResolver().query(
-//                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-//                new String[]{MediaStore.Images.Media._ID},
-//                MediaStore.Images.Media.DATA + "=? ",
-//                new String[]{filePath}, null);
-//        //Log.d(TAG,"00000001");
-//        if (cursor != null && cursor.moveToFirst()) {
-//            @SuppressLint("Range") int id = cursor.getInt(cursor
-//                    .getColumnIndex(MediaStore.MediaColumns._ID));
-//            Uri baseUri = Uri.parse("content://media/external/images/media");
-//            //Log.d(TAG,"00000002");
-//            return Uri.withAppendedPath(baseUri, "" + id);
-//        } else {
-//            if (imageFile.exists()) {
-//                ContentValues values = new ContentValues();
-//                values.put(MediaStore.Images.Media.DATA, filePath);
-//                //Log.d(TAG,"00000003");
-//                return getActivity().getContentResolver().insert(
-//                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-//            } else {
-//                return null;
-//            }
-//        }
-//    }
+}
