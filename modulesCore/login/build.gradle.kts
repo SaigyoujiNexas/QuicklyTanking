@@ -70,10 +70,10 @@ kapt{
 }
 dependencies {
 
+    implementation(project(":modulesPublic:common"))
     libCompose.forEach { implementation(it) }
     libraryC.forEach { (_, v) -> implementation(v)}
     libKtx.forEach { implementation(it) }
-    implementation(project(":modulesPublic:common"))
     libs.forEach { implementation(it) }
     apts.forEach { kapt(it) }
     tests.forEach { androidTestImplementation(it) }

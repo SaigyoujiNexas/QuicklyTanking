@@ -48,7 +48,7 @@ const val libRoom =  "androidx.room:room-runtime:$room_version"
 const val libRoomCompiler = "androidx.room:room-compiler:$room_version"
 
 const val libMD3 = "com.google.android.material:material:1.5.0"
-
+const val libCoroutine = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9"
 const val nav_compose = "androidx.navigation:navigation-compose:$nav_version"
 const val libComposeConstraintlayout = "androidx.constraintlayout:constraintlayout-compose:1.0.0"
 const val libComposeUI = "androidx.compose.ui:ui:$compose_version"
@@ -69,9 +69,12 @@ val libraryC = mapOf(
 )
 
 val libKtx = listOf(
-    "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-alpha02",
+    "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-beta01",
     "androidx.lifecycle:lifecycle-runtime-ktx:2.3.1",
     "androidx.core:core-ktx:1.7.0",
+    "androidx.navigation:navigation-fragment-ktx:$nav_version",
+    "androidx.navigation:navigation-ui-ktx:$nav_version",
+    libCoroutine
 
     )
 val librariesDebug = listOf(
@@ -88,8 +91,6 @@ val libCompose = listOf(
     libComposeActivity,
     libComposeViewModel,
     libHiltNavCompose
-
-
 )
 val apts = listOf(
     libARouterCompiler,
