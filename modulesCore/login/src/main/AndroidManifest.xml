@@ -17,9 +17,6 @@
             android:label="@string/app_name"
             android:theme="@style/Theme.QuicklyTanking">
         </activity>
-        <activity android:name="com.yalantis.ucrop.UCropActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.Material3.DayNight.NoActionBar" />
-    </application>
+           </application>
 
 </manifest>
