@@ -1,6 +1,5 @@
 package com.example.modulescore.main.Pre;
 
-import static com.example.modulescore.main.Pre.Mine.MineFragment.REQUEST_CROP_CODE;
 
 import android.Manifest;
 import android.content.BroadcastReceiver;
