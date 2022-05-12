@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.modulescore.main">
+    package="com.example.modulescore.main" >
     <!-- 允许访问网络，必选权限 -->
     <uses-permission android:name="android.permission.INTERNET" /> <!-- 允许获取精确位置，精准定位必选 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- 允许获取粗略位置，粗略定位必选 -->
@@ -18,19 +18,25 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- 允许读设备等信息，用于问题排查 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <application
         android:name="com.example.modulespublic.common.base.BaseApplication"
-        android:requestLegacyExternalStorage="true"
-        android:hardwareAccelerated="true">
+        android:hardwareAccelerated="true"
+        android:requestLegacyExternalStorage="true" >
+        <activity
+            android:name=".Data.StatisticsActivity"
+            android:exported="false" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.modulescore.main.fileprovider"
             android:exported="false"
-            android:grantUriPermissions="true">
+            android:grantUriPermissions="true" >
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
         <activity
             android:name=".Trace.TraceActivity"
             android:exported="false" />
@@ -43,25 +49,27 @@
         <activity
             android:name=".Pre.PreRunActivity"
             android:exported="true"
-            android:launchMode="standard">
+            android:launchMode="standard" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".Run.RunActivity"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
         <activity
-            android:name=".Pre.Data.PreDataActivity"
+            android:name=".Data.PreDataActivity"
             android:exported="false" />
 
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="50d286f11504bd091ccc96099bcba9cb" />
-        <service android:name=".Run.LocationService"/>
+
+        <service android:name=".Run.LocationService" />
         <service android:name="com.amap.api.location.APSService" />
     </application>
 

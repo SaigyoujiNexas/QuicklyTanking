@@ -30,6 +30,10 @@ public interface GetRequest_Interface {
     Call<List<RunningRecord>> getAllRunningRecords();
 
 
+    @Headers("token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6ImI4OWU2ZjFiN2JmMjVhYzVhNDFhMTIwZmZkMmZlNmM4IiwiZXhwIjoxNjUxMjc0NzIxLCJ1c2VybmFtZSI6Imxpem9uZ2JpbiJ9.FI9dKKGa2llVFU4EiscM_AKOEufg3IqfdW6DH-pbEIY")
+    @GET("getTotalMile")
+    Call<Double> getTotalMile();
+
 //    @Provides
 //    @Singleton
 //    public static GetRequest_Interface provideGetRequest_Interface(Retrofit retrofit){

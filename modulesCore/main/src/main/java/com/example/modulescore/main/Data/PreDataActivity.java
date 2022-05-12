@@ -1,7 +1,8 @@
-package com.example.modulescore.main.Pre.Data;
+package com.example.modulescore.main.Data;
 
+import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,17 +42,29 @@ public class PreDataActivity extends AppCompatActivity implements View.OnClickLi
     public PreDataActivity() {
     }
     LinearLayout linearLayout;
-    PreHandler preHandler;
+    PreDataHandler preDataHandler;
     String message;
     RunningRecord[] runningRecordsArray;
-    String baseUrl = "http://116.62.180.44:8081/";
+    public String baseUrl = "http://116.62.180.44:8081/";
+    String totalmile;
+    TextView text_CumulativeDistance_predata;
+    final String TAG = "PreDataActivityTAG";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pre_data_item0);
-        preHandler = new PreHandler(Looper.getMainLooper(),this);
+        preDataHandler = new PreDataHandler(Looper.getMainLooper(),this);
         linearLayout = findViewById(R.id.linearlayout_pre_data);
         requestAllRunningRecords();
+        SharedPreferences sharedPreferences= getSharedPreferences("totalmile", Context.MODE_PRIVATE);
+        totalmile = sharedPreferences.getString("totalmile","99.99");
+        Log.d(TAG,String.valueOf(totalmile));
+        if(totalmile.equals("99.99") || totalmile.equals(null)){
+            Toast.makeText(this,"总里程获取错误",Toast.LENGTH_SHORT).show();
+        }
+        text_CumulativeDistance_predata = findViewById(R.id.text_CumulativeDistance_predata);
+        text_CumulativeDistance_predata.setText(totalmile);
     }
 
 
@@ -154,8 +167,8 @@ public class PreDataActivity extends AppCompatActivity implements View.OnClickLi
                 }).start();
                 Log.d(TAG, String.valueOf(runningRecordsArray.length));
                 Message message = new Message();
-                message.what = PreHandler.finishProgress;
-                preHandler.sendMessage(message);
+                message.what = PreDataHandler.finishProgress;
+                preDataHandler.sendMessage(message);
             }
 
             @Override

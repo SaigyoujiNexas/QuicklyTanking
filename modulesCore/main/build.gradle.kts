@@ -4,6 +4,7 @@ plugins {
     else
         id("com.android.library")
     id("dagger.hilt.android.plugin")
+    id("org.jetbrains.kotlin.android")
 }
 var applicationId : String? = null
 var versionCode: Int? = null

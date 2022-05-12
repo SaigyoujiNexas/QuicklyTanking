@@ -1,35 +1,22 @@
 package com.example.modulescore.main.Pre.Mine;
 
-import static android.app.Activity.RESULT_OK;
-
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
+import com.example.modulescore.main.Data.PreDataActivity;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -39,28 +26,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.common.utils.ToastUtil;
-import com.example.modulescore.main.Pre.Data.PreDataActivity;
 import com.example.modulescore.main.R;
-import com.example.modulescore.main.Trace.TraceActivity;
-import com.example.modulespublic.common.base.RunningRecord;
-import com.example.modulespublic.common.utils.TimeManager;
-import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import com.example.modulescore.main.Data.StatisticsActivity;
 
 public class MineFragment extends Fragment {
     LinearLayout linearLayout;
@@ -155,6 +133,14 @@ public class MineFragment extends Fragment {
             public void onClick(View view) {
                 Log.d(TAG,"onclick");
                 Intent intent = new Intent(getActivity(), PreDataActivity.class);
+                startActivity(intent);
+            }
+        });
+        viewList.get(1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG,"onclick");
+                Intent intent = new Intent(getActivity(),StatisticsActivity.class);
                 startActivity(intent);
             }
         });
