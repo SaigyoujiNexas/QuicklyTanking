@@ -45,7 +45,7 @@ public class PreDataActivity extends AppCompatActivity implements View.OnClickLi
     PreDataHandler preDataHandler;
     String message;
     RunningRecord[] runningRecordsArray;
-    public String baseUrl = "http://116.62.180.44:8081/";
+    public String baseUrl = "http://116.62.180.44:8080/";
     String totalmile;
     TextView text_CumulativeDistance_predata;
     final String TAG = "PreDataActivityTAG";

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.modulescore.main" >
+    package="com.example.modulescore.main">
     <!-- 允许访问网络，必选权限 -->
     <uses-permission android:name="android.permission.INTERNET" /> <!-- 允许获取精确位置，精准定位必选 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- 允许获取粗略位置，粗略定位必选 -->
@@ -22,7 +22,10 @@
     <application
         android:name="com.example.modulespublic.common.base.BaseApplication"
         android:hardwareAccelerated="true"
-        android:requestLegacyExternalStorage="true" >
+        android:requestLegacyExternalStorage="true">
+        <activity
+            android:name=".Identification.IdentificationActivity"
+            android:exported="false" />
         <activity
             android:name=".Data.StatisticsActivity"
             android:exported="false" />
@@ -31,7 +34,7 @@
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.modulescore.main.fileprovider"
             android:exported="false"
-            android:grantUriPermissions="true" >
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
@@ -49,7 +52,7 @@
         <activity
             android:name=".Pre.PreRunActivity"
             android:exported="true"
-            android:launchMode="standard" >
+            android:launchMode="standard">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

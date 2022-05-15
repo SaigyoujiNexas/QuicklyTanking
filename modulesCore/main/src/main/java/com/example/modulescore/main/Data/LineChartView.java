@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -27,16 +28,17 @@ public class LineChartView extends View {
     /** Y轴每单元数量高度 */
     private float unitHeight;
     /** Y轴数据数组 */
-    private int[] unitHeightNum = new int[] {0, 20, 40, 60, 80, 100};
+    private int[] unitHeightNum = new int[] {0, 3, 6, 9, 12, 15, 18,21,24,27};
     private String[] stageStr = new String[] {"Jan", "Feb", "Mar", "Apr", "May", "Jun"};
     /** 横线左边距大小 */
     private float lineLeftPadding;
     /** X轴单元宽度 */
     private float unitWidth;
     /** 各个阶段数据数组 */
-    private int[] stageNum = new int[] {56, 40, 82, 74, 60, 92};
-    private Path linePath;
-
+    private double[] stageNum = new double[] {1.2, 4.0, 8.2, 7.4, 6.0, 9.2};
+    private Path linePath;//画折线
+    final String TAG = "LineChartViewTAG";
+    private int bottomLineMargin = 60;
     public LineChartView(Context context) {
         super(context);
         initPaint();
@@ -80,16 +82,17 @@ public class LineChartView extends View {
      * 绘制Y轴文字及基准线
      */
     private void drawYText(Canvas canvas) {
-        int top = getHeight() - 80;  //给底部文字留下高度
-        unitHeight = getHeight()/unitHeightNum.length - 20;
+        int top = getHeight() - bottomLineMargin;  //给底部文字留下高度.越小字越靠下
 
-        Rect rect = new Rect();
-        String longText = unitHeightNum[unitHeightNum.length-1]+"万";  //以最长文字对齐
-        textPaint.getTextBounds(longText, 0, longText.length(), rect);
+        unitHeight = (getHeight()-bottomLineMargin)/unitHeightNum.length-unitHeightNum.length/2;
+
+        Rect rect = new Rect();//存文字范围
+        String longText = unitHeightNum[unitHeightNum.length-1]+"公里";  //以最长文字对齐
+
+        textPaint.getTextBounds(longText, 0, longText.length(), rect);//通过最长获得文字空隙
 
         for (int num : unitHeightNum) {
-
-            canvas.drawText(num + "万", 0, top, textPaint);  //画文字
+            canvas.drawText(num + "公里", 0, top, textPaint);  //画文字
 
             lineLeftPadding = rect.width() + 20;
             canvas.drawLine(lineLeftPadding, top, getWidth(), top, linePaint);  //画横线
@@ -98,16 +101,16 @@ public class LineChartView extends View {
     }
 
     /**
-     * 绘制X轴文字
+     * 绘制X轴文字与竖线
      */
     private void drawXText(Canvas canvas) {
         float left = lineLeftPadding;
         unitWidth = getWidth()/stageNum.length - 20;
 
         for (int i=0;i<stageNum.length;i++) {
-            canvas.drawText(stageStr[i], left + unitWidth/4, getHeight()-20, textPaint);  //画文字
+            canvas.drawText(stageStr[i], left + unitWidth/4, getHeight(), textPaint);  //画文字
 
-            canvas.drawLine(left, getHeight()-80, left, 80, linePaint);
+            canvas.drawLine(left, getHeight()-bottomLineMargin, left, bottomLineMargin, linePaint);
 
             left += unitWidth;
         }
@@ -118,25 +121,38 @@ public class LineChartView extends View {
      */
     private void drawLinePath(Canvas canvas) {
         float left = lineLeftPadding;
+        float bottom = getHeight() - bottomLineMargin;
 
         for (int i=0;i<stageNum.length;i++) {
             float topX = left + unitWidth/2;
-            float topY = getHeight() - (float)stageNum[i]/20*unitHeight;
+            float topY = (float) (bottom - stageNum[i]/3  * unitHeight );
 
             if (i == 0) {
-                linePath.moveTo(topX, topY);
+                linePath.moveTo(topX, topY);//moveTo 不会进行绘制，只用于移动移动画笔。
             } else {
-                linePath.lineTo(topX, topY);
+                linePath.lineTo(topX, topY);//lineTo 用于进行直线绘制。
             }
-
+            //画笔样式 STROKE 描边 FILL 填充 FILL_AND_STROKE 描边加填充
             charLinePaint.setStyle(Paint.Style.FILL);
-            canvas.drawCircle(topX, topY, 10, charLinePaint);  //绘制拐点小圆
-
+            canvas.drawCircle(topX, topY, 13, charLinePaint);  //绘制拐点小圆
+            Log.d(TAG,"Y,"+topY);
             left += unitWidth;
         }
 
         charLinePaint.setStyle(Paint.Style.STROKE);
         charLinePaint.setStrokeWidth(4);
         canvas.drawPath(linePath, charLinePaint);
+    }
+
+    public void setUnitHeightNum(int[] unitHeightNum) {
+        this.unitHeightNum = unitHeightNum;
+    }
+
+    public void setStageStr(String[] stageStr) {
+        this.stageStr = stageStr;
+    }
+
+    public void setStageNum(double[] stageNum) {
+        this.stageNum = stageNum;
     }
 }

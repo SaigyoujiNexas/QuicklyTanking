@@ -18,6 +18,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface GetRequest_Interface {
@@ -34,6 +35,10 @@ public interface GetRequest_Interface {
     @GET("getTotalMile")
     Call<Double> getTotalMile();
 
+    @FormUrlEncoded
+    @POST("2.0/token")
+    Call<GetTokenItem> getBaiduToken(@Field("grant_type")String grant_type,@Field("client_id") String apiKey,
+                               @Field("client_secret") String secretKey);
 //    @Provides
 //    @Singleton
 //    public static GetRequest_Interface provideGetRequest_Interface(Retrofit retrofit){

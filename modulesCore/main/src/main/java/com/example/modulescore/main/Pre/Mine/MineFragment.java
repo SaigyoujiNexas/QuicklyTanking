@@ -29,6 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.modulescore.main.Identification.IdentificationActivity;
 import com.example.modulescore.main.R;
 import com.yalantis.ucrop.UCrop;
 
@@ -46,8 +47,8 @@ public class MineFragment extends Fragment {
     final String TAG = "MineFragmentTAG";
     public ImageView userimg_fragmentmine;
     public ImageView backimg_fragmentmine;
-    String[] titles = {"跑步记录","数据统计","我的购物车","我的收藏","关于我们"};
-    int[] imgResource = {R.drawable.runningimg,R.drawable.statisticsimg,R.drawable.shoppingimg,R.drawable.collectionimg,R.drawable.aboutusimg};
+    String[] titles = {"跑步记录","数据统计","菜品识别","我的购物车","我的收藏","关于我们"};
+    int[] imgResource = {R.drawable.runningimg,R.drawable.statisticsimg,R.drawable.dishimg,R.drawable.shoppingimg,R.drawable.collectionimg,R.drawable.aboutusimg};
     public Uri picUri;
     public Uri tempPicUri;
     public Uri backgroundUri;
@@ -131,7 +132,6 @@ public class MineFragment extends Fragment {
         viewList.get(0).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG,"onclick");
                 Intent intent = new Intent(getActivity(), PreDataActivity.class);
                 startActivity(intent);
             }
@@ -139,8 +139,14 @@ public class MineFragment extends Fragment {
         viewList.get(1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG,"onclick");
                 Intent intent = new Intent(getActivity(),StatisticsActivity.class);
+                startActivity(intent);
+            }
+        });
+        viewList.get(2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), IdentificationActivity.class);
                 startActivity(intent);
             }
         });
