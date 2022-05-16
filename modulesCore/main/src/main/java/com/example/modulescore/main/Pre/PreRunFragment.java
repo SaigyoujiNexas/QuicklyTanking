@@ -19,26 +19,31 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.example.common.utils.ToastUtil;
+import com.example.modulesbase.libbase.util.PropertiesUtil;
 import com.example.modulescore.main.Data.PreDataHandler;
 import com.example.modulescore.main.Run.RunActivity;
 import com.example.modulescore.main.Activities.TargetDistanceActivity;
 import com.example.modulescore.main.R;
 import com.example.modulespublic.common.net.GetRequest_Interface;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
 public class PreRunFragment extends Fragment implements View.OnClickListener{
     CardView card_startRun_preRun;
     CardView card_targetDistance_preRun;
     TextView text_CumulativeDistance_prerun;
-    public String baseUrl = "http://116.62.180.44:8080/";
+
     PreDataHandler preDataHandler;
     Double totalMile;
     final String TAG = "PreRunFragmentTAG";
+    String baseUrl = PropertiesUtil.props.getProperty("baseUrl");
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

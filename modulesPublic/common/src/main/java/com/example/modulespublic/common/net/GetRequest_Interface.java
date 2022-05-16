@@ -36,9 +36,15 @@ public interface GetRequest_Interface {
     Call<Double> getTotalMile();
 
     @FormUrlEncoded
-    @POST("2.0/token")
+    @POST("oauth/2.0/token")
     Call<GetTokenItem> getBaiduToken(@Field("grant_type")String grant_type,@Field("client_id") String apiKey,
                                @Field("client_secret") String secretKey);
+
+    @POST("rest/2.0/image-classify/v2/dish")
+    @Headers("Content-Type:application/x-www-form-urlencoded")
+    Call<DiscernResultResponse> getDiscernResultResponse(@Field("access_token")String access_token,
+                                                         @Field("image") String image,
+                                                         @Field("filter_threshold")float filterthreshold);
 //    @Provides
 //    @Singleton
 //    public static GetRequest_Interface provideGetRequest_Interface(Retrofit retrofit){
