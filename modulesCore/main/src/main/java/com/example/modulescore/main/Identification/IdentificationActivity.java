@@ -26,7 +26,7 @@ public class IdentificationActivity extends AppCompatActivity {
     String apiKey = "uv7Y1XiG5broeDMU70AINwAh";
     String grant_type = "client_credentials";
     String access_token = "24.8e93c0cbe57d25501173302a756afbed.2592000.1655218392.282335-26232617";
-    Retrofit retrofit
+    Retrofit retrofit;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +61,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
-        Call<GetTokenItem> call = request.getDiscernResultResponse(access_token,,0.95);//获得call对象
+        Call<GetTokenItem> call = request.getDiscernResultResponse(access_token,111,0.95);//获得call对象
         call.enqueue(new Callback<GetTokenItem>() {
             @Override
             public void onResponse(Call<GetTokenItem> call, Response<GetTokenItem> response) {
