@@ -29,7 +29,7 @@ public class LineChartView extends View {
     private float unitHeight;
     /** Y轴数据数组 */
     private int[] unitHeightNum = new int[] {0, 3, 6, 9, 12, 15, 18,21,24,27};
-    private String[] stageStr = new String[] {"Jan", "Feb", "Mar", "Apr", "May", "Jun"};
+    private String[] stageStr = new String[] {"5月3", "5月4", "5月5", "5月6", "5月7", "5月8"};
     /** 横线左边距大小 */
     private float lineLeftPadding;
     /** X轴单元宽度 */
@@ -38,7 +38,7 @@ public class LineChartView extends View {
     private double[] stageNum = new double[] {1.2, 4.0, 8.2, 7.4, 6.0, 9.2};
     private Path linePath;//画折线
     final String TAG = "LineChartViewTAG";
-    private int bottomLineMargin = 60;
+    private int bottomLineMargin = 65;
     public LineChartView(Context context) {
         super(context);
         initPaint();

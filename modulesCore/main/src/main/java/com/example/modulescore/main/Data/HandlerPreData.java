@@ -11,17 +11,17 @@ import androidx.annotation.Nullable;
 import com.example.modulescore.main.Data.PreDataActivity;
 import com.example.modulescore.main.Pre.PreRunFragment;
 
-public class PreDataHandler extends Handler {
+public class HandlerPreData extends Handler {
     final String TAG = "PreDataHandlerTAG";
     PreDataActivity preDataActivity;
     PreRunFragment preRunFragment;
 
-    public PreDataHandler(@NonNull Looper looper, PreDataActivity preDataActivity) {
+    public HandlerPreData(@NonNull Looper looper, PreDataActivity preDataActivity) {
         super(looper);
         this.preDataActivity = preDataActivity;
         Log.d(TAG,"0");
     }
-    public PreDataHandler(@NonNull Looper looper, PreRunFragment preRunFragment) {
+    public HandlerPreData(@NonNull Looper looper, PreRunFragment preRunFragment) {
         super(looper);
         this.preRunFragment = preRunFragment;
         Log.d(TAG,"1");

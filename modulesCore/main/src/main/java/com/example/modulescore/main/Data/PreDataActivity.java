@@ -43,7 +43,7 @@ public class PreDataActivity extends AppCompatActivity implements View.OnClickLi
     public PreDataActivity() {
     }
     LinearLayout linearLayout;
-    PreDataHandler preDataHandler;
+    HandlerPreData preDataHandler;
     String message;
     RunningRecord[] runningRecordsArray;
     public String baseUrl = PropertiesUtil.props.getProperty("baseUrl");
@@ -55,7 +55,7 @@ public class PreDataActivity extends AppCompatActivity implements View.OnClickLi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pre_data_item0);
-        preDataHandler = new PreDataHandler(Looper.getMainLooper(),this);
+        preDataHandler = new HandlerPreData(Looper.getMainLooper(),this);
         linearLayout = findViewById(R.id.linearlayout_pre_data);
         requestAllRunningRecords();
         SharedPreferences sharedPreferences= getSharedPreferences("totalmile", Context.MODE_PRIVATE);
@@ -168,7 +168,7 @@ public class PreDataActivity extends AppCompatActivity implements View.OnClickLi
                 }).start();
                 Log.d(TAG, String.valueOf(runningRecordsArray.length));
                 Message message = new Message();
-                message.what = PreDataHandler.finishProgress;
+                message.what = HandlerPreData.finishProgress;
                 preDataHandler.sendMessage(message);
             }
 

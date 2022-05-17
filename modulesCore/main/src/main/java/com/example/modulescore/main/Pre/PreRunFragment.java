@@ -20,15 +20,12 @@ import androidx.fragment.app.Fragment;
 
 import com.example.common.utils.ToastUtil;
 import com.example.modulesbase.libbase.util.PropertiesUtil;
-import com.example.modulescore.main.Data.PreDataHandler;
+import com.example.modulescore.main.Data.HandlerPreData;
 import com.example.modulescore.main.Run.RunActivity;
 import com.example.modulescore.main.Activities.TargetDistanceActivity;
 import com.example.modulescore.main.R;
 import com.example.modulespublic.common.net.GetRequest_Interface;
 
-import javax.inject.Inject;
-
-import dagger.hilt.android.AndroidEntryPoint;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -39,7 +36,7 @@ public class PreRunFragment extends Fragment implements View.OnClickListener{
     CardView card_targetDistance_preRun;
     TextView text_CumulativeDistance_prerun;
 
-    PreDataHandler preDataHandler;
+    HandlerPreData preDataHandler;
     Double totalMile;
     final String TAG = "PreRunFragmentTAG";
     String baseUrl = PropertiesUtil.props.getProperty("baseUrl");
@@ -53,7 +50,7 @@ public class PreRunFragment extends Fragment implements View.OnClickListener{
         text_CumulativeDistance_prerun = view.findViewById(R.id.text_CumulativeDistance_prerun);
         card_targetDistance_preRun.setOnClickListener(this);
         card_startRun_preRun.setOnClickListener(this);
-        preDataHandler = new PreDataHandler(Looper.getMainLooper(),this);
+        preDataHandler = new HandlerPreData(Looper.getMainLooper(),this);
         Log.d(TAG, String.valueOf(getContext().getClass())+","+getContext().toString());
         requestTotalMile();
         return view;
@@ -89,13 +86,13 @@ public class PreRunFragment extends Fragment implements View.OnClickListener{
                 if(response.body()!=null)
                     totalMile = response.body();
                 else {
-                    message.what = PreDataHandler.errorRequest;
+                    message.what = HandlerPreData.errorRequest;
                     totalMile = 99.99;
                     preDataHandler.sendMessage(message);
                     return;
                 }
                 Log.d(TAG,response.body()+","+response);
-                message.what = PreDataHandler.finishTotalMile_Prerunfragment;
+                message.what = HandlerPreData.finishTotalMile_Prerunfragment;
                 preDataHandler.sendMessage(message);
                 SharedPreferences.Editor editor = getContext().getSharedPreferences("totalmile", Context.MODE_PRIVATE).edit();
                 editor.putString("totalmile",String.valueOf(totalMile));
