@@ -29,13 +29,30 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.amap.api.maps.MapsInitializer;
+import com.example.common.utils.ToastUtil;
+import com.example.modulesbase.libbase.util.PropertiesUtil;
 import com.example.modulescore.main.Pre.Mine.MineFragment;
 import com.example.modulescore.main.R;
+import com.example.modulespublic.common.base.MyDataBase;
+import com.example.modulespublic.common.base.RunningRecord;
+import com.example.modulespublic.common.base.record;
+import com.example.modulespublic.common.net.BaseResponse;
+import com.example.modulespublic.common.net.GetRequest_Interface;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PreRunActivity extends AppCompatActivity implements View.OnClickListener {
     ImageView img_setting;

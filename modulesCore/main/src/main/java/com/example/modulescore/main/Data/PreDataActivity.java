@@ -56,7 +56,7 @@ public class PreDataActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pre_data_item0);
         preDataHandler = new HandlerPreData(Looper.getMainLooper(),this);
-        linearLayout = findViewById(R.id.linearlayout_pre_data);
+        linearLayout = findViewById(R.id.linearlayout_pre_data_item0);
         requestAllRunningRecords();
         SharedPreferences sharedPreferences= getSharedPreferences("totalmile", Context.MODE_PRIVATE);
         totalmile = sharedPreferences.getString("totalmile","99.99");
@@ -102,7 +102,7 @@ public class PreDataActivity extends AppCompatActivity implements View.OnClickLi
         if(i>0 && dateFormat.format(milliSecond).equals(viewList.get(i-1).getTag())){
             recordDateText.setVisibility(View.GONE);
         }
-        distancetext.setText(record.getDistance()+","+record.getDistance());
+        distancetext.setText(record.getDistance()+"");
         durationtext.setText(TimeManager.formatseconds(record.getRunningtime()));
         calorietext.setText(record.getCalorie());
         speedtext.setText(record.getSpeed());

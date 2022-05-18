@@ -9,6 +9,8 @@ import javax.inject.Singleton;
 
 import dagger.Provides;
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.http.Body;
@@ -17,7 +19,9 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -30,7 +34,6 @@ public interface GetRequest_Interface {
     @Headers("token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6ImI4OWU2ZjFiN2JmMjVhYzVhNDFhMTIwZmZkMmZlNmM4IiwiZXhwIjoxNjUxMjc0NzIxLCJ1c2VybmFtZSI6Imxpem9uZ2JpbiJ9.FI9dKKGa2llVFU4EiscM_AKOEufg3IqfdW6DH-pbEIY")
     @GET("getRoad")
     Call<List<RunningRecord>> getAllRunningRecords();
-
 
     @Headers("token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6ImI4OWU2ZjFiN2JmMjVhYzVhNDFhMTIwZmZkMmZlNmM4IiwiZXhwIjoxNjUxMjc0NzIxLCJ1c2VybmFtZSI6Imxpem9uZ2JpbiJ9.FI9dKKGa2llVFU4EiscM_AKOEufg3IqfdW6DH-pbEIY")
     @GET("getTotalMile")
@@ -47,6 +50,10 @@ public interface GetRequest_Interface {
     Call<DiscernResultResponse> getDiscernResultResponse(@Field("access_token") String access_token,
                                                          @Field("image") String url,@Field("filter_threshold")float filter_threshold);
 
+    @Multipart
+    @POST("modification")
+    @Headers("token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6ImI4OWU2ZjFiN2JmMjVhYzVhNDFhMTIwZmZkMmZlNmM4IiwiZXhwIjoxNjUxMjc0NzIxLCJ1c2VybmFtZSI6Imxpem9uZ2JpbiJ9.FI9dKKGa2llVFU4EiscM_AKOEufg3IqfdW6DH-pbEIY")
+    Call<Object> uploadUserImg( @Part MultipartBody.Part file);
 //    @Provides
 //    @Singleton
 //    public static GetRequest_Interface provideGetRequest_Interface(Retrofit retrofit){

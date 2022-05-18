@@ -7,6 +7,8 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+
+import com.example.modulesbase.libbase.util.PropertiesUtil;
 import com.example.modulescore.main.Data.PreDataActivity;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -31,6 +33,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.modulescore.main.Identification.IdentificationActivity;
 import com.example.modulescore.main.R;
+import com.example.modulespublic.common.net.GetRequest_Interface;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
@@ -40,6 +43,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import com.example.modulescore.main.Data.StatisticsActivity;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MineFragment extends Fragment {
     LinearLayout linearLayout;
@@ -56,6 +68,7 @@ public class MineFragment extends Fragment {
     private ActivityResultLauncher imagePickLauncher,backgroundPickLauncher;
     private ActivityResultLauncher openCameraLauncher,openBackgroundCameraLauncher;
     private ActivityResultLauncher cropLauncher,cropBackgroundLauncher;
+    private File picFile;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,10 +79,10 @@ public class MineFragment extends Fragment {
             else    uri = Uri.EMPTY;
             ///raw//storage/emulated/0/Pictures/1651760808654.jpg 原图片uri
             // /data/user/0/com.example.modulescore.main/cache/1651760808654.jpg 新建的file保存图片
-            var file = new File(getContext().getCacheDir(), new File(uri.getPath()).getName());
-            Log.d(TAG,uri.getPath()+",,"+file.getPath());
-            if(file.exists())           file.delete();
-            picUri = Uri.fromFile(file);            //准备保存裁剪后图片Uri
+            picFile = new File(getContext().getCacheDir(), new File(uri.getPath()).getName());
+            Log.d(TAG,uri.getPath()+",,"+picFile.getPath());
+            if(picFile.exists())           picFile.delete();
+            picUri = Uri.fromFile(picFile);            //准备保存裁剪后图片Uri
             Log.d(TAG,picUri+",0,"+tempPicUri);
             cropImg(uri);
         });
@@ -79,10 +92,10 @@ public class MineFragment extends Fragment {
             else    uri = Uri.EMPTY;
             ///raw//storage/emulated/0/Pictures/1651760808654.jpg 原图片uri uri
             // /data/user/0/com.example.modulescore.main/cache/1651760808654.jpg 新建的file保存图片 file
-            var file = new File(getContext().getCacheDir(), new File(uri.getPath()).getName());
-            Log.d(TAG,uri.getPath()+",,"+file.getPath());
-            if(file.exists())           file.delete();
-            backgroundUri = Uri.fromFile(file);            //准备保存裁剪后图片Uri
+            picFile = new File(getContext().getCacheDir(), new File(uri.getPath()).getName());
+            Log.d(TAG,uri.getPath()+",,"+picFile.getPath());
+            if(picFile.exists())           picFile.delete();
+            backgroundUri = Uri.fromFile(picFile);            //准备保存裁剪后图片Uri
             Log.d(TAG,backgroundUri+",0,"+tempBackgroundUri);
             cropBackGroundImg(uri);
         });
@@ -91,6 +104,7 @@ public class MineFragment extends Fragment {
             @Override
             public void onActivityResult(ActivityResult result) {
                 Glide.with(getContext()).load(picUri).into(userimg_fragmentmine);
+                uploadUserImg();
             }
         });
         cropBackgroundLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),(o)->{
@@ -101,9 +115,9 @@ public class MineFragment extends Fragment {
             public void onActivityResult(ActivityResult result) {
                Log.d(TAG,picUri+",1,"+tempPicUri);
                //原图片Uri; = picUri2，tempUri是保存照相（获取）选中图片Uri
-               File file = new File(getContext().getCacheDir(), new File(tempPicUri.getPath()).getName());
-               if(file.exists())           file.delete();
-               picUri = Uri.fromFile(file);            //准备保存裁剪后图片Uri
+                picFile = new File(getContext().getCacheDir(), new File(tempPicUri.getPath()).getName());
+               if(picFile.exists())           picFile.delete();
+               picUri = Uri.fromFile(picFile);            //准备保存裁剪后图片Uri
                cropImg(tempPicUri);
             }
         });
@@ -111,9 +125,9 @@ public class MineFragment extends Fragment {
         openBackgroundCameraLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),(o) ->{
             Log.d(TAG,backgroundUri+",1,"+tempBackgroundUri);
             //原图片Uri; = picUri2，tempUri是保存照相（获取）选中图片Uri
-            File file = new File(getContext().getCacheDir(), new File(tempBackgroundUri.getPath()).getName());
-            if(file.exists())           file.delete();
-            backgroundUri = Uri.fromFile(file);            //准备保存裁剪后图片Uri
+            picFile = new File(getContext().getCacheDir(), new File(tempBackgroundUri.getPath()).getName());
+            if(picFile.exists())           picFile.delete();
+            backgroundUri = Uri.fromFile(picFile);            //准备保存裁剪后图片Uri
             cropBackGroundImg(tempBackgroundUri);
         });
     }
@@ -347,4 +361,34 @@ public class MineFragment extends Fragment {
         cropBackgroundLauncher.launch(intent);
     }
 
+    private void uploadUserImg(){
+        String baseUrl = PropertiesUtil.props.getProperty("baseUrl");
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(baseUrl).addConverterFactory(GsonConverterFactory.create()).build();
+        GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
+
+
+        // 创建 RequestBody，用于封装构建RequestBody
+        // RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        RequestBody requestFile = RequestBody.create(MediaType.parse("image/jpg"),picFile);
+
+        // MultipartBody.Part  和后端约定好Key，这里的partName是用file
+        MultipartBody.Part body = MultipartBody.Part.createFormData("file", picFile.getName(), requestFile);
+
+        // 添加描述
+        String descriptionString = "hello, 这是文件描述";
+        RequestBody description = RequestBody.create(MediaType.parse("multipart/form-data"), descriptionString);
+
+        Call<Object> call = request.uploadUserImg( body);//获得call对象
+        call.enqueue(new Callback<Object>() {
+            @Override
+            public void onResponse(Call<Object> call, Response<Object> response) {
+                Log.d(TAG,"success"+response);
+            }
+
+            @Override
+            public void onFailure(Call<Object> call, Throwable t) {
+                Log.d(TAG,"failure"+t);
+            }
+        });
+    }
 }
