@@ -41,12 +41,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
-
-/**
-用来显示和连接Service。
- */
 public class MapFragment extends Fragment implements View.OnClickListener{
-//    /**
 
     final String TAG = "MapFragment";
     MapView mapView;
@@ -125,7 +120,7 @@ public class MapFragment extends Fragment implements View.OnClickListener{
 
         @Override
         public void onServiceDisconnected(ComponentName componentName) {
-
+            locationBinder = null;
         }
     };
 
@@ -221,9 +216,14 @@ public class MapFragment extends Fragment implements View.OnClickListener{
         super.onDestroy();
         Log.d(TAG, "onDestroy");
         //在activity执行onDestroy时执行mapView.onDestroy()，销毁地图
-        mapView.onDestroy();
         getActivity().unbindService(serviceConnection);
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mapView.onDestroy();
     }
 
     @Override
@@ -239,7 +239,7 @@ public class MapFragment extends Fragment implements View.OnClickListener{
         super.onPause();
         Log.d(TAG, "onPause");
         //在activity执行onPause时执行mapView.onPause ()，暂停地图的绘制
-        //mapView.onPause();
+        mapView.onPause();
     }
 
     @Override
@@ -258,13 +258,6 @@ public class MapFragment extends Fragment implements View.OnClickListener{
     }
 
     public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
-//        if (transit == FragmentTransaction.TRANSIT_FRAGMENT_OPEN) {//表示是一个进入动作，比如add.show等
-//            if (enter) {//普通的进入的动作
-//                return AnimationUtils.loadAnimation(getContext(), R.anim.anim_bottom_in);
-//            } else {//比如一个已经Fragmen被另一个replace，是一个进入动作，被replace的那个就是false
-//                return AnimationUtils.loadAnimation(getContext(), R.anim.anim_out);
-//            }
-//        } else
         Log.d("onCreateAnimation",enter+",0,"+transit);
         if(enter == true){
             Log.d("onCreateAnimation","1");
@@ -273,14 +266,6 @@ public class MapFragment extends Fragment implements View.OnClickListener{
             Log.d("onCreateAnimation","2");
             return AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.slide_right_out);
         }
-//        if (transit == FragmentTransaction.TRANSIT_FRAGMENT_OPEN) { //表示是一个进入动作，比如add.show等
-//            //Log.d("onCreateAnimation","1");
-//            return AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.slide_right_in);
-//        }
-//        if (transit == FragmentTransaction.TRANSIT_FRAGMENT_CLOSE) {//表示一个退出动作，比如出栈，hide，detach等
-//            Log.d("onCreateAnimation","2");
-//            return AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.slide_right_out);
-//        }
         return null;
 
     }

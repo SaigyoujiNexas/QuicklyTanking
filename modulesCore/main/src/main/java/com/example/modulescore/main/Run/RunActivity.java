@@ -26,11 +26,13 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.amap.api.maps.model.LatLng;
 import com.example.common.utils.ToastUtil;
+import com.example.modulesbase.libbase.util.PropertiesUtil;
 import com.example.modulespublic.common.base.MyDataBase;
 import com.example.modulespublic.common.base.RunningRecord;
 import com.example.modulescore.main.EventBus.MessageEvent;
 import com.example.modulescore.main.UI.View.ProgressButton;
 import com.example.modulescore.main.R;
+import com.example.modulespublic.common.constant.Constant;
 import com.example.modulespublic.common.utils.TimeManager;
 import com.example.modulespublic.common.net.BaseResponse;
 import com.example.modulespublic.common.net.GetRequest_Interface;
@@ -131,44 +133,39 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
                 intent.setAction("finishRun");
                 sendBroadcast(intent);
                 Log.d(TAG,"1");
-
-                new Thread(new Runnable() {
+                String baseUrl = PropertiesUtil.props.getProperty("baseUrl");
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(baseUrl)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+                GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
+                Call<BaseResponse<RunningRecord>> call = request.postRuuningRecord(record);//获得call对象
+                Log.d(TAG,"start upload");
+                call.enqueue(new Callback<BaseResponse<RunningRecord>>() {
                     @Override
-                    public void run() {
-                        MyDataBase.getsInstance(getApplicationContext()).runningDao().insertRunningRecord(record);
-                        Log.d(TAG,record.toString());
-                        String baseUrl = "http://116.62.180.44:8081/";
-                        Retrofit retrofit = new Retrofit.Builder()
-                                .baseUrl(baseUrl)
-                                .addConverterFactory(GsonConverterFactory.create())
-                                .build();
-                        GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
-                        Call<BaseResponse<RunningRecord>> call = request.postRuuningRecord(record);//获得call对象
-                        Log.d(TAG,"start upload");
-                        call.enqueue(new Callback<BaseResponse<RunningRecord>>() {
-                            @Override
-                            public void onResponse(Call<BaseResponse<RunningRecord>> call, Response<BaseResponse<RunningRecord>> response) {
-                                //assert response.body() != null;
-                                ToastUtil.Companion.showToast("上传成功！");
-                                Log.d(TAG,"body:"+response.body()+",errorBody:"+response.errorBody()+",message:"+response.message()+",tostring:"+response.toString());
-                            }
-
-                            @Override
-                            public void onFailure(Call<BaseResponse<RunningRecord>> call, Throwable t) {
-                                Log.d(TAG,"Retrofit_onFailure "+t.toString()+t);
-                                ToastUtil.Companion.showToast("上传失败！");
-                                //Log.d(TAG+"length", String.valueOf(MyDataBase.getsInstance(getApplicationContext()).runningDao().loadAllRunningRecordss().length));
-                            }
-                        });
-                        Log.d(TAG,"2");
+                    public void onResponse(Call<BaseResponse<RunningRecord>> call, Response<BaseResponse<RunningRecord>> response) {
+                        //assert response.body() != null;
+                        ToastUtil.Companion.showToast("上传成功！");
+                        Log.d(TAG,"body:"+response.body()+",errorBody:"+response.errorBody()+",message:"+response.message()+",tostring:"+response.toString());
                     }
-                }).start();
-                Log.d(TAG,"1");
+
+                    @Override
+                    public void onFailure(Call<BaseResponse<RunningRecord>> call, Throwable t) {
+                        Log.d(TAG,"Retrofit_onFailure "+t.toString()+t);
+                        ToastUtil.Companion.showToast("上传失败！保存到数据库中！");
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                MyDataBase.getsInstance(getApplicationContext()).runningDao().insertRunningRecord(record);
+                                Log.d(TAG,record.toString());
+                            }
+                        }).start();
+                        //Log.d(TAG+"length", String.valueOf(MyDataBase.getsInstance(getApplicationContext()).runningDao().loadAllRunningRecordss().length));
+                    }
+                });
                 unbindService(serviceConnection);
                 Log.d(TAG,"2");
             }
-
-
             @Override
             public void onCancel() {
 
@@ -342,7 +339,7 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
 
         @Override
         public void onServiceDisconnected(ComponentName componentName) {
-
+            locationBinder = null;
         }
     };
     public class FinishRunReceiver extends BroadcastReceiver {
