@@ -196,16 +196,12 @@ public class LocationService extends Service implements LocationSource,AMapLocat
                 path.add(nowLatLng);
                 //如果不是第一次定位，就计算距离
                 if (!isFirstLoc) {
-                    //float tempDistance = AMapUtils.calculateLineDistance(nowLatLng, lastLatLng);
-
-                    //Log.d(TAG, "tempDistance"+tempDistance);
                     //计算总距离
                     distanceThisTime = getDistance(path);
-                    //messageEvent.setDistance(decimalFormat.format(distanceThisTime / 1000.0));
-                    messageEvent.setDistance(decimalFormat.format(getDistance(path)/10000.0));
-                    //distance = getDistance(path);
+                    messageEvent.setDistance(decimalFormat.format(getDistance(path)/1000.0));
+
                     //发送速度
-                    nowSpeed = distanceThisTime/passedSeconds;
+                    nowSpeed = distanceThisTime / passedSeconds;
                     Log.d(TAG, "nowsepped"+distanceThisTime/passedSeconds);
                     if (nowSpeed == 0) {
                         messageEvent.setSpeed("--");

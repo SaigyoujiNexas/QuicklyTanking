@@ -25,6 +25,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.amap.api.maps.model.LatLng;
+import com.example.common.utils.ToastUtil;
 import com.example.modulespublic.common.base.MyDataBase;
 import com.example.modulespublic.common.base.RunningRecord;
 import com.example.modulescore.main.EventBus.MessageEvent;
@@ -54,7 +55,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RunActivity extends AppCompatActivity implements View.OnClickListener {
 
-    public GetRequest_Interface getRequestInterface;
     static MapFragment mapFragment = new MapFragment();
     FloatingActionButton startRunButton;
     FloatingActionButton stopRunButton;
@@ -108,6 +108,7 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
         event.setRunning(true);
         EventBus.getDefault().post(event);
         initService();
+
         finishRunButton.setListener(new ProgressButton.ProgressButtonFinishCallback() {
             @Override
             public void onFinish() {
@@ -121,6 +122,7 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
                 record.setPathPointsLine(mPathPointsLine);
                 //record.setStartTime(startTime);
                 record.setStartTime(String.valueOf(startTime.getTime()));
+
                 Log.d(TAG,"0");
                 FinishRunReceiver finishRunReceiver = new FinishRunReceiver();
                 IntentFilter intentFilter = new IntentFilter("finishRun");
@@ -129,6 +131,7 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
                 intent.setAction("finishRun");
                 sendBroadcast(intent);
                 Log.d(TAG,"1");
+
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -146,31 +149,20 @@ public class RunActivity extends AppCompatActivity implements View.OnClickListen
                             @Override
                             public void onResponse(Call<BaseResponse<RunningRecord>> call, Response<BaseResponse<RunningRecord>> response) {
                                 //assert response.body() != null;
+                                ToastUtil.Companion.showToast("上传成功！");
                                 Log.d(TAG,"body:"+response.body()+",errorBody:"+response.errorBody()+",message:"+response.message()+",tostring:"+response.toString());
                             }
 
                             @Override
                             public void onFailure(Call<BaseResponse<RunningRecord>> call, Throwable t) {
                                 Log.d(TAG,"Retrofit_onFailure "+t.toString()+t);
-                                Toast.makeText(RunActivity.this, "保存数据库时出现错误..,保存到本地", Toast.LENGTH_LONG).show();
+                                ToastUtil.Companion.showToast("上传失败！");
                                 //Log.d(TAG+"length", String.valueOf(MyDataBase.getsInstance(getApplicationContext()).runningDao().loadAllRunningRecordss().length));
                             }
                         });
                         Log.d(TAG,"2");
                     }
                 }).start();
-                //Observable<BaseResponse<RunningRecord>> observable = getRequestInterface.postRuuningRecord(record);
-//                RequestModel.Companion.request(getRequestInterface.postRuuningRecord(record),RunActivity.this, new NetCallback<RunningRecord>() {
-//                    @Override
-//                    public void onSuccess(RunningRecord data) {
-//                        Log.d("RunActivityRetrofit:1",data.toString());
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Throwable throwable) {
-//
-//                    }
-//                });
                 Log.d(TAG,"1");
                 unbindService(serviceConnection);
                 Log.d(TAG,"2");
