@@ -44,7 +44,7 @@ public interface GetRequest_Interface {
     @POST("rest/2.0/image-classify/v2/dish")
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     Call<DiscernResultResponse> getDiscernResultResponse(@Field("access_token") String access_token,
-                                                         @Field("url") String url,@Field("filter_threshold")float filter_threshold);
+                                                         @Field("image") String url,@Field("filter_threshold")float filter_threshold);
 
 //    @Provides
 //    @Singleton

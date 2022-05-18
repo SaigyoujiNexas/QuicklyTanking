@@ -37,4 +37,14 @@ public class ResultBean {
     public void setBaike_info(BaikeInfo baike_info) {
         this.baike_info = baike_info;
     }
+
+    @Override
+    public String toString() {
+        return "ResultBean{" +
+                "calorie='" + calorie + '\'' +
+                ", has_calorie=" + has_calorie +
+                ", name='" + name + '\'' +
+                ", baike_info=" + baike_info +
+                '}';
+    }
 }

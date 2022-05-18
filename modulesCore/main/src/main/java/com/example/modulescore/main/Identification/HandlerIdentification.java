@@ -12,7 +12,6 @@ public class HandlerIdentification extends Handler {
     IdentificationActivity identificationActivity;
 
 
-
     public HandlerIdentification(@NonNull Looper looper, IdentificationActivity identificationActivity) {
         super(looper);
         this.identificationActivity = identificationActivity;
@@ -29,7 +28,6 @@ public class HandlerIdentification extends Handler {
         super.handleMessage(msg);
         switch (msg.what){
             case finishIdentification:
-                Log.d("111111111111111111111","!!!111111");
                 identificationActivity.refreshItemIdentification();
                 break;
         }

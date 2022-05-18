@@ -1,5 +1,6 @@
 package com.example.modulescore.main.Identification;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,19 +12,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.modulescore.main.R;
 import com.example.modulespublic.common.net.ResultBean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterIdentification extends RecyclerView.Adapter<AdapterIdentification.ViewHolderIdentification> {
     List<ResultBean> resultBeanList;
+    private List<View> viewList = new ArrayList<>();
+    final String TAG =  "AdapterIdentificationTAG";
 
     public AdapterIdentification(List<ResultBean> resultBeanList) {
         this.resultBeanList = resultBeanList;
+        Log.d(TAG,"size:"+resultBeanList.size());
+        Log.d(TAG,resultBeanList.get(0).getName()+","+resultBeanList.get(0).toString());
     }
 
     @NonNull
     @Override
     public ViewHolderIdentification onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_identification,parent);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_identification,parent,false);
         ViewHolderIdentification viewHolderIdentification = new ViewHolderIdentification(view);
         return viewHolderIdentification;
     }
@@ -32,9 +38,13 @@ public class AdapterIdentification extends RecyclerView.Adapter<AdapterIdentific
     public void onBindViewHolder(@NonNull ViewHolderIdentification holder, int position) {
         ResultBean resultBean = resultBeanList.get(position);
         holder.dishname_identificationitem.setText(resultBean.getName());
-        if(position==0){
+        Log.d(TAG,""+position);
+        if(resultBean.getBaike_info()!=null) {
             holder.baikeurl_identification.setText(resultBean.getBaike_info().getBaike_url());
             holder.description_identification.setText(resultBean.getBaike_info().getDescription());
+        }else {
+            viewList.get(position).findViewById(R.id.baikeurl_identification).setVisibility(View.GONE);
+            viewList.get(position).findViewById(R.id.description_identification).setVisibility(View.GONE);
         }
         holder.calorietext_runrecoritem_identification.setText(resultBean.getCalorie());
     }
@@ -62,6 +72,7 @@ public class AdapterIdentification extends RecyclerView.Adapter<AdapterIdentific
             }
             calorietext_runrecoritem_identification = itemView.findViewById(R.id.calorietext_runrecoritem_identification);
             dishname_identificationitem = itemView.findViewById(R.id.dishname_identificationitem);
+            viewList.add(itemView);
         }
     }
 }

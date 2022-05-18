@@ -161,6 +161,7 @@ public class MineFragment extends Fragment {
         });
         return view;
     }
+
     private void initBackDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());//创建对话框
         LayoutInflater inflater = getLayoutInflater();
@@ -181,7 +182,7 @@ public class MineFragment extends Fragment {
             public void onClick(View view) {
                 identifyTakePhotoImage();
                 try {
-                    openCamera();
+                    openCamera_Back();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -218,7 +219,7 @@ public class MineFragment extends Fragment {
             public void onClick(View view) {
                 identifyTakePhotoImage();
                 try {
-                    openCamera_Back();
+                    openCamera();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -287,7 +288,6 @@ public class MineFragment extends Fragment {
         }
     }
 
-
     //调用相机（指定相机拍摄照片保存地址，相片清晰度高）
     private void openCamera_Back() throws IOException {
         SimpleDateFormat timeStampFormat = new SimpleDateFormat(
@@ -306,7 +306,6 @@ public class MineFragment extends Fragment {
         ContentValues contentValues2 = new ContentValues(1);
         contentValues2.put(MediaStore.Images.Media.DATA, tempFile2.getAbsolutePath());
         tempBackgroundUri = getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
-
 
         if(tempFile != null) {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
