@@ -93,8 +93,8 @@ fun RegisterFifthPage(
         isFloatingActionButtonDocked = true,
         floatingActionButton = {
             FloatingActionButton(onClick = {
-                registerViewModel.setUserInfo(context) {
-                    ARouter.getInstance().build(RoutePath.MAIN).navigation(context)
+                registerViewModel.setUserInfo() {
+                        ARouter.getInstance().build(RoutePath.MAIN).navigation(context)
                 }
             }){
                 Icon(Icons.Filled.ArrowForward, contentDescription = "next")

@@ -32,10 +32,5 @@
             android:name="com.amap.api.v2.apikey"
             android:value="50d286f11504bd091ccc96099bcba9cb" />
         <service android:name="com.amap.api.location.APSService" />
-        <activity android:name="com.yalantis.ucrop.UCropActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.Material3.DayNight.NoActionBar" />
-
     </application>
-
 </manifest>

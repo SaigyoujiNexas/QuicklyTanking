@@ -1,6 +1,7 @@
 import org.gradle.api.JavaVersion
 
 const val isDebug = true
+
 val androidC = mapOf(
     "compileSdk" to 31,
     "minSdk" to 27,
@@ -27,8 +28,6 @@ const val libHiltLifeCycle = "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha
 const val libHiltAndroidCompiler = "androidx.hilt:hilt-compiler:1.0.0"
 const val libStartUp = "androidx.startup:startup-runtime:1.1.0"
 const val libRetrofit = "com.squareup.retrofit2:retrofit:2.9.0"
-const val libRxAndroid = "io.reactivex.rxjava2:rxandroid:2.0.2"
-const val libRetrofit2RxJava = "com.squareup.retrofit2:adapter-rxjava2:2.9.0"
 const val libRetrofit2Gson = "com.squareup.retrofit2:converter-gson:2.9.0"
 const val libRetrofit2Moshi = "com.squareup.retrofit2:converter-moshi:2.9.0"
 
@@ -46,6 +45,7 @@ const val libCoilCompose = "io.coil-kt:coil-compose:2.0.0-rc01"
 const val libEventbus = "org.greenrobot:eventbus:3.1.1"
 const val libRoom =  "androidx.room:room-runtime:$room_version"
 const val libRoomCompiler = "androidx.room:room-compiler:$room_version"
+const val libRoomKtx = "androidx.room:room-ktx:$room_version"
 
 const val libMD3 = "com.google.android.material:material:1.5.0"
 const val libCoroutine = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9"
@@ -59,7 +59,7 @@ const val libComposeViewModel = "androidx.lifecycle:lifecycle-viewmodel-compose:
 const val libHiltNavCompose = "androidx.hilt:hilt-navigation-compose:1.0.0"
 
 val libraryC = mapOf(
-    "appcompat" to  "androidx.appcompat:appcompat:1.4.0",
+    "appcompat" to "androidx.appcompat:appcompat:1.4.0",
     "material" to  "com.google.android.material:material:1.4.0",
     "constraintlayout" to "androidx.constraintlayout:constraintlayout:2.1.2",
     "nav-fragment" to "androidx.navigation:navigation-fragment:$nav_version",
@@ -71,10 +71,12 @@ val libraryC = mapOf(
 val libKtx = listOf(
     "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-beta01",
     "androidx.lifecycle:lifecycle-runtime-ktx:2.3.1",
+    "androidx.lifecycle:lifecycle-livedata-ktx:2.5.0-beta01",
     "androidx.core:core-ktx:1.7.0",
     "androidx.navigation:navigation-fragment-ktx:$nav_version",
     "androidx.navigation:navigation-ui-ktx:$nav_version",
-    libCoroutine
+    libCoroutine,
+    libRoomKtx
 
     )
 val librariesDebug = listOf(
@@ -108,8 +110,6 @@ val libs = listOf(
     libHttpLogger,
     libRetrofit,
     libRetrofit2Gson,
-    libRetrofit2RxJava,
-    libRxAndroid,
     libGlide,
     libGlideOkhttp3,
     libStatusBarUtil,

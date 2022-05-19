@@ -16,7 +16,9 @@ import com.example.modulespublic.common.constant.KeyPool
 import com.example.modulespublic.common.net.ApiService
 import com.example.modulespublic.common.net.BaseResponse
 import com.example.modulespublic.common.utils.FileUtil
+import com.saigyouji.android.composetest.net.LoginService
 import com.saigyouji.android.composetest.net.RegisterService
+import com.saigyouji.android.composetest.net.response.LoginResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -26,7 +28,8 @@ class RegisterViewModel
 @Inject
 constructor(
     private val registerService: RegisterService,
-    private val apiService: ApiService
+    private val apiService: ApiService,
+    private val loginService: LoginService
 ): ViewModel()
 {
     var tel : String by mutableStateOf("")
@@ -75,21 +78,36 @@ constructor(
         }
     }
 
-    fun setUserInfo(lifecycleOwner: LifecycleOwner, onSuccess: (String?) -> Unit) {
-
-        RequestModel.request(
-            apiService.setUserInfo(
-            Preferences.getString(KeyPool.PUBLIC_KEY, ""),
-            FileUtil.imageFileToMultipartBody(head.toFile()),
-            name, gender, birthday, height, weight
-        ),
-            lifecycleOwner, object:NetCallback<String?>{
-            override fun onSuccess(data: String?) {
-                onSuccess.invoke(data)
+    fun setUserInfo(onSuccess: (String?) -> Unit) = viewModelScope.launch {
+        var res: BaseResponse<String?>?
+        try{
+            res = apiService.setUserInfo(Preferences.getString("token", ""),FileUtil.imageFileToMultipartBody(head.toFile()))
+        }catch (e: Exception){
+            res = BaseResponse(e.localizedMessage, 200, e.localizedMessage)
+        }
+        res?.let {
+            if(res.isSuccess)
+                onSuccess.invoke(res.message)
+            else
+                ToastUtil.showToast(res.message)
+        }
+    }
+    fun login(onSuccess: () -> Unit) = viewModelScope.launch {
+        var res: LoginResponse
+        try{
+            res = loginService.login(LoginService.Companion.LoginRequest(
+                LoginService.MODE_PASSWD,null,
+                passwd, tel, Preferences.getString(KeyPool.ID, ""), null))
+        }catch (e: Exception){
+            res = LoginResponse(e.localizedMessage, 200, e.localizedMessage)
+        }
+        res.let{
+            if(res.isSuccess) {
+                Preferences.saveString("token", res.data)
+                onSuccess.invoke()
             }
-            override fun onFailure(throwable: Throwable?) {
-                    ToastUtil.showToast(throwable?.localizedMessage?:"未知错误")
-            }
-        })
+            else
+                ToastUtil.showToast(res.msg)
+        }
     }
 }

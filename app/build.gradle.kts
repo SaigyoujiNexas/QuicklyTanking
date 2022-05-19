@@ -3,6 +3,14 @@ plugins {
     id("kotlin-android")
 }
 android {
+    signingConfigs {
+        getByName("debug") {
+            storeFile = file("./Run00.jks")
+            storePassword = "llllll"
+            keyAlias = "key0"
+            keyPassword = "llllll"
+        }
+    }
     compileSdk = androidC["compileSdk"] as Int
 
     defaultConfig {

@@ -7,7 +7,7 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "QuicklyTanking"
+rootProject.name = "SafeAndRun"
 include(":app")
 include(":modulesBase:libBase")
 include(":modulesPublic:common")

@@ -1,6 +1,5 @@
 package com.saigyouji.android.composetest.ui.register
 
-import android.widget.ProgressBar
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerSize

@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "shop_table")
 data class ShopItem(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    var id: Int = 0,
     @ColumnInfo
     val image: String,
     @ColumnInfo

@@ -14,4 +14,7 @@ interface ShopDao {
 
     @Delete
     suspend fun delete(item: ShopItem)
+
+    @Query("DELETE FROM shop_table")
+    suspend fun deleteAll()
 }

@@ -106,9 +106,9 @@ object LoginFrontPage {
                                 true
                             }))
                                 loginViewModel.loginByVerify(onSuccess = {
-                                    ToastUtil.showToast("login success")
-                                //    ARouter.getInstance().build(RoutePath.MAIN).navigation(context)
-                                //    context?.finish()
+                                //    ToastUtil.showToast("login success")
+                                    ARouter.getInstance().build(RoutePath.MAIN).navigation(context)
+                                    context?.finish()
                                 })
                         }
                     }
