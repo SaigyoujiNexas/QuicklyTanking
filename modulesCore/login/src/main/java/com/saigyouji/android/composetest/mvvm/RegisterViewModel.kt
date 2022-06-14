@@ -10,8 +10,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.common.utils.ToastUtil
 import com.example.modulesbase.libbase.cache.Preferences
-import com.example.modulesbase.libbase.net.RequestModel
-import com.example.modulesbase.libbase.net.response.NetCallback
 import com.example.modulespublic.common.constant.KeyPool
 import com.example.modulespublic.common.net.ApiService
 import com.example.modulespublic.common.net.BaseResponse

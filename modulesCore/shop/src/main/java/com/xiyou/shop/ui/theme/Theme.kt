@@ -37,7 +37,6 @@ fun QuicklyTankingTheme(
     } else {
         LightColorPalette
     }
-
     MaterialTheme(
         colors = colors,
         typography = Typography,

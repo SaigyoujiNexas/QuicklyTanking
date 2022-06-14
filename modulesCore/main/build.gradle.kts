@@ -12,7 +12,7 @@ var versionName: String? = null
 android{
     signingConfigs {
         getByName("debug") {
-            storeFile = file("E:\\learn\\Android\\Run00.jks")
+            storeFile = file("./Run00.jks")
             storePassword = "llllll"
             keyAlias = "key0"
             keyPassword = "llllll"

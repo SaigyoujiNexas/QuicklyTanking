@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/nav_frag_community"
+    android:id="@+id/nav_community">
+    <fragment
+        android:name="com.xiyou.community.view.ui.QuestionReleaseFragment"
+        android:id="@+id/nav_frag_question_release"
+        tools:layout="@layout/fragment_question_release"
+        android:label="发布问题">
+
+    </fragment>
+    <fragment
+        android:label="社区"
+        tools:layout="@layout/fragment_community"
+        android:name="com.xiyou.community.view.ui.CommunityFragment"
+        android:id="@+id/nav_frag_community"
+        >
+        <action
+            android:id="@+id/action_community_to_question_release"
+            app:destination="@id/nav_frag_question_release"
+            app:popUpTo="@id/nav_frag_community"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_community_to_community_content"
+            app:destination="@id/questionInfoFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/nav_frag_community"
+            app:popUpToInclusive="false">"
+            <argument
+                android:name="question"
+                app:argType="com.xiyou.community.data.QuestionCard" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/questionInfoFragment"
+        android:name="com.xiyou.community.view.ui.QuestionInfoFragment"
+        android:label="问题详情"
+        tools:layout="@layout/fragment_community_content">
+        <argument
+            android:name="question"
+            app:argType="com.xiyou.community.data.QuestionCard"/>
+    </fragment>
+</navigation>

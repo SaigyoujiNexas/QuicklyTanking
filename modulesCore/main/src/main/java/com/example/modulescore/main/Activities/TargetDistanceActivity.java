@@ -56,36 +56,16 @@ public class TargetDistanceActivity extends AppCompatActivity implements View.On
                 targetAdapter1.setViewPagerPostion(position);
                 if(position==0){
                     Log.d(TAG,"0");
-                    viewPager2.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            targetAdapter1.getScrollPickerView0().onScrolled(0,0);
-                        }
-                    },300);
+                    viewPager2.postDelayed(() -> targetAdapter1.getScrollPickerView0().onScrolled(0,0),300);
                 }else if(position == 1){
                     Log.d(TAG,"1");
-                    viewPager2.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            targetAdapter1.getScrollPickerView1().onScrolled(0,0);
-                        }
-                    },300);
+                    viewPager2.postDelayed(() -> targetAdapter1.getScrollPickerView1().onScrolled(0,0),300);
                 }else if(position == 2){
                     Log.d(TAG,"2");
-                    viewPager2.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            targetAdapter1.getScrollPickerView2().onScrolled(0,0);
-                        }
-                    },300);
+                    viewPager2.postDelayed(() -> targetAdapter1.getScrollPickerView2().onScrolled(0,0),300);
                 }else if(position == 3){
                     Log.d(TAG,"3");
-                    viewPager2.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            targetAdapter1.getScrollPickerView3().onScrolled(0,0);
-                        }
-                    },300);
+                    viewPager2.postDelayed(() -> targetAdapter1.getScrollPickerView3().onScrolled(0,0),300);
                 }
             }
             @Override
@@ -109,7 +89,8 @@ public class TargetDistanceActivity extends AppCompatActivity implements View.On
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        int id = view.getId();
+        switch (id){
             case R.id.btn_back_targetActivity:
                 Log.d("btn_back_targetActivity","");
                 this.finish();

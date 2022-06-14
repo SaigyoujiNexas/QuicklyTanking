@@ -1,6 +1,6 @@
 import org.gradle.api.JavaVersion
 
-const val isDebug = true
+const val isDebug = false
 
 val androidC = mapOf(
     "compileSdk" to 31,
@@ -14,7 +14,7 @@ val androidC = mapOf(
 const val nav_version = "2.4.1"
 const val truth_version = "1.0"
 const val  room_version = "2.4.2"
-const val compose_version = "1.1.0"
+const val compose_version = "1.2.0-beta02"
 
 const val libUCropper = "com.github.yalantis:ucrop:2.2.6"
 const val libAMap3DMap = "com.amap.api:3dmap:latest.integration"

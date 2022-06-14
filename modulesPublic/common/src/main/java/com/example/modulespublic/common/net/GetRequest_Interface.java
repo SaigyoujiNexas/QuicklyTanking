@@ -1,6 +1,5 @@
 package com.example.modulespublic.common.net;
 
-import com.example.modulespublic.common.base.Rr;
 import com.example.modulespublic.common.base.RunningRecord;
 
 import java.util.List;
@@ -8,7 +7,6 @@ import java.util.List;
 import javax.inject.Singleton;
 
 import dagger.Provides;
-import io.reactivex.Observable;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
