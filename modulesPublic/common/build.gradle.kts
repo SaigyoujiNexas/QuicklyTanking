@@ -2,11 +2,20 @@ plugins {
     id("com.android.library")
     id("kotlin-android")
     id("dagger.hilt.android.plugin")
+    id("kotlin-kapt")
 }
 
 var versionCode: Int? = null
 var versionName: String? = null
     android {
+        signingConfigs {
+            getByName("debug") {
+                storeFile = file("./Run00.jks")
+                storePassword = "llllll"
+                keyAlias = "key0"
+                keyPassword = "llllll"
+            }
+        }
         compileSdk = androidC["compileSdk"] as Int
         defaultConfig {
             minSdk = androidC["minSdk"] as Int
@@ -43,18 +52,22 @@ var versionName: String? = null
             jvmTarget = JvmTarget
         }
     }
+kapt{
+    arguments {
+        arg("AROUTER_MODULE_NAME", project.name)
+    }
+}
 
 dependencies {
 
     api(project(":modulesBase:libBase"))
 
+    libKtx.forEach { implementation(it) }
     libraryC.forEach { (_, s2) -> implementation(s2) }
     libs.forEach { implementation(it) }
-    apts.forEach { annotationProcessor(it) }
+    apts.forEach { kapt(it) }
     tests.forEach { androidTestImplementation(it) }
 
-    implementation("jp.wasabeef:glide-transformations:4.3.0")
-    implementation("com.hjq:toast:8.0")
     testImplementation("junit:junit:4.+")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")

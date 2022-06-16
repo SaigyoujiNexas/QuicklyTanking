@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">QuicklyTanking</string>
+    <string name="app_name">SafeAndRun</string>
     <string name="next">下一步</string>
     <string name="input_tel">输入手机号</string>
 </resources>

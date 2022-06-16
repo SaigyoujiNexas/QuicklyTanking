@@ -82,7 +82,6 @@ dependencies {
     implementation("com.google.android.material:material:1.5.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.3")
     implementation("androidx.preference:preference:1.1.1")
-    implementation("androidx.legacy:legacy-support-v4:1.0.0")
 
     libraryC.forEach { (_, s2) -> implementation(s2) }
     libs.forEach { implementation(it) }

@@ -1,6 +1,6 @@
 package com.xiyou.community.net
 
-import com.example.modulespublic.common.net.BaseResponse
+import com.xupt.safeAndRun.modulespublic.common.net.BaseResponse
 import com.xiyou.community.data.Answer
 import com.xiyou.community.data.CommunityData
 import com.xiyou.community.data.QuestionCard

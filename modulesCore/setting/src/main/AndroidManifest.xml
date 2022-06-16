@@ -3,7 +3,7 @@
     package="com.example.modulescore.setting">
     <application>
         <activity
-            android:name="com.example.modulescore.setting.SettingActivity"
+            android:name="com.xupt.modulescore.setting.SettingActivity"
             android:exported="true">
         </activity>
     </application>

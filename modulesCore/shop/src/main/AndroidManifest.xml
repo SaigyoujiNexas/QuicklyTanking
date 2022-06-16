@@ -7,7 +7,7 @@
             android:name=".ShopActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.QuicklyTanking">
+            android:theme="@style/Theme.AppTheme">
         </activity>
     </application>
 

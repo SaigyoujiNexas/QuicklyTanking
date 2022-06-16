@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.common.utils.ToastUtil
-import com.example.modulespublic.common.net.BaseResponse
+import com.xupt.safeAndRun.modulespublic.common.net.BaseResponse
 import com.xiyou.community.data.*
 import com.xiyou.community.repository.CommunityRepository
 import dagger.hilt.android.lifecycle.HiltViewModel

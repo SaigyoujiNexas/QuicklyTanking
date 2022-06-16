@@ -3,10 +3,10 @@ import org.gradle.api.JavaVersion
 const val isDebug = false
 
 val androidC = mapOf(
-    "compileSdk" to 31,
+    "compileSdk" to 32,
     "minSdk" to 27,
-    "targetSdk" to 31,
-    "buildToolsVersion" to "31.0.0",
+    "targetSdk" to 32,
+    "buildToolsVersion" to "32.0.0",
     "versionCode" to 1,
     "versionName" to "1.0"
 )
@@ -17,8 +17,10 @@ const val  room_version = "2.4.2"
 const val compose_version = "1.2.0-beta02"
 
 const val libUCropper = "com.github.yalantis:ucrop:2.2.6"
-const val libAMap3DMap = "com.amap.api:3dmap:latest.integration"
-const val libAMapLocation = "com.amap.api:location:latest.integration"
+
+const val libAMap3DMap = "com.amap.api:3dmap:9.3.0"
+const val libAMapLocation = "com.amap.api:location:6.1.0"
+
 const val libHttpLogger = "com.squareup.okhttp3:logging-interceptor:4.9.3"
 const val libARouter = "com.alibaba:arouter-api:1.5.2"
 const val libARouterCompiler = "com.alibaba:arouter-compiler:1.5.2"
@@ -116,7 +118,6 @@ val libs = listOf(
     libRecyclerAdapter,
     libRxPermissions,
     libAMap3DMap,
-    libAMapLocation,
     libTicker,
     libCoil,
     libTicker,
@@ -127,9 +128,9 @@ val tests = listOf(
     "androidx.navigation:navigation-testing:$nav_version"
 )
 val applicationIds = mapOf(
-    "app" to "com.example.quicklytanking",
-    "main" to "com.example.modulescore.main",
-    "login" to "com.example.modulescore.login"
+    "app" to "com.xupt.safeAndRun",
+    "main" to "com.xupt.safeAndRun.example.modulescore.main",
+    "login" to "com.xupt.safeAndRun.example.modulescore.login"
 )
 
 val javaVersion = JavaVersion.VERSION_11

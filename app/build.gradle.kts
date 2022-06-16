@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
+    id("dagger.hilt.android.plugin")
+    id("kotlin-kapt")
 }
 android {
     signingConfigs {
@@ -38,6 +40,9 @@ android {
         sourceCompatibility(javaVersion)
         targetCompatibility(javaVersion)
     }
+    kotlinOptions{
+        jvmTarget = JvmTarget
+    }
     //support the view binding and dataBinding
     android.buildFeatures.viewBinding = true
     android.buildFeatures.dataBinding = true
@@ -53,7 +58,9 @@ dependencies {
     }
     implementation(project(":modulesPublic:common"))
     libraryC.forEach {(_, v)-> implementation(v) }
-
+    apts.forEach { kapt(it) }
+    libs.forEach { implementation(it) }
+    libKtx.forEach { implementation(it) }
     implementation(libARouter)
     
     testImplementation("junit:junit:4.+")

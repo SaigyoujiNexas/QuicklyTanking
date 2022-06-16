@@ -5,5 +5,5 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.QuicklyTanking" parent="Base.Theme.QuicklyTanking" />
+    <style name="Theme.AppTheme" parent="Base.Theme.QuicklyTanking" />
 </resources>

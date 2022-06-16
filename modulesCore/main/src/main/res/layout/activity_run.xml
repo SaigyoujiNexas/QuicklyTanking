@@ -158,7 +158,7 @@
             android:layout_marginBottom="200dp"
             tools:ignore="MissingConstraints">
         </com.google.android.material.floatingactionbutton.FloatingActionButton>
-        <com.example.modulescore.main.UI.View.ProgressButton
+        <com.xupt.modulescore.main.UI.View.ProgressButton
             android:id="@+id/finishRunButton"
             android:layout_centerInParent="true"
             android:layout_width="90dp"

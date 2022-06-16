@@ -56,13 +56,9 @@ kapt{
 }
 dependencies {
     implementation(project(":modulesPublic:common"))
-    implementation("com.google.android.material:material:1.5.0-alpha04")
-    implementation("androidx.appcompat:appcompat:1.4.1")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.3")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.3.5")
-    implementation("androidx.navigation:navigation-ui-ktx:2.3.5")
-    libKtx.forEach { implementation(it) }
+
     libs.forEach{implementation(it)}
+    libKtx.forEach { implementation(it) }
     apts.forEach{kapt(it)}
     libraryC.forEach { (_, v) -> implementation(v)}
     tests.forEach { androidTestImplementation(it) }

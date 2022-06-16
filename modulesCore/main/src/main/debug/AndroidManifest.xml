@@ -20,14 +20,14 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
-        android:name="com.example.modulespublic.common.base.BaseApplication"
+        android:name="com.xupt.safeAndRun.modulespublic.common.base.BaseApplication"
         android:hardwareAccelerated="true"
         android:requestLegacyExternalStorage="true">
         <activity
-            android:name=".Identification.IdentificationActivity"
+            android:name="com.xupt.modulescore.main.Identification.IdentificationActivity"
             android:exported="false" />
         <activity
-            android:name=".Data.StatisticsActivity"
+            android:name="com.xupt.modulescore.main.Data.StatisticsActivity"
             android:exported="false" />
 
         <provider
@@ -41,16 +41,16 @@
         </provider>
 
         <activity
-            android:name=".Trace.TraceActivity"
+            android:name="com.xupt.modulescore.main.Trace.TraceActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.AfterRunActivity"
+            android:name="com.xupt.modulescore.main.Activities.AfterRunActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.TargetDistanceActivity"
+            android:name="com.xupt.modulescore.main.Activities.TargetDistanceActivity"
             android:exported="false" />
         <activity
-            android:name=".Pre.PreRunActivity"
+            android:name="com.xupt.modulescore.main.Pre.PreRunActivity"
             android:exported="true"
             android:launchMode="standard">
             <intent-filter>
@@ -59,19 +59,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Run.RunActivity"
+            android:name="com.xupt.modulescore.main.Run.RunActivity"
             android:exported="true"
             android:launchMode="singleTask"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
         <activity
-            android:name=".Data.PreDataActivity"
+            android:name="com.xupt.modulescore.main.Data.PreDataActivity"
             android:exported="false" />
 
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="50d286f11504bd091ccc96099bcba9cb" />
 
-        <service android:name=".Run.LocationService" />
+        <service android:name="com.xupt.modulescore.main.Run.LocationService" />
         <service android:name="com.amap.api.location.APSService" />
     </application>
 

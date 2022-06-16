@@ -7,8 +7,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -36,7 +37,7 @@ import com.xiyou.shop.ui.theme.Shapes
 fun ShopFrontPage(viewModel: ShopViewModel = androidx.lifecycle.viewmodel.compose.viewModel())
 {
     val list by viewModel.allItem.collectAsState(initial = emptyList())
-    LazyVerticalGrid(cells = GridCells.Fixed(2)){
+    LazyVerticalGrid(columns = GridCells.Fixed(2)){
         items(list){item->
             ShopItemCard(item)
         }

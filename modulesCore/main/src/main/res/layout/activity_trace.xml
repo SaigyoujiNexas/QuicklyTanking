@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Trace.TraceActivity">
+    tools:context="com.xupt.modulescore.main.Trace.TraceActivity">
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout_TarceActivity"
         android:layout_width="match_parent"

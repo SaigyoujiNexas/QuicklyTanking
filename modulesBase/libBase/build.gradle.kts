@@ -36,6 +36,9 @@ android {
                 proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             }
         }
+    kotlinOptions{
+        jvmTarget = JvmTarget
+    }
         compileOptions {
             sourceCompatibility(javaVersion)
             targetCompatibility(javaVersion)
@@ -53,6 +56,5 @@ android {
         testImplementation("junit:junit:4.+")
         androidTestImplementation("androidx.test.ext:junit:1.1.3")
         androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
-        implementation("androidx.core:core-ktx:+")
     }
 

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.quicklytanking">
-
-    <application
-        android:name="com.example.modulespublic.common.base.BaseApplication">
+    package="com.xupt.safeAndRun">
+    <application>
         <activity
-            android:name=".StartActivity"
+            android:name="com.xupt.safeAndRun.StartActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

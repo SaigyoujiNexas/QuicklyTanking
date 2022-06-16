@@ -3,7 +3,8 @@
 package="com.xiyou.community">
 
 <application>
-
+    <activity android:name=".CommunityActivity"
+        android:exported="false"/>
 </application>
 
 </manifest>
