@@ -15,7 +15,7 @@ interface LoginService {
 
     companion object {
         private const val LOGIN = "login"
-        private const val SEND_CODE = "loginMessage"
+        private const val SEND_CODE = "getMessage"
         const val MODE_PASSWD = 0
         const val MODE_VERIFY = 1
 
@@ -33,6 +33,4 @@ interface LoginService {
             val message:String? = null
         )
     }
-    @GET("oauth/2.0/token?grant_type=client_credentials&client_id=GMjmqqOG1GSahCNxQBL8Si4A&client_secret=0Q1Ge4HZtw2HbikZ0FRMmkgmPNce79xH")
-    suspend fun test(): String?
 }

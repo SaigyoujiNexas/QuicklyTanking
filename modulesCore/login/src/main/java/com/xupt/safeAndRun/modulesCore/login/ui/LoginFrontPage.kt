@@ -1,6 +1,7 @@
 package com.xupt.safeAndRun.modulesCore.login.ui
 
 import android.text.TextUtils
+import android.widget.Toast
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
@@ -88,9 +89,10 @@ object LoginFrontPage {
                             if (checkInput(loginViewModel.passwd, "密码不能为空"))
                                 loginViewModel.loginByPasswd(onSuccess = {
                                     ToastUtil.showToast("login success")
-                                    //      ARouter.getInstance().build(RoutePath.MAIN).navigation(
-                                    //          context)
-                                    //      context?.finish()
+                                    Toast.makeText(context, "test", Toast.LENGTH_SHORT).show()
+                                        ARouter.getInstance().build(RoutePath.MAIN).navigation(
+                                              context)
+                                          context?.finish()
                                 })
                         } else {
                             if (checkInput(loginViewModel.verifyCode, "验证码不能为空", otherJudge = {

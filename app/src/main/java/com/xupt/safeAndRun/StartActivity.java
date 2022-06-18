@@ -28,5 +28,6 @@ public class StartActivity extends AppCompatActivity {
         else{
             ARouter.getInstance().build(RoutePath.MAIN).navigation(this);
         }
+        finish();
     }
 }

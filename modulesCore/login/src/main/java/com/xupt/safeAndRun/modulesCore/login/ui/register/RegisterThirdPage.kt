@@ -15,9 +15,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.alibaba.android.arouter.launcher.ARouter
 import com.xupt.safeAndRun.modulesCore.login.mvvm.RegisterViewModel
 import com.xupt.safeAndRun.modulesCore.login.util.checkInput
 import com.xupt.safeAndRun.modulesCore.login.util.findActivity
+import com.xupt.safeAndRun.modulespublic.common.constant.RoutePath
 
 /**
  * @author Yuki
@@ -49,7 +51,9 @@ fun RegisterThirdPage(registerViewModel: RegisterViewModel = viewModel(),
                     registerViewModel.judgeUserName {
                         registerViewModel.register {
                             registerViewModel.login {
-                                navController.navigate("register_fifth")
+                                //navController.navigate("register_fifth")
+                                ARouter.getInstance().build(RoutePath.MAIN).navigation()
+                                context?.finish()
                             }
                         }
                     }
