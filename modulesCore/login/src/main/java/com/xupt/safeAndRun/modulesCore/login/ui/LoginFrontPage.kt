@@ -28,10 +28,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.core.net.toUri
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.alibaba.android.arouter.launcher.ARouter
 import com.example.common.utils.ToastUtil
 import com.xupt.safeAndRun.modulesCore.login.NavPath
 import com.xupt.safeAndRun.modulesCore.login.NavPath.register_first
@@ -90,21 +91,22 @@ object LoginFrontPage {
                                 loginViewModel.loginByPasswd(onSuccess = {
                                     ToastUtil.showToast("login success")
                                     Toast.makeText(context, "test", Toast.LENGTH_SHORT).show()
-                                        ARouter.getInstance().build(RoutePath.MAIN).navigation(
-                                              context)
-                                          context?.finish()
+                                       navController.navigate("com.xupt.safeAndRun.runActivity")
                                 })
                         } else {
                             if (checkInput(loginViewModel.verifyCode, "验证码不能为空", otherJudge = {
                                     if (it.length < 4) {
                                         ToastUtil.showToast("验证码应为4位数字")
                                         false
+                                    } else {
+                                        true
                                     }
-                                    true
                                 }))
                                 loginViewModel.loginByVerify(onSuccess = {
+                                    val request = NavDeepLinkRequest.Builder
+                                        .fromUri(RoutePath.MAIN.toUri())
+                                    navController.navigate(request.build())
                                     //    ToastUtil.showToast("login success")
-                                    ARouter.getInstance().build(RoutePath.MAIN).navigation(context)
                                     context?.finish()
                                 })
                         }
@@ -113,12 +115,14 @@ object LoginFrontPage {
                     Icon(Icons.Filled.Done, contentDescription = "next")
                 }
             },
-            content = {
+            content = { paddingValue ->
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .fillMaxHeight()
+                        .padding(paddingValue)
                         .padding(top = 125.dp)
+
                 ) {
                     Text(
                         text = "欢迎使用， 请输入您的手机号",
@@ -250,7 +254,7 @@ object LoginFrontPage {
 @ExperimentalAnimationApi
 @Preview
 @Composable
-fun previewLoginFrontPage() {
+fun PreviewLoginFrontPage() {
     LoginFrontPage.LoginFrontPage()
 }
 

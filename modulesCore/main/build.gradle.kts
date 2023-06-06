@@ -54,6 +54,7 @@ android{
     buildFeatures {
         viewBinding = true
     }
+    namespace = "com.example.modulescore.main"
     sourceSets["main"].manifest.srcFile {
         if (isDebug)
             "src/main/debug/AndroidManifest.xml"

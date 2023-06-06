@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.Color
 
 @Immutable
 interface FabOption {
+
     @Stable val iconTint: Color
     @Stable val backgroundTint: Color
     @Stable val showLabel: Boolean

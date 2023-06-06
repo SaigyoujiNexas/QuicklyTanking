@@ -13,7 +13,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.alibaba.android.arouter.facade.annotation.Route
 import com.xupt.safeAndRun.modulesCore.login.NavPath.forget
 import com.xupt.safeAndRun.modulespublic.common.constant.RoutePath
 import com.xupt.safeAndRun.modulesCore.login.NavPath.login
@@ -34,7 +33,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 private const val TAG = "MainActivity"
 
-@Route(path = RoutePath.LOG_IN)
+//@Route(path = RoutePath.LOG_IN)
 @AndroidEntryPoint
 @ExperimentalAnimationApi
 class LoginActivity : AppCompatActivity(){

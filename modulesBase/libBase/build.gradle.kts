@@ -1,8 +1,7 @@
-
 plugins {
     id("kotlin-android")
+    id("com.google.dagger.hilt.android")
     id("com.android.library")
-    id("dagger.hilt.android.plugin")
 }
 var versionCode : Int? = null
 var versionName : String? = null
@@ -43,7 +42,8 @@ android {
             sourceCompatibility(javaVersion)
             targetCompatibility(javaVersion)
         }
-    }
+    namespace = "com.xupt.safeAndRun.modulesbase.libbase"
+}
 
     dependencies {
 

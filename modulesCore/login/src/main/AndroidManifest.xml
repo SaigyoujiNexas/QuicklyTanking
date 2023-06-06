@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.xupt.safeAndRun.modulesCore.login">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application>
         <activity
             android:name="com.xupt.safeAndRun.modulesCore.login.LoginActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.AppTheme">
+            <nav-graph android:value="@navigation/nav_login"/>
         </activity>
            </application>
 </manifest>

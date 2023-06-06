@@ -22,7 +22,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
-import com.alibaba.android.arouter.launcher.ARouter
 import com.xupt.safeAndRun.modulespublic.common.R
 import com.xupt.safeAndRun.modulespublic.common.constant.RoutePath
 import com.xupt.safeAndRun.modulesCore.login.mvvm.RegisterViewModel
@@ -83,7 +82,7 @@ fun RegisterFifthPage(
         floatingActionButton = {
             FloatingActionButton(onClick = {
                 registerViewModel.setUserInfo() {
-                        ARouter.getInstance().build(RoutePath.MAIN).navigation(context)
+                    navController.navigate("com.xupt.safeAndRun.runActivity")
                 }
             }){
                 Icon(Icons.Filled.ArrowForward, contentDescription = "next")
@@ -93,6 +92,7 @@ fun RegisterFifthPage(
             Column(modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
+                .padding(it)
                 .padding(horizontal = 24.dp)
                 .padding(top = 54.dp)
                 ,

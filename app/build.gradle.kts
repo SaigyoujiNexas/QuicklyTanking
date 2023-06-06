@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    id("dagger.hilt.android.plugin")
+    id("com.google.dagger.hilt.android")
     id("kotlin-kapt")
 }
 android {
@@ -23,11 +23,6 @@ android {
         versionName = androidC["versionName"] as String
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        javaCompileOptions{
-            annotationProcessorOptions {
-                arguments += mapOf("AROUTER_MODULE_NAME" to project.name)
-            }
-        }
     }
 
     buildTypes {
@@ -48,8 +43,14 @@ android {
     android.buildFeatures.dataBinding = true
 
     buildToolsVersion = androidC["buildToolsVersion"] as String
+    namespace = "com.xupt.safeAndRun"
 }
 
+kapt{
+    arguments {
+        arg("AROUTER_MODULE_NAME", project.name)
+    }
+}
 dependencies {
 
     if(!isDebug) {
@@ -61,8 +62,7 @@ dependencies {
     apts.forEach { kapt(it) }
     libs.forEach { implementation(it) }
     libKtx.forEach { implementation(it) }
-    implementation(libARouter)
-    
+
     testImplementation("junit:junit:4.+")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")

@@ -5,7 +5,7 @@ import com.amap.api.maps.model.LatLng;
 import java.util.Date;
 import java.util.List;
 
-public class record {
+public class Record {
     private int id;
     private List<LatLng> pathPointsLine;
     private String distance;

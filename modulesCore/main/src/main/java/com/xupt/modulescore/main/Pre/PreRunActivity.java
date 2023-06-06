@@ -21,7 +21,6 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.alibaba.android.arouter.facade.annotation.Route;
 import com.amap.api.maps.MapsInitializer;
 import com.xupt.modulescore.main.Pre.Mine.MineFragment;
 import com.example.modulescore.main.R;
@@ -32,7 +31,7 @@ import com.xupt.safeAndRun.modulespublic.common.constant.RoutePath;
 import java.util.ArrayList;
 import java.util.List;
 
-@Route(path = RoutePath.MAIN)
+//@Route(path = RoutePath.MAIN)
 public class PreRunActivity extends AppCompatActivity implements View.OnClickListener {
     ImageView img_setting;
     ImageView img_close;

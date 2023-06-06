@@ -6,10 +6,11 @@ plugins {
         id("com.android.library")
 
     id("org.jetbrains.kotlin.android")
+
     id("kotlin-kapt")
-    id("dagger.hilt.android.plugin")
+    id("com.google.dagger.hilt.android")
 }
-var applicationId : String? = null
+var applicationId : String? = ""
 var versionCode: Int? = null
 var versionName: String? = null
 android {
@@ -55,6 +56,7 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    namespace = "com.xupt.safeAndRun.modulesCore.login"
     sourceSets["main"].manifest.srcFile {
         if (isDebug)
             "src/main/debug/AndroidManifest.xml"
@@ -82,6 +84,4 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:${rootProject.extra["compose_version"]}")
-    debugImplementation("androidx.compose.ui:ui-tooling:${rootProject.extra["compose_version"]}")
 }

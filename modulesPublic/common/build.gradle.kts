@@ -1,7 +1,7 @@
 plugins {
     id("com.android.library")
     id("kotlin-android")
-    id("dagger.hilt.android.plugin")
+    id("com.google.dagger.hilt.android")
     id("kotlin-kapt")
 }
 
@@ -51,6 +51,7 @@ var versionName: String? = null
         kotlinOptions {
             jvmTarget = JvmTarget
         }
+        namespace = "com.xupt.safeAndRun.modulespublic.common"
     }
 kapt{
     arguments {

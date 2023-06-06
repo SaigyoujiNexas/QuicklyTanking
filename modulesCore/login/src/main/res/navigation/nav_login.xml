@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:startDestination="@id/nav_login_activity"
+    android:id="@+id/nav_login">
+    <activity android:name="com.xupt.safeAndRun.modulesCore.login.LoginActivity" android:id="@+id/nav_login_activity">
+        <deepLink app:uri="android-app://com.xupt.safeAndRun/login/LoginActivity" />
+    </activity>
+</navigation>

@@ -4,7 +4,7 @@ plugins {
     else
         id("com.android.library")
     id("kotlin-android")
-    id("dagger.hilt.android.plugin")
+    id("com.google.dagger.hilt.android")
 }
 var applicationId : String? = null
 var versionCode: Int? = null
@@ -43,6 +43,7 @@ android{
         sourceCompatibility(javaVersion)
         targetCompatibility(javaVersion)
     }
+    namespace = "com.example.modulescore.setting"
     sourceSets["main"].manifest.srcFile {
         if (isDebug)
             "src/main/debug/AndroidManifest.xml"

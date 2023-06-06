@@ -5,7 +5,7 @@ plugins {
     else
         id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id("dagger.hilt.android.plugin")
+    id("com.google.dagger.hilt.android")
     id("kotlin-kapt")
     id("kotlin-parcelize")
 }
@@ -42,6 +42,7 @@ android {
     kotlinOptions {
         jvmTarget = JvmTarget
     }
+    namespace = "com.xiyou.community"
     sourceSets["main"].manifest.srcFile{
         if(isDebug)
             "src/main/debug/AndroidManifest.xml"

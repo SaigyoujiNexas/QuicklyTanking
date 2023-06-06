@@ -19,7 +19,7 @@ class AnimatorController(private val viewModel: VerifyViewModel) {
                 viewModel.btString = ((VerifyViewModel.WAIT_TIME - it.animatedValue as Int) / 1000).toString()
             }
             valueAnimator?.addListener(object: AnimatorListenerAdapter(){
-                override fun onAnimationEnd(animation: Animator?) {
+                override fun onAnimationEnd(animation: Animator) {
                     super.onAnimationEnd(animation)
                     complete()
                 }

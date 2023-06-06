@@ -13,6 +13,7 @@ public interface RunningDao {
     public void insertRunningRecord(RunningRecord... record);//插入多个数据,冲突策略是取代旧数据同时继续事务
     @Insert
     public void insertBothRunningRecords(RunningRecord record1, RunningRecord record2);
+    
     @Update(onConflict = OnConflictStrategy.REPLACE)
     public void updateRunningRecordss(RunningRecord... records);
     @Delete

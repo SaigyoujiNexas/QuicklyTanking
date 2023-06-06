@@ -3,31 +3,33 @@ import org.gradle.api.JavaVersion
 const val isDebug = false
 
 val androidC = mapOf(
-    "compileSdk" to 32,
+    "compileSdk" to 33,
     "minSdk" to 27,
-    "targetSdk" to 32,
+    "targetSdk" to 33,
     "buildToolsVersion" to "32.0.0",
     "versionCode" to 1,
     "versionName" to "1.0"
 )
 
-const val nav_version = "2.4.1"
+const val nav_version = "2.5.3"
 const val truth_version = "1.0"
-const val  room_version = "2.4.2"
-const val compose_version = "1.2.0-beta02"
-
+const val room_version = "2.4.2"
+const val compose_version = "1.4.3"
+const val hilt_version = "2.46.1"
 const val libUCropper = "com.github.yalantis:ucrop:2.2.6"
 
-const val libAMap3DMap = "com.amap.api:3dmap:9.3.0"
-const val libAMapLocation = "com.amap.api:location:6.1.0"
+const val libAMap3DMap = "com.amap.api:3dmap:9.7.0"
+const val libAMapLocation = "com.amap.api:location:6.3.0"
 
 const val libHttpLogger = "com.squareup.okhttp3:logging-interceptor:4.9.3"
-const val libARouter = "com.alibaba:arouter-api:1.5.2"
-const val libARouterCompiler = "com.alibaba:arouter-compiler:1.5.2"
-const val libHilt = "com.google.dagger:hilt-android:2.40.5"
-const val libHiltCompiler = "com.google.dagger:hilt-android-compiler:2.40.5"
-const val libHiltLifeCycle = "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03"
+//const val libARouter = "com.alibaba:arouter-api:1.5.2"
+//const val libARouterCompiler = "com.alibaba:arouter-compiler:1.5.2"
+
+const val libHilt = "com.google.dagger:hilt-android:$hilt_version"
+const val libHiltCompiler = "com.google.dagger:hilt-android-compiler:$hilt_version"
+//const val libHiltLifeCycle = "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03"
 const val libHiltAndroidCompiler = "androidx.hilt:hilt-compiler:1.0.0"
+
 const val libStartUp = "androidx.startup:startup-runtime:1.1.0"
 const val libRetrofit = "com.squareup.retrofit2:retrofit:2.9.0"
 const val libRetrofit2Gson = "com.squareup.retrofit2:converter-gson:2.9.0"
@@ -51,42 +53,54 @@ const val libRoomKtx = "androidx.room:room-ktx:$room_version"
 
 const val libMD3 = "com.google.android.material:material:1.5.0"
 const val libCoroutine = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9"
-const val nav_compose = "androidx.navigation:navigation-compose:$nav_version"
+
 const val libComposeConstraintlayout = "androidx.constraintlayout:constraintlayout-compose:1.0.0"
 const val libComposeUI = "androidx.compose.ui:ui:$compose_version"
 const val libComposeMaterial = "androidx.compose.material:material:$compose_version"
 const val libComposePreview = "androidx.compose.ui:ui-tooling-preview:$compose_version"
-const val libComposeActivity = "androidx.activity:activity-compose:1.4.0"
+const val libComposeActivity = "androidx.activity:activity-compose:1.7.2"
 const val libComposeViewModel = "androidx.lifecycle:lifecycle-viewmodel-compose:$compose_version"
 const val libHiltNavCompose = "androidx.hilt:hilt-navigation-compose:1.0.0"
 
+
+//--------------------Navigation--------------------
+val libNavigationFragment = "androidx.navigation:navigation-fragment:$nav_version"
+val libNavigationUI = "androidx.navigation:navigation-ui:$nav_version"
+val libNavgationKtxFragment = "androidx.navigation:navigation-fragment-ktx:$nav_version"
+val libNavigationKtxUI = "androidx.navigation:navigation-ui-ktx:$nav_version"
+val libNavigationDynamicFeaturesFragment = "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
+val androidNavigationTesting = "androidx.navigation:navigation-testing:$nav_version"
+val libComposeNavigation = "androidx.navigation:navigation-compose:$nav_version"
+
 val libraryC = mapOf(
-    "appcompat" to "androidx.appcompat:appcompat:1.4.0",
-    "material" to  "com.google.android.material:material:1.4.0",
-    "constraintlayout" to "androidx.constraintlayout:constraintlayout:2.1.2",
-    "nav-fragment" to "androidx.navigation:navigation-fragment:$nav_version",
-    "nav-ui" to "androidx.navigation:navigation-ui:$nav_version",
-    "nav-dnmc-fragment" to "androidx.navigation:navigation-dynamic-features-fragment:$nav_version",
+    "appcompat" to "androidx.appcompat:appcompat:1.6.1",
+    "constraintlayout" to "androidx.constraintlayout:constraintlayout:2.1.4",
+    "navigation-fragment" to libNavigationFragment,
+    "navigation-ui" to libNavigationUI,
+    "navigation-dynamic-features-fragment" to libNavigationDynamicFeaturesFragment,
     "md3" to libMD3
 )
 
 val libKtx = listOf(
     "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-beta01",
-    "androidx.lifecycle:lifecycle-runtime-ktx:2.3.1",
+    "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1",
     "androidx.lifecycle:lifecycle-livedata-ktx:2.5.0-beta01",
-    "androidx.core:core-ktx:1.7.0",
+    "androidx.core:core-ktx:1.10.1",
     "androidx.navigation:navigation-fragment-ktx:$nav_version",
     "androidx.navigation:navigation-ui-ktx:$nav_version",
     libCoroutine,
-    libRoomKtx
+    libRoomKtx,
+    libNavigationKtxUI,
+    libNavgationKtxFragment
 
     )
 val librariesDebug = listOf(
-    "com.google.truth:truth:$truth_version"
+    "com.google.truth:truth:$truth_version",
+    "androidx.compose.ui:ui-tooling:$compose_version",
 )
 
 val libCompose = listOf(
-    nav_compose,
+    libComposeNavigation,
     libCoilCompose,
     libComposeConstraintlayout,
     libComposeUI,
@@ -97,7 +111,7 @@ val libCompose = listOf(
     libHiltNavCompose
 )
 val apts = listOf(
-    libARouterCompiler,
+//    libARouterCompiler,
     libHiltCompiler,
     libHiltAndroidCompiler,
     libGlideCompiler,
@@ -106,16 +120,13 @@ val apts = listOf(
 val libs = listOf(
     libUCropper,
     libStartUp,
-    libARouter,
     libHilt,
-    libHiltLifeCycle,
+//    libHiltLifeCycle,
     libHttpLogger,
     libRetrofit,
     libRetrofit2Gson,
     libGlide,
     libGlideOkhttp3,
-    libStatusBarUtil,
-    libRecyclerAdapter,
     libRxPermissions,
     libAMap3DMap,
     libTicker,
@@ -125,7 +136,8 @@ val libs = listOf(
     libRoom
 )
 val tests = listOf(
-    "androidx.navigation:navigation-testing:$nav_version"
+    "androidx.navigation:navigation-testing:$nav_version",
+    "androidx.compose.ui:ui-test-junit4:$compose_version"
 )
 val applicationIds = mapOf(
     "app" to "com.xupt.safeAndRun",
@@ -133,7 +145,7 @@ val applicationIds = mapOf(
     "login" to "com.xupt.safeAndRun.example.modulescore.login"
 )
 
-val javaVersion = JavaVersion.VERSION_11
+val javaVersion = JavaVersion.VERSION_17
 
-val kotlinVersion = "1.6.10"
-const val JvmTarget = "11"
+const val kotlinVersion = "1.8.10"
+const val JvmTarget = "17"
