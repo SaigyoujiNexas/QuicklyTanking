@@ -9,7 +9,7 @@ import com.xiyou.shop.entite.ShopItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@Database(entities = arrayOf(ShopItem::class),version = 1, exportSchema = false)
+@Database(entities = [ShopItem::class],version = 1, exportSchema = false)
 abstract class ShopDatabase: RoomDatabase(){
     abstract  fun shopDao(): ShopDao
 

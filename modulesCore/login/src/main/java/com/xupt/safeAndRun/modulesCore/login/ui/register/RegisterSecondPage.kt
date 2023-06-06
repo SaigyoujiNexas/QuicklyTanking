@@ -22,8 +22,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.xupt.safeAndRun.modulesCore.login.NavPath.register_third
-import com.xupt.safeAndRun.modulesCore.login.mvvm.RegisterViewModel
+import com.xupt.safeAndRun.modulesCore.login.mvvm.LoginViewModel
 import com.xupt.safeAndRun.modulesCore.login.util.checkInput
 import com.xupt.safeAndRun.modulesCore.login.util.findActivity
 
@@ -34,11 +33,15 @@ import com.xupt.safeAndRun.modulesCore.login.util.findActivity
  */
 
 @Composable
-fun RegisterSecondPage(registerViewModel: RegisterViewModel = viewModel(),
-                       navController: NavHostController = rememberNavController()
+fun RegisterSecondPage(
+    loginViewModel: LoginViewModel = viewModel(),
+    navController: NavHostController = rememberNavController()
 ){
 
     val context = LocalContext.current.findActivity()
+    val uiStatus by remember { loginViewModel.uiStatus }
+    val registerStatus = uiStatus as LoginViewModel.UiStatus.Register
+    var passwd by remember { mutableStateOf("") }
     var passwdVrf by remember { mutableStateOf("") }
     // the status of the two passwd are same.
     var VrfStatus by remember{ mutableStateOf(true)}
@@ -54,11 +57,12 @@ fun RegisterSecondPage(registerViewModel: RegisterViewModel = viewModel(),
         isFloatingActionButtonDocked = true,
         floatingActionButton = {
             FloatingActionButton(onClick = {
-                if(registerViewModel.passwd.checkInput("请输入账号密码") && passwdVrf.checkInput("请再次确认密码"){
-                        TextUtils.equals(registerViewModel.passwd, passwdVrf)
+                if(passwd.checkInput("请输入账号密码") && passwdVrf.checkInput("请再次确认密码"){
+                        TextUtils.equals(passwd, passwdVrf)
                     })
                 {
-                    navController.navigate(register_third)
+                    registerStatus.passwd = passwd
+                    loginViewModel.handleIntent(LoginViewModel.Action.Next)
                 }
             }) {
                 Icon(Icons.Filled.ArrowForward, contentDescription = "next")
@@ -67,6 +71,7 @@ fun RegisterSecondPage(registerViewModel: RegisterViewModel = viewModel(),
         content = {
             Column(
                 modifier = Modifier
+                    .padding(it)
                     .padding(top = 125.dp)
                     .fillMaxWidth()
             ) {
@@ -76,10 +81,10 @@ fun RegisterSecondPage(registerViewModel: RegisterViewModel = viewModel(),
                     textAlign = TextAlign.Center
                 )
                 OutlinedTextField(
-                    value = registerViewModel.passwd,
-                    onValueChange = { registerViewModel.passwd = it
-                        VrfStatus = TextUtils.isEmpty(registerViewModel.passwd)|| TextUtils.isEmpty(passwdVrf) ||
-                                TextUtils.equals(registerViewModel.passwd, passwdVrf)
+                    value = passwd,
+                    onValueChange = { passwd = it
+                        VrfStatus = TextUtils.isEmpty(passwd)|| TextUtils.isEmpty(passwdVrf) ||
+                                TextUtils.equals(passwd, passwdVrf)
                                     },
                     label = { Text(text = "账号密码") },
                     maxLines = 1,
@@ -94,7 +99,7 @@ fun RegisterSecondPage(registerViewModel: RegisterViewModel = viewModel(),
                     value = passwdVrf,
                     onValueChange = {
                         passwdVrf = it
-                        VrfStatus = TextUtils.isEmpty(registerViewModel.passwd)|| TextUtils.isEmpty(passwdVrf) || TextUtils.equals(registerViewModel.passwd, passwdVrf) },
+                        VrfStatus = TextUtils.isEmpty(passwd)|| TextUtils.isEmpty(passwdVrf) || TextUtils.equals(passwd, passwdVrf) },
                     label = { Text(text = "确认密码") },
                     maxLines = 1,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),

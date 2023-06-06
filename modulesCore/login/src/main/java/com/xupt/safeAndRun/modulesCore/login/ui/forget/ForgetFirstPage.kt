@@ -8,74 +8,74 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.common.utils.ToastUtil
-import com.xupt.safeAndRun.modulesCore.login.mvvm.ForgetViewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.xupt.safeAndRun.modulesCore.login.entity.ForgetAccount
+import com.xupt.safeAndRun.modulesCore.login.entity.LoginAccount
 import com.xupt.safeAndRun.modulesCore.login.mvvm.LoginViewModel
-import com.xupt.safeAndRun.modulesCore.login.mvvm.VerifyViewModel
-import com.xupt.safeAndRun.modulesCore.login.net.response.LoginResponse
-import com.xupt.safeAndRun.modulesCore.login.status.AnimatorController
-import com.xupt.safeAndRun.modulesCore.login.ui.LoginFrontPage
 import com.xupt.safeAndRun.modulesCore.login.util.checkInput
-import com.xupt.safeAndRun.modulesbase.libbase.cache.Preferences
-import com.xupt.safeAndRun.modulespublic.common.constant.KeyPool
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.currentCoroutineContext
+import com.xupt.safeAndRun.modulesCore.login.util.findActivity
+import com.xupt.safeAndRun.modulespublic.common.constant.RoutePath
 import kotlinx.coroutines.launch
-import kotlin.coroutines.coroutineContext
 
 @Composable
-fun ForgetFirstPage(forgetViewModel: ForgetViewModel = viewModel(),
-verifyViewModel: VerifyViewModel = viewModel()){
-val crt_scp = rememberCoroutineScope()
+fun ForgetFirstPage(
+    loginViewModel: LoginViewModel = viewModel(),
+    navController: NavController = rememberNavController()) {
+
+    val crt_scp = rememberCoroutineScope()
+    val uiStatus by remember { loginViewModel.uiStatus }
+    if(uiStatus !is LoginViewModel.UiStatus.Forget){
+        throw Exception("uiStatus is not LoginViewModel.UiStatus.Forget")
+    }
+    val forgetUiStatus = uiStatus as LoginViewModel.UiStatus.Forget
+    val context = LocalContext.current
+    var tel by remember{ mutableStateOf("") }
+    var passwd by remember{ mutableStateOf("") }
+    var verifyCode by remember{ mutableStateOf("") }
     Scaffold(
         bottomBar = {
                     BottomAppBar(
-                        cutoutShape = MaterialTheme.shapes.small.copy(
-                            CornerSize(50)
-                        )
-                    ) {
-
+                        cutoutShape = MaterialTheme.shapes.small.copy(CornerSize(50))) {
                     }
         },
         isFloatingActionButtonDocked = true,
         floatingActionButton = {
             FloatingActionButton(onClick = {
                 //first, forget the password.
-                forgetViewModel.forgetPassword {
+                loginViewModel.handleIntent(LoginViewModel.Action.Forget(ForgetAccount(tel, passwd, verifyCode)){
                     //then login.
                     crt_scp.launch {
-                        val response: LoginResponse
-                        try {
-                            response = forgetViewModel.login()
-                        }catch (e: Exception) {
-                            ToastUtil.showToast("登录失败 ${e.localizedMessage}")
-                            return@launch
-                        }
-                        response.apply {
-                            Preferences.saveString(KeyPool.TOKEN, data)
-                            ToastUtil.showToast("登录成功")
-                        }
-
+                        loginViewModel.handleIntent(LoginViewModel.Action.Login(LoginViewModel.LoginMethod.BY_PASSWD, LoginAccount(tel, passwd)){
+                            navController.navigate(RoutePath.MAIN)
+                            context.findActivity()?.finish()
+                        })
                     }
-                }
+                })
             }) {
                 Icon(Icons.Filled.Done, contentDescription = "forget_next")
             }
         },
-        content = {
+        content = { paddingValue->
             Column(
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(paddingValue)
                     .padding(horizontal = 24.dp, vertical = 125.dp)
             ) {
                 Text (text = "忘记密码了?", modifier = Modifier.align(Alignment.CenterHorizontally))
@@ -84,9 +84,9 @@ val crt_scp = rememberCoroutineScope()
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 12.dp),
-                    value = forgetViewModel.tel,
+                    value = tel,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-                    onValueChange = {forgetViewModel.tel = it},
+                    onValueChange = {tel = it},
                     label = {Text(text = "手机号")})
 
                 ConstraintLayout(
@@ -105,21 +105,19 @@ val crt_scp = rememberCoroutineScope()
                                 end.linkTo(parent.end)
                             }
                             .animateContentSize(),
-                        enabled = verifyViewModel.btClickable,
+                        enabled = forgetUiStatus.sendCount == 0,
                         onClick = {
-                            if (forgetViewModel.tel.checkInput(toastMsg = "手机号不可为空")) {
-                                verifyViewModel.verify(forgetViewModel.tel){
-                                    AnimatorController(verifyViewModel).start()
-                                }
+                            if (tel.checkInput(toastMsg = "手机号不可为空")) {
+                                loginViewModel.handleIntent(LoginViewModel.Action.SendCode(tel))
                             }
                         }
                     ) {
-                        Text(text = verifyViewModel.btString)
+                        Text(text = if (forgetUiStatus.sendCount == 0) "发送验证码" else forgetUiStatus.sendCount.toString())
                     }
                     OutlinedTextField(
-                        value = forgetViewModel.code,
+                        value = verifyCode,
                         maxLines = 1,
-                        onValueChange = { forgetViewModel.code = it },
+                        onValueChange = { verifyCode = it },
                         label = { Text(text = "短信验证码") },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         modifier = Modifier
@@ -136,9 +134,9 @@ val crt_scp = rememberCoroutineScope()
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 12.dp),
-                    value = forgetViewModel.passwd,
+                    value = passwd,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                    onValueChange = {forgetViewModel.passwd = it},
+                    onValueChange = { passwd = it },
                     label = {Text(text = "新密码")})
             }
         }

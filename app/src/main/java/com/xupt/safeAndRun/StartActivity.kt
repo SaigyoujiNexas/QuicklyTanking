@@ -28,7 +28,9 @@ class StartActivity : AppCompatActivity(){
                 .build()
             navController.navigate(request)
         } else {
-            navController.navigate(R.id.nav_main)
+            val request = NavDeepLinkRequest.Builder
+                .fromUri(RoutePath.MAIN.toUri()).build()
+            navController.navigate(request)
         }
         this.finish()
     }

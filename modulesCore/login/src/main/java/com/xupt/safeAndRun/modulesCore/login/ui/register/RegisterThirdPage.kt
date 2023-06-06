@@ -15,7 +15,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.xupt.safeAndRun.modulesCore.login.mvvm.RegisterViewModel
+import com.xupt.safeAndRun.modulesCore.login.entity.LoginAccount
+import com.xupt.safeAndRun.modulesCore.login.entity.RegisterAccount
+import com.xupt.safeAndRun.modulesCore.login.mvvm.LoginViewModel
 import com.xupt.safeAndRun.modulesCore.login.util.checkInput
 import com.xupt.safeAndRun.modulesCore.login.util.findActivity
 import com.xupt.safeAndRun.modulespublic.common.constant.RoutePath
@@ -28,12 +30,16 @@ import com.xupt.safeAndRun.modulespublic.common.constant.RoutePath
  * if user exit after this page, background should put the default value in the database.
  */
 @Composable
-fun RegisterThirdPage(registerViewModel: RegisterViewModel = viewModel(),
-                      navController: NavHostController = rememberNavController()
+fun RegisterThirdPage(
+    loginViewModel: LoginViewModel = viewModel(),
+    navController: NavHostController = rememberNavController()
 ){
 
     val context = LocalContext.current.findActivity()
     // the status of the two passwd are same.
+    var name by remember{mutableStateOf("")}
+    val uiStatus by remember{ loginViewModel.uiStatus }
+    val registerStatus = uiStatus as LoginViewModel.UiStatus.Register
     Scaffold(
         bottomBar = {
             BottomAppBar(
@@ -46,21 +52,20 @@ fun RegisterThirdPage(registerViewModel: RegisterViewModel = viewModel(),
         isFloatingActionButtonDocked = true,
         floatingActionButton = {
             FloatingActionButton(onClick = {
-                if(registerViewModel.name.checkInput("用户昵称不能为空")) {
-                    registerViewModel.judgeUserName {
-                        registerViewModel.register {
-                            registerViewModel.login {
-                                //navController.navigate("register_fifth")
-//                                ARouter.getInstance().build(RoutePath.MAIN).navigation()
-                                navController.navigate("com.xupt.safeAndRun.runActivity")
-                                context?.finish()
+                registerStatus.name = name
+                if(name.checkInput("用户昵称不能为空")) {
+                    loginViewModel.judgeUserName(name) {
+                        loginViewModel.handleIntent(
+                            LoginViewModel.Action.Register(
+                                RegisterAccount(tel = registerStatus.tel, name = registerStatus.name, passwd = registerStatus.passwd, verifyCode = registerStatus.verifyCode)){
+                                loginViewModel.handleIntent(LoginViewModel.Action.Login(LoginViewModel.LoginMethod.BY_PASSWD, LoginAccount(registerStatus.tel, registerStatus.passwd)){
+                                    navController.navigate(RoutePath.MAIN)
+                                    context?.finish()
+                                })
+                            })
                             }
                         }
-                    }
-
-
-                }
-            }) {
+                    }){
                 Icon(Icons.Filled.ArrowForward, contentDescription = "next")
             }
         },
@@ -77,8 +82,8 @@ fun RegisterThirdPage(registerViewModel: RegisterViewModel = viewModel(),
                     textAlign = TextAlign.Center
                 )
                 OutlinedTextField(
-                    value = registerViewModel.name,
-                    onValueChange = { registerViewModel.name = it },
+                    value = name,
+                    onValueChange = { name = it },
                     label = { Text(text = "用户昵称") },
                     maxLines = 1,
                     modifier = Modifier

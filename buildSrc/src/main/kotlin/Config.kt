@@ -10,13 +10,16 @@ val androidC = mapOf(
     "versionCode" to 1,
     "versionName" to "1.0"
 )
-
+const val preference_version = "1.2.0"
 const val nav_version = "2.5.3"
 const val truth_version = "1.0"
 const val room_version = "2.4.2"
 const val compose_version = "1.4.3"
 const val hilt_version = "2.46.1"
+const val md3_version = "1.9.0"
+
 const val libUCropper = "com.github.yalantis:ucrop:2.2.6"
+
 
 const val libAMap3DMap = "com.amap.api:3dmap:9.7.0"
 const val libAMapLocation = "com.amap.api:location:6.3.0"
@@ -51,7 +54,10 @@ const val libRoom =  "androidx.room:room-runtime:$room_version"
 const val libRoomCompiler = "androidx.room:room-compiler:$room_version"
 const val libRoomKtx = "androidx.room:room-ktx:$room_version"
 
-const val libMD3 = "com.google.android.material:material:1.5.0"
+const val libPreference = "androidx.preference:preference:$preference_version"
+const val libPreferenceKtx = "androidx.preference:preference-ktx:$preference_version"
+
+const val libMD3 = "com.google.android.material:material:$md3_version"
 const val libCoroutine = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9"
 
 const val libComposeConstraintlayout = "androidx.constraintlayout:constraintlayout-compose:1.0.0"
@@ -61,7 +67,7 @@ const val libComposePreview = "androidx.compose.ui:ui-tooling-preview:$compose_v
 const val libComposeActivity = "androidx.activity:activity-compose:1.7.2"
 const val libComposeViewModel = "androidx.lifecycle:lifecycle-viewmodel-compose:$compose_version"
 const val libHiltNavCompose = "androidx.hilt:hilt-navigation-compose:1.0.0"
-
+const val libComposeMD3 = "androidx.compose.material3:material3:1.0.1"
 
 //--------------------Navigation--------------------
 val libNavigationFragment = "androidx.navigation:navigation-fragment:$nav_version"
@@ -91,7 +97,8 @@ val libKtx = listOf(
     libCoroutine,
     libRoomKtx,
     libNavigationKtxUI,
-    libNavgationKtxFragment
+    libNavgationKtxFragment,
+    libPreferenceKtx
 
     )
 val librariesDebug = listOf(
@@ -108,7 +115,8 @@ val libCompose = listOf(
     libComposePreview,
     libComposeActivity,
     libComposeViewModel,
-    libHiltNavCompose
+    libHiltNavCompose,
+    libComposeMD3
 )
 val apts = listOf(
 //    libARouterCompiler,
@@ -122,6 +130,7 @@ val libs = listOf(
     libStartUp,
     libHilt,
 //    libHiltLifeCycle,
+    libPreference,
     libHttpLogger,
     libRetrofit,
     libRetrofit2Gson,

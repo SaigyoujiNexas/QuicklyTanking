@@ -20,10 +20,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.common.utils.ToastUtil
-import com.xupt.safeAndRun.modulesCore.login.NavPath.register_second
-import com.xupt.safeAndRun.modulesCore.login.mvvm.RegisterViewModel
-import com.xupt.safeAndRun.modulesCore.login.mvvm.VerifyViewModel
-import com.xupt.safeAndRun.modulesCore.login.status.AnimatorController
+import com.xupt.safeAndRun.modulesCore.login.mvvm.LoginViewModel
 import com.xupt.safeAndRun.modulesCore.login.util.checkInput
 
 /**
@@ -32,10 +29,20 @@ import com.xupt.safeAndRun.modulesCore.login.util.checkInput
  * correct verify code from participant phone number that will to register.
  */
 @Composable
-fun RegisterFirstPage(verifyViewModel: VerifyViewModel = viewModel(),
-                      registerViewModel: RegisterViewModel = viewModel(),
-                      navController: NavHostController = rememberNavController()
-){
+fun RegisterFirstPage(
+    loginViewModel: LoginViewModel = viewModel(),
+    navController: NavHostController = rememberNavController()){
+
+    val uiStatus by remember { loginViewModel.uiStatus }
+    if(uiStatus !is LoginViewModel.UiStatus.Register){
+        throw IllegalArgumentException("uiStatus must be Register")
+    }
+    val registerStatus = uiStatus as LoginViewModel.UiStatus.Register
+    var tel by remember{ mutableStateOf("") }
+    var verifyCode by remember {
+        mutableStateOf("")
+    }
+
     Scaffold(
         bottomBar = {
             BottomAppBar(
@@ -49,24 +56,26 @@ fun RegisterFirstPage(verifyViewModel: VerifyViewModel = viewModel(),
         isFloatingActionButtonDocked = true,
         floatingActionButton = {
             FloatingActionButton(onClick = {
-                if(registerViewModel.tel.checkInput("请输入手机号") && registerViewModel.verify.checkInput("请输入短信验证码"){
+                if(tel.checkInput("请输入手机号") && verifyCode.checkInput("请输入短信验证码"){
                     if(it.length != 4) {
                         ToastUtil.showToast("请输入4位有效数字")
-                        false }
-                        true
-                    })
-                {
-                //    verifyViewModel.checkVerify(registerViewModel.tel, registerViewModel.verify) {
-                        navController.navigate(register_second)
-                //    }
+                        false
+                    }
+                    else true
+                    }
+                ) {
+                    registerStatus.tel = tel
+                    registerStatus.verifyCode = verifyCode
+                    loginViewModel.handleIntent(LoginViewModel.Action.Next)
                 }
             }) {
                 Icon(Icons.Filled.ArrowForward, contentDescription = "next")
             }
         },
-        content = {
+        content = { paddingValue->
             Column(
                 modifier = Modifier
+                    .padding(paddingValue)
                     .padding(top = 125.dp)
                     .fillMaxWidth()
         ) {
@@ -76,8 +85,8 @@ fun RegisterFirstPage(verifyViewModel: VerifyViewModel = viewModel(),
                 textAlign = TextAlign.Center
             )
             OutlinedTextField(
-                value = registerViewModel.tel,
-                onValueChange = { registerViewModel.tel = it },
+                value = tel,
+                onValueChange = { tel = it },
                 label = { Text(text = "手机号") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
                 modifier = Modifier
@@ -103,21 +112,19 @@ fun RegisterFirstPage(verifyViewModel: VerifyViewModel = viewModel(),
                             }
                             .animateContentSize()
                         ,
-                        enabled = verifyViewModel.btClickable
+                        enabled = registerStatus.sendCount == 0
                         ,
                         onClick = {
-                            if(registerViewModel.tel.checkInput("请输入手机号"))
-                                verifyViewModel.verify(registerViewModel.tel) {
-                                    AnimatorController(verifyViewModel).start()
-                                }
+                            if(tel.checkInput("请输入手机号"))
+                                loginViewModel.handleIntent(LoginViewModel.Action.SendCode(tel))
                         }
                     ) {
-                        Text(text = verifyViewModel.btString)
+                        Text(text = if(registerStatus.sendCount == 0) "发送验证码" else registerStatus.sendCount.toString())
                     }
                     OutlinedTextField(
-                        value = registerViewModel.verify,
+                        value = verifyCode,
                         maxLines = 1,
-                        onValueChange = { registerViewModel.verify = it },
+                        onValueChange = { verifyCode = it },
                         label = { Text(text = "短信验证码") },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         modifier = Modifier

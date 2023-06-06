@@ -31,13 +31,6 @@ android{
             viewBinding = true
             dataBinding = true
         }
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments += mapOf("AROUTER_MODULE_NAME" to project.name)
-            }
-        }
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -78,12 +71,7 @@ dependencies {
     implementation("androidx.room:room-ktx:$roomVersion")
 
     implementation(project(":modulesPublic:common"))
-    implementation("androidx.appcompat:appcompat:1.4.1")
     implementation("org.greenrobot:eventbus:3.1.1")
-    implementation("com.google.android.material:material:1.5.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.3")
-    implementation("androidx.preference:preference:1.1.1")
-
     libraryC.forEach { (_, s2) -> implementation(s2) }
     libs.forEach { implementation(it) }
     apts.forEach { annotationProcessor(it) }

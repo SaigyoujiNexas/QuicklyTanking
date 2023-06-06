@@ -6,6 +6,6 @@
     <activity
         android:name="com.xupt.modulescore.main.Pre.PreRunActivity"
         android:id="@+id/nav_run_activity" >
-        <deepLink app:uri="com.xupt.safeAndRun.runActivity" />
+        <deepLink app:uri="android-app://com.xupt.safeAndRun/main/MainActivity" />
     </activity>
 </navigation>

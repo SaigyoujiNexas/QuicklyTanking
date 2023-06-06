@@ -12,7 +12,14 @@ android {
             keyAlias = "key0"
             keyPassword = "llllll"
         }
+        create("release"){
+            storeFile = file("./Run00.jks")
+            storePassword = "llllll"
+            keyAlias = "key0"
+            keyPassword = "llllll"
+        }
     }
+
     compileSdk = androidC["compileSdk"] as Int
 
     defaultConfig {
@@ -26,6 +33,12 @@ android {
     }
 
     buildTypes {
+        getByName("release") {
+            signingConfig = signingConfigs.getByName("release")
+        }
+        getByName("debug"){
+            signingConfig = signingConfigs.getByName("debug")
+        }
         val release by getting {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
@@ -46,11 +59,6 @@ android {
     namespace = "com.xupt.safeAndRun"
 }
 
-kapt{
-    arguments {
-        arg("AROUTER_MODULE_NAME", project.name)
-    }
-}
 dependencies {
 
     if(!isDebug) {

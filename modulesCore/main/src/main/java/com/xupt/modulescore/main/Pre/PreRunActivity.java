@@ -48,11 +48,6 @@ public class PreRunActivity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pre_run);
-        MapsInitializer mapsInitializer = new MapsInitializer();
-        //更新隐私合规状态,需要在初始化地图之前完成
-        mapsInitializer.updatePrivacyShow(this, true, true);
-        //更新同意隐私状态,需要在初始化地图之前完成
-        mapsInitializer.updatePrivacyAgree(this, true);
         card_setting_back = findViewById(R.id.card_setting_back);
         card_music_prerun = findViewById(R.id.card_music_prerun);
         final String TAG = "PreRunActivityTAG";

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <application>
         <provider
@@ -11,7 +12,18 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+        <provider
+            android:authorities="${applicationId}.androidx-startup"
+            android:name="androidx.startup.InitializationProvider"
+            android:exported="false"
+            tools:node="merge">
+            <meta-data
+                android:name="com.xupt.modulescore.main.init.AMapInitializer"
+                android:value="androidx.startup"/>
+        </provider>
 
+        <activity android:name="com.xupt.modulescore.main.Identification.IdentificationActivity"
+            android:exported="false" />
         <activity
             android:name="com.xupt.modulescore.main.Trace.TraceActivity"
             android:exported="false" />

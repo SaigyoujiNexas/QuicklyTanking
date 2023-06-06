@@ -23,12 +23,6 @@ var versionName: String? = null
 
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
             consumerProguardFiles("consumer-rules.pro")
-
-            javaCompileOptions {
-                annotationProcessorOptions {
-                    arguments += mapOf("AROUTER_MODULE_NAME" to project.name)
-                }
-            }
         }
         buildFeatures {
             viewBinding = true
@@ -53,11 +47,7 @@ var versionName: String? = null
         }
         namespace = "com.xupt.safeAndRun.modulespublic.common"
     }
-kapt{
-    arguments {
-        arg("AROUTER_MODULE_NAME", project.name)
-    }
-}
+
 
 dependencies {
 

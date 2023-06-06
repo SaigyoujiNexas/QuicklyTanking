@@ -1,22 +1,38 @@
 package com.xupt.safeAndRun.modulesCore.login.ui
 
+import android.os.CountDownTimer
 import android.text.TextUtils
 import android.widget.Toast
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material.BottomAppBar
+import androidx.compose.material.Button
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -36,35 +52,38 @@ import androidx.navigation.compose.rememberNavController
 import com.example.common.utils.ToastUtil
 import com.xupt.safeAndRun.modulesCore.login.NavPath
 import com.xupt.safeAndRun.modulesCore.login.NavPath.register_first
+import com.xupt.safeAndRun.modulesCore.login.entity.LoginAccount
 import com.xupt.safeAndRun.modulesCore.login.mvvm.LoginViewModel
-import com.xupt.safeAndRun.modulesCore.login.mvvm.VerifyViewModel
-import com.xupt.safeAndRun.modulesCore.login.status.AnimatorController
 import com.xupt.safeAndRun.modulesCore.login.util.findActivity
 import com.xupt.safeAndRun.modulespublic.common.constant.RoutePath
 
 object LoginFrontPage {
-    sealed class LoginState {
-        object Passwd : LoginState()
-        object Verify : LoginState()
-
-        fun isLoginByPasswd() = this == Passwd
-        fun toggleValue() = if (isLoginByPasswd()) Verify else Passwd
-    }
-
-
-    @Composable
-    fun rememberLoginState() = remember { mutableStateOf<LoginState>(LoginState.Passwd) }
 
     @ExperimentalAnimationApi
     @Composable
     fun LoginFrontPage(
-        navController: NavHostController = rememberNavController(),
         loginViewModel: LoginViewModel = viewModel(),
-        verifyViewModel: VerifyViewModel = viewModel(),
-        loginState: MutableState<LoginState> = rememberLoginState()
+        navController: NavHostController = rememberNavController(),
     ) {
-
+        val uiStatus by remember { loginViewModel.uiStatus }
+        if(uiStatus !is LoginViewModel.UiStatus.Login){
+            throw IllegalStateException("LoginFrontPage must be called when uiStatus is Login")
+        }
+        val loginState = uiStatus as LoginViewModel.UiStatus.Login
+        var tel by remember{ mutableStateOf("")}
+        var passwd by remember{ mutableStateOf("")}
+        var verifyCode by remember { mutableStateOf("") }
         val context = LocalContext.current.findActivity()
+        var countDownTime by remember { mutableStateOf(0) }
+        val counter = object:CountDownTimer((60) * 1000L, 1000L){
+            override fun onTick(millisUntilFinished: Long) {
+                countDownTime = (millisUntilFinished / 1000L).toInt()
+            }
+
+            override fun onFinish() {
+                countDownTime = 0;
+            }
+        }
         Scaffold(
             bottomBar = {
                 BottomAppBar(
@@ -84,17 +103,22 @@ object LoginFrontPage {
             isFloatingActionButtonDocked = true,
             floatingActionButton = {
                 FloatingActionButton(onClick = {
-                    if (checkInput(loginViewModel.tel, "手机号不能为空")
+                    if (checkInput(tel, "手机号不能为空")
                     ) {
-                        if (loginState.value.isLoginByPasswd()) {
-                            if (checkInput(loginViewModel.passwd, "密码不能为空"))
-                                loginViewModel.loginByPasswd(onSuccess = {
-                                    ToastUtil.showToast("login success")
-                                    Toast.makeText(context, "test", Toast.LENGTH_SHORT).show()
-                                       navController.navigate("com.xupt.safeAndRun.runActivity")
-                                })
+                        if (loginState.loginMethod == LoginViewModel.LoginMethod.BY_PASSWD){
+                            if (checkInput(passwd, "密码不能为空")){
+                                loginViewModel.handleIntent(
+                                    LoginViewModel.Action.Login(
+                                        LoginViewModel.LoginMethod.BY_PASSWD,
+                                        LoginAccount(tel, passwd)){
+                                        ToastUtil.showToast("login success")
+                                        val request = NavDeepLinkRequest.Builder
+                                            .fromUri(RoutePath.MAIN.toUri())
+                                            .build()
+                                        navController.navigate(request)
+                                })}
                         } else {
-                            if (checkInput(loginViewModel.verifyCode, "验证码不能为空", otherJudge = {
+                            if (checkInput(verifyCode, "验证码不能为空", otherJudge = {
                                     if (it.length < 4) {
                                         ToastUtil.showToast("验证码应为4位数字")
                                         false
@@ -102,10 +126,14 @@ object LoginFrontPage {
                                         true
                                     }
                                 }))
-                                loginViewModel.loginByVerify(onSuccess = {
-                                    val request = NavDeepLinkRequest.Builder
-                                        .fromUri(RoutePath.MAIN.toUri())
-                                    navController.navigate(request.build())
+                                loginViewModel.handleIntent(
+                                    LoginViewModel.Action.Login(
+                                        LoginViewModel.LoginMethod.BY_VERIFY_CODE,
+                                        LoginAccount(tel, verifyCode)){
+                                        val request = NavDeepLinkRequest.Builder
+                                            .fromUri(RoutePath.MAIN.toUri())
+                                            .build()
+                                        navController.navigate(request)
                                     //    ToastUtil.showToast("login success")
                                     context?.finish()
                                 })
@@ -130,8 +158,8 @@ object LoginFrontPage {
                         textAlign = TextAlign.Center
                     )
                     OutlinedTextField(
-                        value = loginViewModel.tel,
-                        onValueChange = { loginViewModel.tel = it },
+                        value = tel,
+                        onValueChange = { tel = it },
                         label = { Text(text = "手机号") },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
                         modifier = Modifier
@@ -139,10 +167,10 @@ object LoginFrontPage {
                             .padding(horizontal = 24.dp)
                             .padding(top = 24.dp)
                     )
-                    if (loginState.value.isLoginByPasswd()) {
+                    if (loginState.loginMethod == LoginViewModel.LoginMethod.BY_PASSWD) {
                         OutlinedTextField(
-                            value = loginViewModel.passwd,
-                            onValueChange = { loginViewModel.passwd = it },
+                            value = passwd,
+                            onValueChange = { passwd = it },
                             label = { Text(text = "密码") },
                             visualTransformation = PasswordVisualTransformation(),
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
@@ -166,27 +194,23 @@ object LoginFrontPage {
                                         top.linkTo(textField.top)
                                         bottom.linkTo(textField.bottom)
                                         end.linkTo(parent.end, margin = 24.dp)
-                                    }
-                                    .animateContentSize(),
-                                enabled = verifyViewModel.btClickable,
+                                    }.animateContentSize(),
+                                enabled = countDownTime == 0,
                                 onClick = {
-                                    if (checkInput(
-                                            str = loginViewModel.tel,
-                                            toastMsg = "手机号不可为空"
-                                        )
-                                    ) {
-                                        loginViewModel.sendCode {
-                                            AnimatorController(verifyViewModel).start()
-                                        }
+                                    counter.start()
+                                    if (checkInput(tel, "手机号不可为空")) {
+                                        loginViewModel.handleIntent(LoginViewModel.Action.SendCode(tel){
+//                                            AnimatorController().start()
+                                        })
                                     }
                                 }
                             ) {
-                                Text(text = verifyViewModel.btString)
+                                Text(text = "${countDownTime.takeIf { it != 0 }?: "发送验证码"}")
                             }
                             OutlinedTextField(
-                                value = loginViewModel.verifyCode,
+                                value = verifyCode,
                                 maxLines = 1,
-                                onValueChange = { loginViewModel.verifyCode = it },
+                                onValueChange = { verifyCode = it },
                                 label = { Text(text = "短信验证码") },
                                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                                 modifier = Modifier
@@ -201,11 +225,12 @@ object LoginFrontPage {
                         }
                     }
                     //Bottom Line.
-                    Row(modifier = Modifier.fillMaxWidth()
+                    Row(modifier = Modifier
+                        .fillMaxWidth()
                         .padding(horizontal = 24.dp, vertical = 12.dp),
                     horizontalArrangement = Arrangement.SpaceBetween) {
                         Text(
-                            text = if (loginState.value.isLoginByPasswd())
+                            text = if (loginState.loginMethod == LoginViewModel.LoginMethod.BY_PASSWD)
                                 "使用短信验证码登录"
                             else
                                 "使用账号密码登录",
@@ -217,7 +242,11 @@ object LoginFrontPage {
                                     enabled = true,
                                     role = Role.Button,
                                     onClick = {
-                                        loginState.value = loginState.value.toggleValue()
+                                        val targetStatus = if(loginState.loginMethod == LoginViewModel.LoginMethod.BY_PASSWD)
+                                            LoginViewModel.LoginMethod.BY_VERIFY_CODE
+                                        else
+                                            LoginViewModel.LoginMethod.BY_PASSWD
+                                        loginViewModel.handleIntent(LoginViewModel.Action.SwitchLoginMethod(targetStatus))
                                     })
                         )
                         Text(text = "忘记密码", color = Color.Gray,

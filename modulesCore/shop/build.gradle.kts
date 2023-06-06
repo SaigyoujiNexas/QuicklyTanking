@@ -63,12 +63,6 @@ android {
             "src/main/AndroidManifest.xml"
     }
 }
-
-kapt{
-    arguments {
-        arg("AROUTER_MODULE_NAME", project.name)
-    }
-}
 dependencies {
 
     implementation(project(":modulesPublic:common"))
